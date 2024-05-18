@@ -1,7 +1,7 @@
 {
   programs ={
     git = {
-      enable = false;
+      enable = true;
       userEmail = "niklastasler@gmail.com";
       userName = "Niklas";
       extraConfig = {
@@ -9,7 +9,7 @@
       };
     };
     gh = {
-      enable = false;
+      enable = true;
       gitCredentialHelper.enable = true;
     };
   };
