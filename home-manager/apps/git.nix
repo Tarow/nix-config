@@ -1,10 +1,16 @@
 {
-  programs.git = {
-    enable = true;
-    userEmail = "niklastasler@gmail.com";
-    userName = "Niklas";
-    extraConfig = {
-      init.defaultBranch = "main";
+  programs ={
+    git = {
+      enable = false;
+      userEmail = "niklastasler@gmail.com";
+      userName = "Niklas";
+      extraConfig = {
+        init.defaultBranch = "main";
+      };
+    };
+    gh = {
+      enable = false;
+      gitCredentialHelper.enable = true;
     };
   };
 }
