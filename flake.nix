@@ -5,7 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager/release-23.11";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -17,7 +17,8 @@
   }@inputs: let
     inherit (self) outputs;
     system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
+    # TODO: Change back to stable release once complex fish abbrs are supported
+    pkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
     vars = import ./vars.nix;
   in rec{
     overlays = (import ./overlays {inherit inputs;});

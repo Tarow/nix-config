@@ -24,8 +24,26 @@
       set sponge_delay 10
     '';
 
-    shellAbbrs = lib.optionalAttrs config.programs.git.enable {
-      ga = "git add";
+    shellAbbrs = {
+      L = {position = "anywhere"; expansion = "% | less"; setCursor = true;};
+      G = {position = "anywhere"; expansion = "| grep %"; setCursor = true;};
+    } // lib.optionalAttrs config.programs.git.enable {
+      gco   = "git checkout";
+      gcb   = "git checkout -b";
+      gpl   = "git pull";
+      gp    = "git push";
+      gcm   = {expansion = "git commit -m \"%\""; setCursor = true;};
+      gcma  = {expansion = "git commit --amend -m \"%\""; setCursor = true;};
+      ga    = "git add";
+      gfa   = "git fetch --all";
+    } // {
+      dc    = "docker compose";
+      dcu   = "docker compose up -d";
+      dcd   = "docker compose down -v";
+      dl    = "docker logs";
+      dlf   = "docker logs -f";
+      dsh   = {expansion = "docker exec -it $ /bin/sh"; setCursor = true;};
+      drun  = {expansion = "docker run --rm -it % /bin/sh"; setCursor = true;};
     };
   };
 }
