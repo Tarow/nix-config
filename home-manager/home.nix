@@ -1,11 +1,11 @@
-{ inputs, outputs, config, pkgs, ... }:
+{ inputs, outputs, lib, config, pkgs, vars, ... }:
 
 {
 
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = "niklas";
-  home.homeDirectory = "/home/niklas";
+  home.username = lib.toLower vars.user.name;
+  home.homeDirectory = vars.user.home;
 
   nixpkgs = {
     # You can add overlays here
@@ -14,7 +14,6 @@
       outputs.overlays.additions
       outputs.overlays.modifications
       outputs.overlays.unstable-packages
-
     ];
     # Configure your nixpkgs instance
     config = {
@@ -36,16 +35,30 @@
   home.packages = with pkgs; [
     go
     neofetch
+    less
     dockdns
     discovr
+    neovim
+    eza
+    bat
   ];
 
   home.sessionVariables = {
-    # EDITOR = "emacs";
+    EDITOR = "nvim";
   };
 
   home.shellAliases = {
     hms = "home-manager switch --flake ~/projects/nix/#$USER";
+    gl = "git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit";
+    v = "nvim";
+    vi = "nvim";
+    vim = "nvim";
+    k = "kubectl";
+    ls = "eza";
+    ll = "eza -l";
+    la = "eza -la";
+    cat = "bat --paging=never";
+    tree = "eza -T";
   };
 
   # Let Home Manager install and manage itself.

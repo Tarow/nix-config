@@ -18,14 +18,14 @@
     inherit (self) outputs;
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
-
+    vars = import ./vars.nix;
   in rec{
     overlays = (import ./overlays {inherit inputs;});
    
     homeConfigurations = {
       niklas = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        extraSpecialArgs = {inherit inputs outputs;};
+        extraSpecialArgs = {inherit inputs outputs vars;};
         modules = [
           ./home-manager/home.nix
         ];

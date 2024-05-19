@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 {
   programs.fish = {
     enable = true;
@@ -20,6 +20,12 @@
     ];
     interactiveShellInit = ''
       bind \\cr _fzf_search_history
+      fzf_configure_bindings --directory=è --history=\cR --processes=ô --variables=ë --git_status=ß --git_log=ø
+      set sponge_delay 10
     '';
+
+    shellAbbrs = lib.optionalAttrs config.programs.git.enable {
+      ga = "git add";
+    };
   };
 }

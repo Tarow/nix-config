@@ -1,5 +1,5 @@
 {
-  programs ={
+  programs = {
     git = {
       enable = true;
       userEmail = "niklastasler@gmail.com";
