@@ -41,6 +41,7 @@
     neovim
     eza
     bat
+    nixpkgs-fmt
   ];
 
   home.sessionVariables = {
@@ -65,6 +66,7 @@
   programs.home-manager.enable = true;
 
   imports = [
+    ./docker
     ./apps/fish.nix
     ./apps/fzf.nix
     ./apps/git.nix
