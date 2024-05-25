@@ -44,6 +44,8 @@
       dlf   = "docker logs -f";
       dsh   = {expansion = "docker exec -it $ /bin/sh"; setCursor = true;};
       drun  = {expansion = "docker run --rm -it % /bin/sh"; setCursor = true;};
+    } // {
+      hm = "home-manager";
     };
   };
 }

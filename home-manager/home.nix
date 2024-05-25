@@ -1,6 +1,13 @@
-{ inputs, outputs, lib, config, pkgs, vars, ... }:
+{ inputs, outputs, lib, config, pkgs, vars, ... }@args:
 
 {
+
+  imports = [
+    ./docker
+    ./apps/fish.nix
+    ./apps/fzf.nix
+    ./apps/git.nix
+  ];
 
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -42,6 +49,7 @@
     eza
     bat
     nixpkgs-fmt
+    nil
   ];
 
   home.sessionVariables = {
@@ -65,10 +73,5 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-  imports = [
-    ./docker
-    ./apps/fish.nix
-    ./apps/fzf.nix
-    ./apps/git.nix
-  ];
+  docker.enable = true;
 }
