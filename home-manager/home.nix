@@ -18,6 +18,7 @@
   nixpkgs = {
     # You can add overlays here
     overlays = [
+      inputs.nix-vscode-extensions.overlays.default
       # Add overlays your own flake exports (from overlays and pkgs dir):
       outputs.overlays.additions
       outputs.overlays.modifications
@@ -58,7 +59,7 @@
   };
 
   home.shellAliases = {
-    hms = "home-manager switch --flake ~/projects/nix-config/#$USER";
+    hms = "home-manager switch -b bak --flake ~/projects/nix-config/#$USER";
     gl = "git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit";
     v = "nvim";
     vi = "nvim";
