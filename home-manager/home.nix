@@ -7,6 +7,7 @@
     ./apps/fish.nix
     ./apps/fzf.nix
     ./apps/git.nix
+    ./apps/vscode.nix
   ];
 
   # Home Manager needs a bit of information about you and the paths it should
