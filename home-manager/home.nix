@@ -58,7 +58,7 @@
   };
 
   home.shellAliases = {
-    hms = "home-manager switch --flake ~/projects/nix/#$USER";
+    hms = "home-manager switch --flake ~/projects/nix-config/#$USER";
     gl = "git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit";
     v = "nvim";
     vi = "nvim";
