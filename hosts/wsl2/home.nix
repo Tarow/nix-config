@@ -22,6 +22,8 @@
     shell.enable = true;
     docker.enable = true;
     golang.enable = true;
+    npm.enable = true;
+    react.enable = true;
   };
 
   home.shellAliases = {
