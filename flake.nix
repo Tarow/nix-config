@@ -23,20 +23,28 @@
     }@inputs:
     let
       inherit (self) outputs;
-      system = "x86_64-linux";
-      pkgs = inputs.nixpkgs.legacyPackages.${system};
-      vars = import ./vars.nix;
-    in
-    {
-      overlays = (import ./overlays { inherit inputs; });
+      packages = inputs.nixpkgs.legacyPackages;
 
-      homeConfigurations = {
-        niklas = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
+      mkHome = { system, homePath, vars ? { } }:
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = packages.${system};
           extraSpecialArgs = { inherit inputs outputs vars; };
           modules = [
-            ./home-manager/home.nix
+            ./modules/home-manager
+            homePath
           ];
+        };
+    in
+    {
+      overlays = (import ./overlays {
+        inherit inputs;
+      });
+
+      homeConfigurations = {
+        wsl2 = mkHome {
+          system = "x86_64-linux";
+          homePath = ./hosts/wsl2/home.nix;
+          vars = import ./hosts/wsl2/vars.nix;
         };
       };
     };

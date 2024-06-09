@@ -14,7 +14,6 @@
         dsznajder.es7-react-js-snippets
         esbenp.prettier-vscode
         formulahendry.auto-rename-tag
-        golang.go
         jnoortheen.nix-ide
         ms-vscode-remote.remote-ssh
         pkief.material-icon-theme
@@ -88,27 +87,6 @@
         "editor.defaultFormatter" = "esbenp.prettier-vscode";
       };
 
-
-      "[go]" = {
-        "editor.parameterHints.enabled" = true;
-        "editor.insertSpaces" = false;
-        "editor.formatOnSave" = true;
-        "editor.codeActionsOnSave" = {
-          "source.organizeImports" = "always";
-        };
-        "editor.suggest.snippetsPreventQuickSuggestions" = false;
-      };
-      "gopls" = {
-        "ui.completion.usePlaceholders" = true;
-      };
-      "go.survey.prompt" = false;
-      "go.formatTool" = "goimports";
-      "go.lintTool" = "golangci-lint";
-      "go.lintFlags" = [
-        "--fast"
-      ];
-      "go.inlayHints.parameterNames" = true;
-      "go.toolsManagement.autoUpdate" = true;
 
       "[nix]" = {
         "editor.detectIndentation" = false;
