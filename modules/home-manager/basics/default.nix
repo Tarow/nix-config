@@ -16,7 +16,7 @@ in
     home.packages = with pkgs; [
       nixpkgs-fmt
       nil
-      kubectl
+
     ];
   };
 }
