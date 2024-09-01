@@ -19,6 +19,7 @@
       url = "github:nix-community/nix-vscode-extensions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
   };
   outputs =
     { self
@@ -32,15 +33,16 @@
 
       mkSystem = { system, cfgPath, vars ? { } }:
         nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = {
-          inherit inputs outputs vars;
+          inherit system;
+          specialArgs = {
+            inherit inputs outputs vars;
+          };
+          modules = [
+            ./modules/nixos
+            cfgPath
+            home-manager.nixosModules.home-manager
+          ];
         };
-        modules = [
-          ./modules/nixos
-          cfgPath
-        ];
-      };
 
       mkHome = { system, cfgPath, vars ? { } }:
         home-manager.lib.homeManagerConfiguration {
