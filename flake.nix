@@ -30,12 +30,13 @@
     let
       inherit (self) outputs;
       packages = inputs.nixpkgs.legacyPackages;
+      lib = nixpkgs.lib.extend (final: prev: (import ./lib final) // home-manager.lib);
 
       mkSystem = { system, cfgPath, vars ? { } }:
         nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
-            inherit inputs outputs vars;
+            inherit inputs outputs vars lib;
           };
           modules = [
             ./modules/nixos
@@ -47,7 +48,7 @@
       mkHome = { system, cfgPath, vars ? { } }:
         home-manager.lib.homeManagerConfiguration {
           pkgs = packages.${system};
-          extraSpecialArgs = { inherit inputs outputs vars; };
+          extraSpecialArgs = { inherit inputs outputs vars lib; };
           modules = [
             ./modules/home-manager
             cfgPath

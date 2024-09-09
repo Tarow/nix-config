@@ -1,4 +1,4 @@
-{inputs, ...}: {
+{ inputs, ... }: {
   # This one brings our custom packages from the 'pkgs' directory
   additions = final: prev: import ../pkgs final.pkgs;
 
@@ -7,12 +7,12 @@
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
     neofetch = prev.neofetch.overrideAttrs (old: {
-        src = prev.fetchFromGitHub {
+      src = prev.fetchFromGitHub {
         owner = "dylanaraps";
         repo = "neofetch";
         rev = "87827df455558bd99ca40f443d49a9f7026040f8";
         sha256 = "sha256-merlndX2bST3Zwcoxj8JlISMfMRPDQRzxHAVe1hzgHU=";
-        };
+      };
     });
   };
 

@@ -6,10 +6,5 @@
   # Additionally, you can also enable certain modules and settings in your user configuration.
 
   # When you add a new module, make sure to add an enable flag which defaults to false, so your options won't be automatically set.
-  imports =
-    let
-      dirs = builtins.attrNames (lib.attrsets.filterAttrs (v: v: v == "directory") (builtins.readDir ./.));
-      dirPaths = builtins.map (d: ./. + "/${d}") dirs;
-    in
-    dirPaths;
+  imports = (lib.tarow.readSubdirs ./.);
 }
