@@ -5,7 +5,7 @@ let
 
   networkCfg = lib.attrsets.optionalAttrs cfg.addToTraefik {
     services.${name}.labels = (import ../traefik/labels.nix { inherit name config lib; port = 3000; });
-    networks = [ config.tarow.docker.traefik.network ];
+    networks.${config.tarow.docker.traefik.network}.external = true;
   };
 in
 {

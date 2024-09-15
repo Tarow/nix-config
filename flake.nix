@@ -20,11 +20,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    arion = {
+      url = "github:hercules-ci/arion";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
   outputs =
     { self
     , nixpkgs
     , home-manager
+    , arion
     , ...
     }@inputs:
     let
@@ -40,8 +46,8 @@
           };
           modules = [
             ./modules/nixos
+            arion.nixosModules.arion
             cfgPath
-            home-manager.nixosModules.home-manager
           ];
         };
 

@@ -13,15 +13,6 @@
         "10.1.1.99:53:53/udp"
         "10.1.1.99:853:853/tcp"
       ];
-      labels = [
-      ];
-      networks = [ "traefik-proxy" ];
-    };
-  };
-
-  networks = {
-    traefik-proxy = {
-      external = true;
     };
   };
 }

@@ -5,7 +5,18 @@
   tarow = {
     wsl.enable = true;
     shell.enable = true;
-    docker.enable = true;
+    podman.enable = true;
+    docker.enable = false;
+    stacks = {
+      adguard.enable = true;
+      audiobookshelf.enable = true;
+      traefik = {
+        enable = true;
+        network = "traefik-proxy";
+        domain = "ntasler.de";
+      };
+    };
+
   };
 
   environment.shellAliases = {
@@ -16,5 +27,9 @@
   programs.nix-ld = {
     enable = true;
     package = pkgs.nix-ld-rs;
+  };
+
+  users.users.${config.wsl.defaultUser} = {
+    shell = pkgs.fish;
   };
 }

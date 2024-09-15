@@ -16,6 +16,8 @@ in
     home.packages = with pkgs; [
       nixpkgs-fmt
       nil
+      jq
+      yq-go
     ];
   };
 }
