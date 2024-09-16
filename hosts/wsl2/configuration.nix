@@ -11,7 +11,8 @@
       adguard.enable = true;
       audiobookshelf.enable = true;
       readarr-audiobooks.enable = true;
-      readarr-audiobooks.addToTraefik = false;
+      readarr-ebooks.enable = true;
+      calibre-web.enable = true;
       traefik = {
         enable = true;
         network = "traefik-proxy";
