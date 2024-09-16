@@ -10,8 +10,8 @@
     stacks = {
       adguard.enable = true;
       audiobookshelf.enable = true;
-      readarr.enable = true;
-      readarr.addToTraefik = false;
+      readarr-audiobooks.enable = true;
+      readarr-audiobooks.addToTraefik = false;
       traefik = {
         enable = true;
         network = "traefik-proxy";
