@@ -13,6 +13,7 @@
       readarr-audiobooks.enable = true;
       readarr-ebooks.enable = true;
       calibre-web.enable = true;
+      changedetection.enable = true;
       traefik = {
         enable = true;
         network = "traefik-proxy";
