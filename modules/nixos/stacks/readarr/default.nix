@@ -1,28 +1,30 @@
 { pkgs, lib, config, inputs, ... }:
 let
-  name = "adguard";
+  name = "readarr";
   cfg = config.tarow.stacks.${name};
   storage = "${config.tarow.stacks.storageBaseDir}/${name}";
+  mediaStorage = "${config.tarow.stacks.mediaStorageBaseDir}";
 
   stack = {
     networks.${config.tarow.stacks.traefik.network}.external = lib.mkIf cfg.addToTraefik true;
     services.${name}.service = lib.mkMerge [
       {
-        image = "adguard/adguardhome:latest";
+        image = "lscr.io/linuxserver/readarr:develop";
         container_name = name;
         restart = "unless-stopped";
+        environment = {
+          PUID = 1000;
+          PGID = 1000;
+          TZ = "Europe/Berlin";
+        };
         volumes = [
-          "${storage}/work:/opt/adguardhome/work"
-          "${storage}/conf:/opt/adguardhome/conf"
+          "${storage}/config:/config"
+          "${mediaStorage}:/media"
         ];
-        ports = [
-          "53:53/tcp"
-          "53:53/udp"
-          "853:853/tcp"
-        ] ++ lib.lists.optional (!cfg.addToTraefik) "3000:3000";
+        ports = lib.lists.optional (!cfg.addToTraefik) "8787:8787";
       }
       (lib.mkIf cfg.addToTraefik {
-        labels = (import ../traefik/labels.nix { inherit name config lib; port = 3000; });
+        labels = (import ../traefik/labels.nix { inherit name config lib; port = 8787; }) // (import ../traefik/middlewares.nix name [ "private" ]);
         networks = [ config.tarow.stacks.traefik.network ];
       })
     ];
