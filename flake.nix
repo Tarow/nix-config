@@ -40,6 +40,7 @@
     let
       inherit (self) outputs;
       lib = nixpkgs.lib.extend (final: prev: (import ./lib final) // home-manager.lib);
+      packages = inputs.nixpkgs.legacyPackages;
 
       mkSystem = { system, cfgPath }:
         nixpkgs.lib.nixosSystem {
@@ -60,6 +61,7 @@
           extraSpecialArgs = { inherit inputs outputs lib; };
           modules = [
             ./modules/home-manager
+            ./hosts/shared/home.nix
             cfgPath
           ];
         };
