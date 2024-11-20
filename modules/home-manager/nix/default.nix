@@ -47,6 +47,4 @@
       allowUnfree = true;
     };
   };
-
-
 }

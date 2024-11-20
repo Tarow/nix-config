@@ -1,5 +1,5 @@
 {
-  description = "My Arch Nix";
+  description = "NixOS and Home Manager Configuration Flake for my Hosts";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
@@ -39,14 +39,13 @@
     }@inputs:
     let
       inherit (self) outputs;
-      packages = inputs.nixpkgs.legacyPackages;
       lib = nixpkgs.lib.extend (final: prev: (import ./lib final) // home-manager.lib);
 
-      mkSystem = { system, cfgPath, vars ? { } }:
+      mkSystem = { system, cfgPath }:
         nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
-            inherit inputs outputs vars lib;
+            inherit inputs outputs lib;
           };
           modules = [
             ./modules/nixos
@@ -55,10 +54,10 @@
           ];
         };
 
-      mkHome = { system, cfgPath, vars ? { } }:
+      mkHome = { system ? "x86_64-linux", cfgPath }:
         home-manager.lib.homeManagerConfiguration {
           pkgs = packages.${system};
-          extraSpecialArgs = { inherit inputs outputs vars lib; };
+          extraSpecialArgs = { inherit inputs outputs lib; };
           modules = [
             ./modules/home-manager
             cfgPath
@@ -72,17 +71,17 @@
 
       nixosConfigurations = {
         wsl2 = mkSystem {
-          system = "x86_64-linux";
           cfgPath = ./hosts/wsl2/configuration.nix;
-          vars = import ./hosts/wsl2/vars.nix;
         };
       };
 
       homeConfigurations = {
         wsl2 = mkHome {
-          system = "x86_64-linux";
           cfgPath = ./hosts/wsl2/home.nix;
-          vars = import ./hosts/wsl2/vars.nix;
+        };
+
+        thinkpad = mkHome {
+          cfgPath = ./hosts/thinkpad/home.nix;
         };
       };
     };

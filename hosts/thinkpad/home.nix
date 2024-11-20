@@ -1,14 +1,12 @@
 { inputs, outputs, lib, config, pkgs, ... }@args:
+
+
 {
   config = {
     home.stateVersion = "24.05";
 
     home.username = "niklas";
     home.homeDirectory = "/home/niklas";
-
-    programs.home-manager.enable = true;
-
-    news.display  = "silent";
 
     home.sessionVariables = {
       EDITOR = "nvim";
@@ -33,7 +31,16 @@
     };
 
     home.shellAliases = {
-      uh = "home-manager switch -b bak --flake ~/projects/nix-config/#wsl2";
+      uh = "home-manager switch -b bak --flake ~/nix-config/#thinkpad";
+    };
+
+    dconf.settings = {
+      "org/gnome/desktop/input-sources" = {
+        show-all-sources = true;
+        sources = [
+          [ "xkb" "eu" ]
+        ];
+      };
     };
   };
 }

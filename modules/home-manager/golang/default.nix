@@ -1,4 +1,4 @@
-{ lib, pkgs, config, vars, ... }:
+{ lib, pkgs, config, ... }:
 let
   cfg = config.tarow.golang;
 

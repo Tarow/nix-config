@@ -1,4 +1,4 @@
-{ lib, pkgs, config, vars, ... }:
+{ lib, pkgs, config, ... }:
 let
   cfg = config.tarow.git;
   shellAbbrs = {
@@ -30,16 +30,17 @@ in
   config.programs = lib.mkIf cfg.enable {
     git = {
       enable = true;
-      userEmail = vars.git.email;
-      userName = vars.git.name;
+      userEmail = config.tarow.person.email;
+      userName = config.tarow.person.name;
       extraConfig = {
         init.defaultBranch = "main";
         push.autoSetupRemote = true;
         pull.rebase = false;
       };
-    } // lib.optionalAttrs (lib.attrsets.hasAttrByPath [ "git" "signingKey" ] vars) {
-      signing.key = vars.git.signingKey;
-      signing.signByDefault = true;
+      signing = {
+        key = lib.mkDefault null;
+        signByDefault = (config.programs.git.signing.key != null);
+      };
     };
 
     gh = {
