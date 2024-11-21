@@ -21,5 +21,7 @@ lib: {
           );
       in
       f [ ] attrList;
+
+    enableModules = moduleNames: builtins.listToAttrs (builtins.map (m: { name = m; value = { enable = true; }; }) moduleNames);
   };
 }

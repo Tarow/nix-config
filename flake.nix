@@ -5,6 +5,8 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL/main";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -42,7 +44,7 @@
       lib = nixpkgs.lib.extend (final: prev: (import ./lib final) // home-manager.lib);
       packages = inputs.nixpkgs.legacyPackages;
 
-      mkSystem = { system, cfgPath }:
+      mkSystem = { system ? "x86_64-linux", cfgPath }:
         nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
@@ -72,19 +74,13 @@
       });
 
       nixosConfigurations = {
-        wsl2 = mkSystem {
-          cfgPath = ./hosts/wsl2/configuration.nix;
-        };
+        wsl2 = mkSystem { cfgPath = ./hosts/wsl2/configuration.nix; };
+        thinkpad = mkSystem { cfgPath = ./hosts/thinkpad/configuration.nix; };
       };
 
       homeConfigurations = {
-        wsl2 = mkHome {
-          cfgPath = ./hosts/wsl2/home.nix;
-        };
-
-        thinkpad = mkHome {
-          cfgPath = ./hosts/thinkpad/home.nix;
-        };
+        wsl2 = mkHome { cfgPath = ./hosts/wsl2/home.nix; };
+        thinkpad = mkHome { cfgPath = ./hosts/thinkpad/home.nix; };
       };
     };
 }

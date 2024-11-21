@@ -1,39 +1,36 @@
-{ config, pkgs, lib, inputs, outputs, ... }:
+# Edit this configuration file to define what should be installed on
+# your system.  Help is available in the configuration.nix(5) man page
+# and in the NixOS manual (accessible by running ‘nixos-help’).
+{ config, inputs, pkgs, lib, ... }:
 {
+  imports = [
+    ./hardware-configuration.nix
+    inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x13-amd
+  ];
+
   system.stateVersion = "24.05";
 
-  tarow = {
-    wsl.enable = true;
-    shell.enable = true;
-    podman.enable = true;
-    docker.enable = false;
-    stacks = {
-      adguard.enable = true;
-      audiobookshelf.enable = true;
-      readarr-audiobooks.enable = true;
-      readarr-ebooks.enable = true;
-      calibre-web.enable = true;
-      changedetection.enable = true;
-      traefik = {
-        enable = true;
-        network = "traefik-proxy";
-        domain = "ntasler.de";
-      };
-    };
+  tarow = lib.mkMerge [
+    (lib.tarow.enableModules [
+      "basics"
+      "bootLoader"
+      "gnome"
+      "keyboard"
+      "locale"
+      "networkManager"
+      "pipewire"
+      "printing"
+      "shells"
+    ])
+    { basics.configLocation = "~/nix-config#thinkpad"; }
+  ];
 
-  };
-
-  environment.shellAliases = {
-    us = "sudo nixos-rebuild switch --flake ~/projects/nix-config/#wsl2";
-  };
-
-  environment.systemPackages = [ pkgs.wget ];
-  programs.nix-ld = {
-    enable = true;
-    package = pkgs.nix-ld-rs;
-  };
-
-  users.users.${config.wsl.defaultUser} = {
+  networking.hostName = "nixos";
+  users.users.niklas = {
+    isNormalUser = true;
+    description = "Niklas";
+    extraGroups = [ "wheel" (lib.mkIf config.tarow.networkManager.enable "networkmanager") ];
     shell = pkgs.fish;
   };
+
 }

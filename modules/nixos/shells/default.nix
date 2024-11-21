@@ -1,9 +1,9 @@
 { lib, pkgs, config, ... }:
 let
-  cfg = config.tarow.shell;
+  cfg = config.tarow.shells;
 in
 {
-  options.tarow.shell = {
+  options.tarow.shells = {
     enable = lib.options.mkOption {
       type = lib.types.bool;
       example = ''true'';
