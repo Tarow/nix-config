@@ -14,6 +14,7 @@
         "git"
         "shells"
         "golang"
+        "gnome"
         "npm"
         "react"
         "vscode"
@@ -23,13 +24,5 @@
       }
     ];
 
-    dconf.settings = {
-      "org/gnome/desktop/input-sources" = {
-        show-all-sources = true;
-        sources = [
-          [ "xkb" "eu" ]
-        ];
-      };
-    };
   };
 }

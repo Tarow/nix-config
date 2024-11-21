@@ -10,10 +10,7 @@
       dates = "weekly";
       options = "--delete-older-than 30d";
     };
-
-    # Necessary for comma to work now. Disable later once issue below is resolved
-    # https://github.com/nix-community/comma/issues/43
-    channel.enable = true;
+    channel.enable = false;
 
     # Pin nixpkgs and unstable references to the ones used by the flake.
     # This results in tools like "nix search" and "nix run" to use the same nixpkgs instance as the system flake.
