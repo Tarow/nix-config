@@ -12,7 +12,7 @@ in
       "org/gnome/desktop/input-sources" = {
         show-all-sources = true;
         sources = [
-          [ "xkb" "eu" ]
+          (lib.hm.gvariant.mkTuple [ "xkb" "eu" ])
         ];
       };
     };

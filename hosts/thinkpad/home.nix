@@ -21,7 +21,17 @@
       ])
       {
         basics.configLocation = "~/nix-config#thinkpad";
+        git-clone.repos.pkm = {
+          uri = "git@github.com:Tarow/pkm.git";
+          location = "~";
+        };
       }
+    ];
+
+    programs.firefox.enable = true;
+    home.packages = with pkgs; [
+      discord
+      obsidian
     ];
 
   };

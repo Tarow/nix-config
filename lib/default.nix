@@ -1,5 +1,11 @@
 lib: {
   tarow = with lib; {
+
+    mkIfElse = p: yes: no: mkMerge [
+      (mkIf p yes)
+      (mkIf (!p) no)
+    ];
+
     readSubdirs = basePath:
       let
         dirs = builtins.attrNames (attrsets.filterAttrs (v: v: v == "directory") (builtins.readDir basePath));

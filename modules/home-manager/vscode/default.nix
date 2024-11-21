@@ -14,6 +14,10 @@ in
     programs.vscode.userSettings = {
       "editor.formatOnSave" = true;
       "terminal.integrated.defaultProfile.linux" = "fish";
+
+      "terminal.integrated.commandsToSkipShell" = [
+        "-workbench.action.terminal.focusFind"
+      ];
     };
   };
 }
