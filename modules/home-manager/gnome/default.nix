@@ -15,6 +15,10 @@ in
           (lib.hm.gvariant.mkTuple [ "xkb" "eu" ])
         ];
       };
+
+      "org/gnome/shell/keybindings" = {
+        show-screenshot-ui = [ "<Shift><Super>s" ];
+      };
     };
 
     # GNOME does not see new applications installed with HM unless until next login.
