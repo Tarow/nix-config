@@ -18,6 +18,10 @@ in
       "terminal.integrated.commandsToSkipShell" = [
         "-workbench.action.terminal.focusFind"
       ];
+
+      "editor.fontLigatures" = true;
+      "editor.fontFamily" = "JetBrainsMono Nerd Font Mono";
+      "terminal.integrated.fontFamily" = "JetBrainsMono Nerd Font Mono";
     };
   };
 }

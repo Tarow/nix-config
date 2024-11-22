@@ -32,6 +32,7 @@
     home.packages = with pkgs; [
       discord
       obsidian
+      telegram-desktop
     ];
 
   };

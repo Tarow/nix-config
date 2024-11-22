@@ -18,10 +18,10 @@ in
       golangci-lint
       gopls
       gotools
+      gnumake
     ];
 
     programs.vscode = {
-
       extensions = with pkgs.vscode-marketplace; with pkgs.vscode-marketplace-release;
         [
           golang.go
