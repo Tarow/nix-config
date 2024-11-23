@@ -17,6 +17,7 @@
         "gnome"
         "npm"
         "react"
+        "sshClient"
         "vscode"
       ])
       {
