@@ -18,6 +18,7 @@ in
       "terminal.integrated.commandsToSkipShell" = [
         "-workbench.action.terminal.focusFind"
       ];
+      "remote.SSH.useLocalServer" = false;
 
       "editor.fontLigatures" = true;
       "editor.fontFamily" = "JetBrainsMono Nerd Font Mono";
