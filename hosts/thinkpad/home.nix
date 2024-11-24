@@ -18,6 +18,7 @@
         "npm"
         "react"
         "sshClient"
+        "java"
         "vscode"
       ])
       {

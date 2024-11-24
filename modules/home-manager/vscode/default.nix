@@ -19,7 +19,10 @@ in
         "-workbench.action.terminal.focusFind"
       ];
       "remote.SSH.useLocalServer" = false;
-
+      "remote.SSH.remotePlatform" = {
+        "ntasler" = "linux";
+        "ntasler.de" = "linux";
+      };
       "editor.fontLigatures" = true;
       "editor.fontFamily" = "JetBrainsMono Nerd Font Mono";
       "terminal.integrated.fontFamily" = "JetBrainsMono Nerd Font Mono";
