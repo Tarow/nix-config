@@ -8,8 +8,8 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    home.packages = with pkgs;[ unstable.nodePackages."@angular/cli" ];
     programs.vscode = {
-      home.packages = with pkgs;[ nodePackages."@angular/cli" ];
       extensions = with pkgs.vscode-marketplace; with pkgs.vscode-marketplace-release;
         [
           angular.ng-template

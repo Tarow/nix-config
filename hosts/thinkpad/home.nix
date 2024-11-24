@@ -10,6 +10,7 @@
 
     tarow = lib.mkMerge [
       (lib.tarow.enableModules [
+        "angular"
         "basics"
         "git"
         "shells"
