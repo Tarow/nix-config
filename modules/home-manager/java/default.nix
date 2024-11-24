@@ -1,7 +1,7 @@
 { lib, pkgs, config, ... }:
 let
   cfg = config.tarow.java;
-
+  jdk = pkgs.jdk;
 in
 {
   options.tarow.java = {
@@ -9,5 +9,11 @@ in
   };
   config = lib.mkIf cfg.enable {
     programs.java.enable = true;
+    programs.java.package = jdk;
+
+    programs.vscode.userSettings = {
+      "java.jdt.ls.java.home" = jdk.home;
+      "java.import.gradle.java.home" = jdk.home;
+    };
   };
 }

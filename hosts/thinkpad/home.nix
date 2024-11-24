@@ -37,5 +37,6 @@
       telegram-desktop
     ];
 
+    #systemd.user.sessionVariables = config.home.sessionVariables;
   };
 }
