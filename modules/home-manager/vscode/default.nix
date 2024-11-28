@@ -9,7 +9,7 @@ in
 
   config = lib.mkIf cfg.enable {
     programs.vscode.enable = true;
-
+    programs.vscode.enableUpdateCheck = false;
     # Enable basic, shared settings here. Each module can add module-specific VSCode settings.
     programs.vscode.userSettings = {
       "editor.formatOnSave" = true;
