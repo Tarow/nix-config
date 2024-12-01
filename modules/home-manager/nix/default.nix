@@ -17,7 +17,7 @@
   ];
 
   nix = {
-    package = pkgs.unstable.nix;
+    package = pkgs.nix;
     gc.automatic = true;
     # Run garbage collection every day at 12:30
     gc.frequency = if pkgs.stdenv.isLinux then "12:30" else "daily";
