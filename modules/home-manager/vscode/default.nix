@@ -9,10 +9,10 @@ in
 
   config = lib.mkIf cfg.enable {
     programs.vscode.enable = true;
+    programs.vscode.package = pkgs.unstable.vscodium;
     programs.vscode.enableUpdateCheck = false;
     # Enable basic, shared settings here. Each module can add module-specific VSCode settings.
     programs.vscode.userSettings = {
-      "editor.formatOnSave" = true;
       "terminal.integrated.defaultProfile.linux" = "fish";
 
       "terminal.integrated.commandsToSkipShell" = [
@@ -22,6 +22,11 @@ in
       "remote.SSH.remotePlatform" = {
         "ntasler" = "linux";
         "ntasler.de" = "linux";
+      };
+
+      "editor.formatOnSave" = true;
+      "editor.codeActionsOnSave" = {
+        "source.organizeImports" = true;
       };
       "editor.fontLigatures" = true;
       "editor.fontFamily" = "JetBrainsMono Nerd Font Mono";
