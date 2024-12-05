@@ -76,11 +76,13 @@
       nixosConfigurations = {
         wsl2 = mkSystem { cfgPath = ./hosts/wsl2/configuration.nix; };
         thinkpad = mkSystem { cfgPath = ./hosts/thinkpad/configuration.nix; };
+        desktop = mkSystem {cfgPath = ./hosts/desktop/configuration.nix; };
       };
 
       homeConfigurations = {
         wsl2 = mkHome { cfgPath = ./hosts/wsl2/home.nix; };
         thinkpad = mkHome { cfgPath = ./hosts/thinkpad/home.nix; };
+        desktop = mkHome { cfgPath = ./hosts/desktop/home.nix; };
       };
     };
 }
