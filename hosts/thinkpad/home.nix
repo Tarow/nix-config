@@ -36,6 +36,7 @@
       discord
       obsidian
       telegram-desktop
+      teams-for-linux
     ];
 
     #systemd.user.sessionVariables = config.home.sessionVariables;

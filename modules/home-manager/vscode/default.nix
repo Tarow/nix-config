@@ -9,7 +9,7 @@ in
 
   config = lib.mkIf cfg.enable {
     programs.vscode.enable = true;
-    programs.vscode.package = pkgs.unstable.vscodium;
+    programs.vscode.package = pkgs.unstable.vscode;
     programs.vscode.enableUpdateCheck = false;
     # Enable basic, shared settings here. Each module can add module-specific VSCode settings.
     programs.vscode.userSettings = {
@@ -26,11 +26,14 @@ in
 
       "editor.formatOnSave" = true;
       "editor.codeActionsOnSave" = {
-        "source.organizeImports" = true;
+        "source.organizeImports" = "explicit";
       };
+      "editor.linkedEditing" = true;
       "editor.fontLigatures" = true;
       "editor.fontFamily" = "JetBrainsMono Nerd Font Mono";
       "terminal.integrated.fontFamily" = "JetBrainsMono Nerd Font Mono";
     };
+
+    programs.vscode.extensions = with pkgs.vscode-marketplace; with pkgs.vscode-marketplace-release; [ jnoortheen.nix-ide ];
   };
 }
