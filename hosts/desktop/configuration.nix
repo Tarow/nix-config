@@ -21,7 +21,7 @@
       "printing"
       "shells"
     ])
-    { basics.configLocation = "~/nix-config#thinkpad"; }
+    { basics.configLocation = "~/nix-config#desktop"; }
   ];
 
   networking.hostName = "nixos";
@@ -37,8 +37,8 @@
     enable = true;
   };
 
-  services.xserver.videoDrivers = ["nvidia"];
-   hardware.nvidia = {
+  services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.nvidia = {
     modesetting.enable = true;
 
     # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
