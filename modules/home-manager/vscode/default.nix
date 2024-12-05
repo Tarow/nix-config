@@ -34,6 +34,9 @@ in
       "terminal.integrated.fontFamily" = "JetBrainsMono Nerd Font Mono";
     };
 
-    programs.vscode.extensions = with pkgs.vscode-marketplace; with pkgs.vscode-marketplace-release; [ jnoortheen.nix-ide ];
+    programs.vscode.extensions = with pkgs.vscode-marketplace; with pkgs.vscode-marketplace-release; [
+      jnoortheen.nix-ide
+      esbenp.prettier-vscode
+    ];
   };
 }
