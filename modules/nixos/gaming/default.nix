@@ -1,6 +1,15 @@
 { pkgs, lib, config, inputs, ... }:
 let
   cfg = config.tarow.gaming;
+
+  customLutris = pkgs.lutris-unwrapped.overrideAttrs (old: {
+    src = pkgs.fetchFromGitHub {
+      owner = "lutris";
+      repo = "lutris";
+      rev = "v0.5.18";
+      hash = "sha256-dI5hqWBWrOGYUEM9Mfm7bTh7BEc4e+T9gJeiZ3BiqmE=";
+    };
+  });
 in
 {
   options.tarow.gaming = {
@@ -8,8 +17,9 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    hardware.opengl = {
+    hardware.graphics = {
       enable = true;
+      enable32Bit = true;
     };
 
     programs.steam = {
@@ -19,9 +29,14 @@ in
 
     programs.gamemode.enable = true;
 
-    environment.systemPackages = with pkgs; [ protonup lutris ];
+    environment.systemPackages = with pkgs; [ protonup customLutris ];
     environment.sessionVariables = {
       STEAM_EXTRA_COMPAT_TOOLS_PATHS = "$HOME/.steam/root/compatibilitytools.d";
     };
+
+    #programs.nix-ld = {
+    #  enable = true;
+    #  libraries = pkgs.steam-run.fhsenv.args.multiPkgs pkgs;
+    #};
   };
 }
