@@ -13,6 +13,7 @@
     (lib.tarow.enableModules [
       "basics"
       "bootLoader"
+      "gaming"
       "gnome"
       "keyboard"
       "locale"
@@ -67,5 +68,10 @@
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
+  # Workaround for
+  # https://github.com/NixOS/nixpkgs/issues/103746
+  # https://discourse.nixos.org/t/gnome-display-manager-fails-to-login-until-wi-fi-connection-is-established/50513/11
+  systemd.services."getty@tty1".enable = false;
+  systemd.services."autovt@tty1".enable = false;
 }
 
