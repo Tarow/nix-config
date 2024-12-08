@@ -29,7 +29,7 @@ in
 
     programs.gamemode.enable = true;
 
-    environment.systemPackages = with pkgs; [ protonup customLutris ];
+    environment.systemPackages = with pkgs; [ protonup lutris wine ];
     environment.sessionVariables = {
       STEAM_EXTRA_COMPAT_TOOLS_PATHS = "$HOME/.steam/root/compatibilitytools.d";
     };

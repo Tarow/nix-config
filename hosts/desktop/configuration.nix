@@ -73,5 +73,14 @@
   # https://discourse.nixos.org/t/gnome-display-manager-fails-to-login-until-wi-fi-connection-is-established/50513/11
   systemd.services."getty@tty1".enable = false;
   systemd.services."autovt@tty1".enable = false;
+
+  boot.loader.systemd-boot = {
+    edk2-uefi-shell.enable = true;
+    windows."win11" = {
+      title = "Windows 11";
+      efiDeviceHandle = "HD0b";
+      sortKey = "z_windows";
+    };
+  };
 }
 
