@@ -38,5 +38,10 @@ in
       jnoortheen.nix-ide
       esbenp.prettier-vscode
     ];
+
+    programs.vscode.keybindings = [{
+      "key" = "ctrl+e";
+      "command" = "terminal.focus";
+    }];
   };
 }
