@@ -41,6 +41,19 @@
       discord
       obsidian
       telegram-desktop
+      teams-for-linux
+    ];
+
+    dconf.settings."org/gnome/shell".favourite-apps = [
+      "org.gnome.Console.desktop"
+      "org.gnome.Nautilus.desktop"
+      "org.gnome.Settings.desktop"
+      "firefox.desktop"
+      "org.telegram.desktop.desktop"
+      "discord.desktop"
+      "code.desktop"
+      "obsidian.desktop"
+      "org.gnome.Calendar.desktop"
     ];
 
     #systemd.user.sessionVariables = config.home.sessionVariables;
