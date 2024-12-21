@@ -36,6 +36,17 @@ in
         num-workspaces = 3;
       };
 
+      # Turn screen off after 15 minutes of inactivity
+      "org/gnome/desktop/session" = {
+        idle-delay = lib.hm.gvariant.mkUint32 900;
+      };
+
+      # Hibernate after 1 hour of inactivity
+      "org/gnome/settings-daemon/plugins/power" = {
+        sleep-inactive-ac-timeout = 3600;
+        sleep-inactive-ac-type = "suspend";
+      };
+
       # Disable "hot corner"
       "org/gnome/desktop/interface" = {
         enable-hot-corners = false;
