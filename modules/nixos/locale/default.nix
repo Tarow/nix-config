@@ -8,6 +8,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    time.hardwareClockInLocalTime = true;
     time.timeZone = "Europe/Berlin";
 
     # Select internationalisation properties.
