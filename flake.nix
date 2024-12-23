@@ -46,11 +46,11 @@
 
       mkSystem = { system ? "x86_64-linux", cfgPath }:
         nixpkgs.lib.nixosSystem {
-          inherit system;
           specialArgs = {
             inherit inputs outputs lib;
           };
           modules = [
+            { nixpkgs.hostPlatform = system; }
             ./modules/nixos
             arion.nixosModules.arion
             cfgPath
@@ -76,7 +76,7 @@
       nixosConfigurations = {
         wsl2 = mkSystem { cfgPath = ./hosts/wsl2/configuration.nix; };
         thinkpad = mkSystem { cfgPath = ./hosts/thinkpad/configuration.nix; };
-        desktop = mkSystem {cfgPath = ./hosts/desktop/configuration.nix; };
+        desktop = mkSystem { cfgPath = ./hosts/desktop/configuration.nix; };
       };
 
       homeConfigurations = {
