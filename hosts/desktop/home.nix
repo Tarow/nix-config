@@ -46,8 +46,8 @@
       teams-for-linux
     ];
 
-    dconf.settings."org/gnome/shell".favourite-apps = [
-      "org.gnome.Console.desktop"
+    dconf.settings."org/gnome/shell".favorite-apps = [
+      "com.mitchellh.ghostty.desktop"
       "org.gnome.Nautilus.desktop"
       "org.gnome.Settings.desktop"
       "firefox.desktop"
