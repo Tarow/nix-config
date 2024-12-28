@@ -68,6 +68,17 @@
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
+  # Prevent instant wakeup from suspend
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="pci", DRIVER=="pcieport", ATTR{power/wakeup}="disabled"
+  '';
+
+
+  swapDevices = [{
+    device = "/var/lib/swapfile";
+    size = 32 * 1024;
+  }];
+
   # Workaround for
   # https://github.com/NixOS/nixpkgs/issues/103746
   # https://discourse.nixos.org/t/gnome-display-manager-fails-to-login-until-wi-fi-connection-is-established/50513/11

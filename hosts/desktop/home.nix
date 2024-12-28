@@ -12,6 +12,7 @@
         "angular"
         "basics"
         "git"
+        "ghostty"
         "shells"
         "golang"
         "gnome"
