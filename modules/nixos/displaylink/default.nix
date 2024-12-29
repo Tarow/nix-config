@@ -4,7 +4,8 @@ let
 
   displaylinkOverlay = final: prev: {
     displaylink = prev.displaylink.overrideAttrs (old: {
-      src = ./displaylink-600.zip;
+      version = "6.1.0-17";
+      src = ./displaylink-610.zip;
     });
   };
 in
