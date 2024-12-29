@@ -13,6 +13,7 @@
     (lib.tarow.enableModules [
       "basics"
       "bootLoader"
+      "displaylink"
       "gaming"
       "gnome"
       "keyboard"
@@ -38,7 +39,9 @@
     enable = true;
   };
 
+
   services.xserver.videoDrivers = [ "nvidia" ];
+
   hardware.nvidia = {
     modesetting.enable = true;
 
