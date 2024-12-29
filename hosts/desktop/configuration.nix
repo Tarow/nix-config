@@ -13,7 +13,6 @@
     (lib.tarow.enableModules [
       "basics"
       "bootLoader"
-      "displaylink"
       "gaming"
       "gnome"
       "keyboard"
