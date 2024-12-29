@@ -19,6 +19,7 @@
         "npm"
         "react"
         "sshClient"
+        "stylix"
         "java"
         "vscode"
       ])
