@@ -10,7 +10,26 @@ in
   imports = [ inputs.stylix.homeManagerModules.stylix ];
 
   config = lib.mkIf cfg.enable {
-    stylix.enable = true;
-    stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/ayu-dark.yaml";
+    stylix = {
+      enable = true;
+      image = pkgs.nixos-artwork.wallpapers.simple-dark-gray.gnomeFilePath;
+      base16Scheme = "${pkgs.base16-schemes}/share/themes/ayu-dark.yaml";
+
+      polarity = "dark";
+      fonts = {
+        monospace = {
+          package = pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; };
+          name = "JetBrainsMono Nerd Font Mono";
+        };
+        sansSerif = {
+          package = pkgs.dejavu_fonts;
+          name = "DejaVu Sans";
+        };
+        serif = {
+          package = pkgs.dejavu_fonts;
+          name = "DejaVu Serif";
+        };
+      };
+    };
   };
 }

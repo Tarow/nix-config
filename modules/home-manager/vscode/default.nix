@@ -30,8 +30,6 @@ in
       };
       "editor.linkedEditing" = true;
       "editor.fontLigatures" = true;
-      "editor.fontFamily" = "JetBrainsMono Nerd Font Mono";
-      "terminal.integrated.fontFamily" = "JetBrainsMono Nerd Font Mono";
     };
 
     programs.vscode.extensions = with pkgs.vscode-marketplace; with pkgs.vscode-marketplace-release; [

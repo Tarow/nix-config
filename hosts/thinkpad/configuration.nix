@@ -33,6 +33,5 @@
     shell = pkgs.fish;
   };
 
-
   services.fprintd.enable = false;
 }
