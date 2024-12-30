@@ -1,10 +1,10 @@
 { pkgs, lib, config, inputs, ... }:
 let
-  cfg = config.tarow.basics;
+  cfg = config.tarow.core;
 in
 {
-  options.tarow.basics = {
-    enable = lib.options.mkEnableOption "Basic Programs and Configs";
+  options.tarow.core = {
+    enable = lib.options.mkEnableOption "Core Programs and Configs";
     configLocation = lib.options.mkOption {
       type = lib.types.nullOr lib.types.str;
       example = "~/nix-config#host";
