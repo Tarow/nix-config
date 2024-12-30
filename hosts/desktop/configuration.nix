@@ -16,7 +16,7 @@
 
   tarow = lib.mkMerge [
     (lib.tarow.enableModules [
-      "basics"
+      "core"
       "bootLoader"
       "gaming"
       "gnome"
@@ -27,7 +27,7 @@
       "printing"
       "shells"
     ])
-    {basics.configLocation = "~/nix-config#desktop";}
+    {core.configLocation = "~/nix-config#desktop";}
   ];
 
   networking.hostName = "nixos";

@@ -6,52 +6,50 @@
   pkgs,
   ...
 }: {
-  config = {
-    home.stateVersion = "24.11";
+  home.stateVersion = "24.11";
 
-    home.username = "niklas";
-    home.homeDirectory = "/home/niklas";
+  home.username = "niklas";
+  home.homeDirectory = "/home/niklas";
 
-    tarow = lib.mkMerge [
-      (lib.tarow.enableModules [
-        "angular"
-        "core"
-        "ghostty"
-        "git"
-        "gnome"
-        "golang"
-        "java"
-        "npm"
-        "react"
-        "shells"
-        "sshClient"
-        "stylix"
-        "vscode"
-      ])
-      {
-        core.configLocation = "~/nix-config#desktop";
-        git-clone.repos = {
-          nix-config = {
-            uri = "https://github.com/Tarow/nix-config.git";
-            location = "~";
-          };
-          pkm = {
-            uri = "https://github.com/Tarow/pkm.git";
-            location = "~";
-          };
+  tarow = lib.mkMerge [
+    (lib.tarow.enableModules [
+      "angular"
+      "core"
+      "ghostty"
+      "git"
+      "gnome"
+      "golang"
+      "java"
+      "npm"
+      "react"
+      "shells"
+      "sshClient"
+      "stylix"
+      "vscode"
+    ])
+    {
+      core.configLocation = "~/nix-config#desktop";
+      git-clone.repos = {
+        nix-config = {
+          uri = "https://github.com/Tarow/nix-config.git";
+          location = "~";
         };
-      }
-    ];
+        pkm = {
+          uri = "https://github.com/Tarow/pkm.git";
+          location = "~";
+        };
+      };
+    }
+  ];
 
-    programs.firefox.enable = true;
-    home.packages = with pkgs; [
-      bruno
-      discord
-      obsidian
-      telegram-desktop
-      teams-for-linux
-    ];
+  programs.firefox.enable = true;
+  home.packages = with pkgs; [
+    bruno
+    discord
+    obsidian
+    telegram-desktop
+    teams-for-linux
+  ];
 
-    #systemd.user.sessionVariables = config.home.sessionVariables;
-  };
+  #systemd.user.sessionVariables = config.home.sessionVariables;
 }

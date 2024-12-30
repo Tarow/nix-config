@@ -1,3 +1,14 @@
 {
-    
+  "nix.serverSettings": {
+    "nixd": {
+      "options": {
+        "nixos": {
+         "expr": "(builtins.getFlake \"${workspaceFolder}/\").nixosConfigurations.desktop.options"
+        },
+        "home_manager": {
+          "expr": "(builtins.getFlake \"${workspaceFolder}/\").homeConfigurations.desktop.options"
+        }
+      }
+    }
+  }
 }
