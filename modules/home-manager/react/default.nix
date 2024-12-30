@@ -17,7 +17,8 @@ in {
 
   config = lib.mkIf cfg.enable {
     programs.vscode = {
-      extensions = with pkgs.vscode-marketplace; with pkgs.vscode-marketplace-release; [
+      extensions = with pkgs.vscode-marketplace;
+      with pkgs.vscode-marketplace-release; [
         dbaeumer.vscode-eslint
         bradlc.vscode-tailwindcss
         dsznajder.es7-react-js-snippets

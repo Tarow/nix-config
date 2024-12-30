@@ -13,7 +13,8 @@ in {
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [unstable.nodePackages."@angular/cli"];
     programs.vscode = {
-      extensions = with pkgs.vscode-marketplace; with pkgs.vscode-marketplace-release; [
+      extensions = with pkgs.vscode-marketplace;
+      with pkgs.vscode-marketplace-release; [
         angular.ng-template
         bradlc.vscode-tailwindcss
         formulahendry.auto-rename-tag

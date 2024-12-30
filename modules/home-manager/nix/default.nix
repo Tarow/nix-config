@@ -26,7 +26,7 @@
       then "12:30"
       else "daily";
     settings = {
-      extra-experimental-features = ["nix-command" "flakes"];
+      extra-experimental-features = ["nix-command" "flakes" "pipe-operators"];
       warn-dirty = false;
     };
   };

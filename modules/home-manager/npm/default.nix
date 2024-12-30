@@ -19,7 +19,8 @@ in {
     home.packages = [pkgs.nodejs_22];
 
     programs.vscode = {
-      extensions = with pkgs.vscode-marketplace; with pkgs.vscode-marketplace-release; [
+      extensions = with pkgs.vscode-marketplace;
+      with pkgs.vscode-marketplace-release; [
         dbaeumer.vscode-eslint
         formulahendry.auto-rename-tag
       ];

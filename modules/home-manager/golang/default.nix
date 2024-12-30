@@ -25,7 +25,8 @@ in {
     ];
 
     programs.vscode = {
-      extensions = with pkgs.vscode-marketplace; with pkgs.vscode-marketplace-release; [
+      extensions = with pkgs.vscode-marketplace;
+      with pkgs.vscode-marketplace-release; [
         golang.go
       ];
 

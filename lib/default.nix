@@ -28,10 +28,11 @@ lib: {
       f [] attrList;
 
     enableModules = moduleNames:
-      builtins.listToAttrs (builtins.map (m: {
-          name = m;
-          value = {enable = true;};
-        })
-        moduleNames);
+          moduleNames 
+          |> (builtins.map (m: {
+              name = m;
+              value = {enable = true;};
+            }))
+          |> (builtins.listToAttrs);
   };
 }
