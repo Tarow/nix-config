@@ -57,6 +57,18 @@ in
         edge-tiling = true;
       };
 
+      "org/gnome/shell".favorite-apps = [
+        (lib.optionalString config.tarow.ghostty.enable "com.mitchellh.ghostty.desktop")
+        "org.gnome.Nautilus.desktop"
+        "org.gnome.Settings.desktop"
+        (lib.optionalString config.programs.firefox.enable "firefox.desktop")
+        (lib.optionalString (builtins.elem pkgs.telegram-desktop config.home.packages) "org.telegram.desktop.desktop")
+        (lib.optionalString (builtins.elem pkgs.discord config.home.packages) "discord.desktop")
+        (lib.optionalString config.programs.vscode.enable "code.desktop")
+        (lib.optionalString (builtins.elem pkgs.obsidian config.home.packages) "obsidian.desktop")
+        "org.gnome.Calendar.desktop"
+      ];
+
     };
 
     # GNOME does not see new applications installed with HM unless until next login.

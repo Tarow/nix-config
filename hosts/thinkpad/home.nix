@@ -42,19 +42,6 @@
       teams-for-linux
     ];
 
-
-    dconf.settings."org/gnome/shell".favorite-apps = with lib; [
-      (if config.tarow.ghostty.enable then "com.mitchellh.ghostty.desktop" else "")
-      "org.gnome.Nautilus.desktop"
-      "org.gnome.Settings.desktop"
-      "firefox.desktop"
-      "org.telegram.desktop.desktop"
-      "discord.desktop"
-      "code.desktop"
-      "obsidian.desktop"
-      "org.gnome.Calendar.desktop"
-    ];
-
     #systemd.user.sessionVariables = config.home.sessionVariables;
   };
 }
