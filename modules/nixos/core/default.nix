@@ -1,8 +1,12 @@
-{ pkgs, lib, config, inputs, ... }:
-let
-  cfg = config.tarow.core;
-in
 {
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}: let
+  cfg = config.tarow.core;
+in {
   options.tarow.core = {
     enable = lib.options.mkEnableOption "Core Programs and Configs";
     configLocation = lib.options.mkOption {

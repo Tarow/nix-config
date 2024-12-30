@@ -1,5 +1,4 @@
-name: middlewares:
-let
+name: middlewares: let
   mapping = {
     public = "public-chain@file";
     private = "private-chain@file";
@@ -7,6 +6,4 @@ let
   };
 
   validMiddlewares = builtins.filter (key: mapping ? ${key}) middlewares;
-in
-{ "traefik.http.routers.${name}.middlewares" = builtins.concatStringsSep "," (map (key: mapping.${key}) validMiddlewares); }
-
+in {"traefik.http.routers.${name}.middlewares" = builtins.concatStringsSep "," (map (key: mapping.${key}) validMiddlewares);}

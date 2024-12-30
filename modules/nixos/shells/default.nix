@@ -1,8 +1,11 @@
-{ lib, pkgs, config, ... }:
-let
-  cfg = config.tarow.shells;
-in
 {
+  lib,
+  pkgs,
+  config,
+  ...
+}: let
+  cfg = config.tarow.shells;
+in {
   options.tarow.shells = {
     enable = lib.options.mkOption {
       type = lib.types.bool;
@@ -13,7 +16,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-
     # Enable shell support, bash is always enabled
     programs.fish.enable = true;
     programs.zsh.enable = true;

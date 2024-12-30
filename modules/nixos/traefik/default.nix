@@ -1,8 +1,12 @@
-{ lib, config, pkgs, ... }:
-let
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}: let
   cfg = config.luna.traefik;
 
-  certs = pkgs.runCommand "certs" { } ''
+  certs = pkgs.runCommand "certs" {} ''
     HOME=$TMPDIR
     mkdir $out
     ${pkgs.mkcert}/bin/mkcert -cert-file $out/${cfg.hostName}.pem -key-file $out/${cfg.hostName}-key.pem "${cfg.hostName}" "*.${cfg.hostName}"
@@ -13,7 +17,7 @@ let
       routers = {
         dashboard = {
           rule = "Host(`traefik.${cfg.hostName}`)";
-          entrypoints = [ "websecure" ];
+          entrypoints = ["websecure"];
           service = "api@internal";
         };
       };
@@ -39,7 +43,7 @@ let
       };
       websecure = {
         address = ":443";
-        http.tls = { };
+        http.tls = {};
       };
     };
 
@@ -57,8 +61,7 @@ let
     accessLog.format = "json";
     log.level = "WARN";
   };
-in
-{
+in {
   options.luna.traefik = {
     enable = lib.mkEnableOption "traefik";
     hostName = lib.options.mkOption {

@@ -1,8 +1,12 @@
-{ pkgs, lib, config, inputs, ... }:
-let
-  cfg = config.tarow.pipewire;
-in
 {
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}: let
+  cfg = config.tarow.pipewire;
+in {
   options.tarow.pipewire = {
     enable = lib.options.mkEnableOption "Pipewire";
   };

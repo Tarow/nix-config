@@ -1,5 +1,10 @@
-{ pkgs, lib, config, inputs, ... }:
-let
+{
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}: let
   cfg = config.tarow.gaming;
 
   customLutris = pkgs.lutris-unwrapped.overrideAttrs (old: {
@@ -10,8 +15,7 @@ let
       hash = "sha256-dI5hqWBWrOGYUEM9Mfm7bTh7BEc4e+T9gJeiZ3BiqmE=";
     };
   });
-in
-{
+in {
   options.tarow.gaming = {
     enable = lib.options.mkEnableOption "Gaming setup";
   };
@@ -29,7 +33,7 @@ in
 
     programs.gamemode.enable = true;
 
-    environment.systemPackages = with pkgs; [ protonup lutris wine ];
+    environment.systemPackages = with pkgs; [protonup lutris wine];
     environment.sessionVariables = {
       STEAM_EXTRA_COMPAT_TOOLS_PATHS = "$HOME/.steam/root/compatibilitytools.d";
     };

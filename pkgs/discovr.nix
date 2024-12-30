@@ -1,5 +1,8 @@
-{ buildGoModule, pkgs, fetchFromGitHub }:
-
+{
+  buildGoModule,
+  pkgs,
+  fetchFromGitHub,
+}:
 buildGoModule rec {
   name = "discovr";
   nativeBuildInputs = [pkgs.unstable.oapi-codegen];

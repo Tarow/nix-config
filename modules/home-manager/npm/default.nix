@@ -1,8 +1,11 @@
-{ lib, pkgs, config, ... }:
-let
-  cfg = config.tarow.npm;
-in
 {
+  lib,
+  pkgs,
+  config,
+  ...
+}: let
+  cfg = config.tarow.npm;
+in {
   options.tarow.npm = {
     enable = lib.options.mkOption {
       type = lib.types.bool;
@@ -13,14 +16,13 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = [ pkgs.nodejs_22 ];
+    home.packages = [pkgs.nodejs_22];
 
     programs.vscode = {
-      extensions = with pkgs.vscode-marketplace; with pkgs.vscode-marketplace-release;
-        [
-          dbaeumer.vscode-eslint
-          formulahendry.auto-rename-tag
-        ];
+      extensions = with pkgs.vscode-marketplace; with pkgs.vscode-marketplace-release; [
+        dbaeumer.vscode-eslint
+        formulahendry.auto-rename-tag
+      ];
       userSettings = {
         # Language Settings
         "[typescript]" = {
@@ -34,7 +36,6 @@ in
         "[javascript]" = {
           "editor.defaultFormatter" = "vscode.typescript-language-features";
         };
-
       };
     };
   };

@@ -1,5 +1,10 @@
-{ pkgs, lib, config, inputs, ... }:
-let
+{
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}: let
   name = "audiobookshelf";
   cfg = config.tarow.stacks.${name};
   storage = "${config.tarow.stacks.storageBaseDir}/${name}";
@@ -23,13 +28,17 @@ let
         ];
       }
       (lib.mkIf cfg.addToTraefik {
-        labels = (import ../traefik/labels.nix { inherit name config lib; port = 80; }) // (import ../traefik/middlewares.nix name [ "public" ]);
-        networks = [ config.tarow.stacks.traefik.network ];
+        labels =
+          (import ../traefik/labels.nix {
+            inherit name config lib;
+            port = 80;
+          })
+          // (import ../traefik/middlewares.nix name ["public"]);
+        networks = [config.tarow.stacks.traefik.network];
       })
     ];
   };
-in
-{
+in {
   options.tarow.stacks.${name} = with lib; {
     enable = options.mkEnableOption name;
     addToTraefik = options.mkOption {

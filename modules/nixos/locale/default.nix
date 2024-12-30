@@ -1,8 +1,12 @@
-{ pkgs, lib, config, inputs, ... }:
-let
-  cfg = config.tarow.locale;
-in
 {
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}: let
+  cfg = config.tarow.locale;
+in {
   options.tarow.locale = {
     enable = lib.options.mkEnableOption "Locale Settings";
   };

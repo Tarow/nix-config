@@ -1,6 +1,10 @@
-name:
-{ pkgs, lib, config, inputs, ... }:
-let
+name: {
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}: let
   cfg = config.tarow.stacks.${name};
   storage = "${config.tarow.stacks.storageBaseDir}/${name}";
   mediaStorage = "${config.tarow.stacks.mediaStorageBaseDir}";
@@ -24,13 +28,17 @@ let
         ports = lib.lists.optional (!cfg.addToTraefik) "8787:8787";
       }
       (lib.mkIf cfg.addToTraefik {
-        labels = (import ../traefik/labels.nix { inherit name config lib; port = 8787; }) // (import ../traefik/middlewares.nix name [ "private" ]);
-        networks = [ config.tarow.stacks.traefik.network ];
+        labels =
+          (import ../traefik/labels.nix {
+            inherit name config lib;
+            port = 8787;
+          })
+          // (import ../traefik/middlewares.nix name ["private"]);
+        networks = [config.tarow.stacks.traefik.network];
       })
     ];
   };
-in
-{
+in {
   options.tarow.stacks.${name} = with lib; {
     enable = options.mkEnableOption name;
     addToTraefik = options.mkOption {

@@ -1,5 +1,10 @@
-{ pkgs, lib, config, inputs, ... }:
-let
+{
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}: let
   name = "adguard";
   cfg = config.tarow.stacks.${name};
   storage = "${config.tarow.stacks.storageBaseDir}/${name}";
@@ -15,20 +20,24 @@ let
           "${storage}/work:/opt/adguardhome/work"
           "${storage}/conf:/opt/adguardhome/conf"
         ];
-        ports = [
-          "53:53/tcp"
-          "53:53/udp"
-          "853:853/tcp"
-        ] ++ lib.lists.optional (!cfg.addToTraefik) "3000:3000";
+        ports =
+          [
+            "53:53/tcp"
+            "53:53/udp"
+            "853:853/tcp"
+          ]
+          ++ lib.lists.optional (!cfg.addToTraefik) "3000:3000";
       }
       (lib.mkIf cfg.addToTraefik {
-        labels = (import ../traefik/labels.nix { inherit name config lib; port = 3000; });
-        networks = [ config.tarow.stacks.traefik.network ];
+        labels = import ../traefik/labels.nix {
+          inherit name config lib;
+          port = 3000;
+        };
+        networks = [config.tarow.stacks.traefik.network];
       })
     ];
   };
-in
-{
+in {
   options.tarow.stacks.${name} = with lib; {
     enable = options.mkEnableOption name;
     addToTraefik = options.mkOption {

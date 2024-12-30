@@ -1,8 +1,12 @@
-{ pkgs, lib, config, inputs, ... }:
-let
-  cfg = config.tarow.keyboard;
-in
 {
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}: let
+  cfg = config.tarow.keyboard;
+in {
   options.tarow.keyboard = {
     enable = lib.options.mkEnableOption "Keyboard Settings";
   };

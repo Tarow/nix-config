@@ -1,6 +1,10 @@
 # Module, that only exposes options with general information that will be used by other modules
-{ pkgs, lib, config, ... }:
 {
+  pkgs,
+  lib,
+  config,
+  ...
+}: {
   options.tarow.person = {
     name = lib.options.mkOption {
       type = lib.types.str;

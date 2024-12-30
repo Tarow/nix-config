@@ -1,8 +1,13 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{ config, inputs, pkgs, lib, ... }:
 {
+  config,
+  inputs,
+  pkgs,
+  lib,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
     inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x13-amd
@@ -22,14 +27,14 @@
       "printing"
       "shells"
     ])
-    { basics.configLocation = "~/nix-config#thinkpad"; }
+    {basics.configLocation = "~/nix-config#thinkpad";}
   ];
 
   networking.hostName = "nixos";
   users.users.niklas = {
     isNormalUser = true;
     description = "Niklas";
-    extraGroups = [ "wheel" (lib.mkIf config.tarow.networkManager.enable "networkmanager") ];
+    extraGroups = ["wheel" (lib.mkIf config.tarow.networkManager.enable "networkmanager")];
     shell = pkgs.fish;
   };
 

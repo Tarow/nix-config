@@ -1,8 +1,12 @@
-{ pkgs, lib, config, inputs, ... }:
-let
-  cfg = config.tarow.podman;
-in
 {
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}: let
+  cfg = config.tarow.podman;
+in {
   options.tarow.podman = {
     enable = lib.options.mkEnableOption "Podman";
   };

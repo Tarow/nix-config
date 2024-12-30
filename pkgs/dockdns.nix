@@ -1,12 +1,14 @@
-{ buildGoModule, fetchFromGitHub }:
-
+{
+  buildGoModule,
+  fetchFromGitHub,
+}:
 buildGoModule rec {
   name = "dockdns";
 
   src = fetchFromGitHub {
     owner = "Tarow";
     repo = "dockdns";
-    rev  = "241efd51dae8f85494914567c783cd2622efb81e";
+    rev = "241efd51dae8f85494914567c783cd2622efb81e";
     sha256 = "sha256-Yj8UsfPPPu8XmDT8cU1/7/57TevS8Qthk4bZM9D0WY8=";
   };
 

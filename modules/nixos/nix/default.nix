@@ -1,8 +1,14 @@
-{ lib, config, pkgs, inputs, outputs, ... }:
 {
+  lib,
+  config,
+  pkgs,
+  inputs,
+  outputs,
+  ...
+}: {
   nix = {
     settings = {
-      extra-experimental-features = [ "nix-command" "flakes" ];
+      extra-experimental-features = ["nix-command" "flakes"];
       warn-dirty = false;
     };
     gc = {
@@ -41,5 +47,4 @@
     enable = true;
     package = pkgs.nix-ld-rs;
   };
-
 }

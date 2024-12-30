@@ -1,9 +1,12 @@
-{ lib, pkgs, config, ... }:
-let
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}: let
   cfg = config.tarow.java;
   jdk = pkgs.jdk;
-in
-{
+in {
   options.tarow.java = {
     enable = lib.options.mkEnableOption "Java";
   };
@@ -11,7 +14,8 @@ in
     programs.java.enable = true;
     programs.java.package = jdk;
 
-    programs.vscode.extensions = with pkgs.vscode-marketplace; with pkgs.vscode-marketplace-release; [
+    programs.vscode.extensions = with pkgs.vscode-marketplace;
+    with pkgs.vscode-marketplace-release; [
       vscjava.vscode-java-pack
     ];
 

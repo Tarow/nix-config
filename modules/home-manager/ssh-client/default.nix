@@ -1,9 +1,11 @@
-{ lib, pkgs, config, ... }:
-let
-  cfg = config.tarow.sshClient;
-
-in
 {
+  lib,
+  pkgs,
+  config,
+  ...
+}: let
+  cfg = config.tarow.sshClient;
+in {
   options.tarow.sshClient = {
     enable = lib.options.mkEnableOption "SSH Client Config";
   };

@@ -1,9 +1,11 @@
-{ lib, pkgs, config, ... }:
-let
-  cfg = config.tarow.golang;
-
-in
 {
+  lib,
+  pkgs,
+  config,
+  ...
+}: let
+  cfg = config.tarow.golang;
+in {
   options.tarow.golang = {
     enable = lib.options.mkOption {
       type = lib.types.bool;
@@ -23,10 +25,9 @@ in
     ];
 
     programs.vscode = {
-      extensions = with pkgs.vscode-marketplace; with pkgs.vscode-marketplace-release;
-        [
-          golang.go
-        ];
+      extensions = with pkgs.vscode-marketplace; with pkgs.vscode-marketplace-release; [
+        golang.go
+      ];
 
       userSettings = {
         "[go]" = {

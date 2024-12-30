@@ -1,5 +1,11 @@
-{ inputs, outputs, lib, config, pkgs, ... }@args:
 {
+  inputs,
+  outputs,
+  lib,
+  config,
+  pkgs,
+  ...
+} @ args: {
   config = {
     home.stateVersion = "24.05";
 

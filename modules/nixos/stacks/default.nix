@@ -1,9 +1,13 @@
-{ pkgs, lib, config, inputs, ... }:
-let
-  cfg = config.tarow.stacks;
-in
 {
-  imports = (lib.tarow.readSubdirs ./.);
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}: let
+  cfg = config.tarow.stacks;
+in {
+  imports = lib.tarow.readSubdirs ./.;
 
   options.tarow.stacks = {
     storageBaseDir = lib.mkOption {
@@ -16,8 +20,10 @@ in
     };
   };
   config.virtualisation = {
-    arion.backend = if config.tarow.docker.enable then "docker" else "podman-socket";
+    arion.backend =
+      if config.tarow.docker.enable
+      then "docker"
+      else "podman-socket";
     podman.dockerSocket.enable = lib.mkIf (config.virtualisation.arion.backend == "podman-socket") true;
   };
 }
-

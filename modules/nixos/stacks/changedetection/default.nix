@@ -1,5 +1,10 @@
-{ pkgs, lib, config, inputs, ... }:
-let
+{
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}: let
   name = "changedetection";
   port = 5000;
   cfg = config.tarow.stacks.${name};
@@ -27,13 +32,15 @@ let
         ports = lib.mkIf (!cfg.addToTraefik) [
           "${toString port}:${toString port}"
         ];
-        networks = [ "default" ];
+        networks = ["default"];
       }
       (lib.mkIf cfg.addToTraefik {
-        labels = (import ../traefik/labels.nix {
-          inherit name config lib port;
-        }) // (import ../traefik/middlewares.nix name [ "private" ]);
-        networks = [ config.tarow.stacks.traefik.network ];
+        labels =
+          (import ../traefik/labels.nix {
+            inherit name config lib port;
+          })
+          // (import ../traefik/middlewares.nix name ["private"]);
+        networks = [config.tarow.stacks.traefik.network];
       })
     ];
     services.${playwrightContainer}.service = {
@@ -42,8 +49,7 @@ let
       restart = "unless-stopped";
     };
   };
-in
-{
+in {
   options.tarow.stacks.${name} = with lib; {
     enable = options.mkEnableOption name;
     addToTraefik = options.mkOption {

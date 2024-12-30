@@ -1,9 +1,13 @@
-{ pkgs, lib, config, inputs, ... }:
-let
+{
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}: let
   name = "traefik";
   cfg = config.tarow.docker.${name};
-in
-{
+in {
   options.tarow.stacks.${name} = {
     enable = lib.options.mkEnableOption name;
     domain = lib.options.mkOption {

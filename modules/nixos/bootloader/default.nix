@@ -1,8 +1,12 @@
-{ pkgs, lib, config, inputs, ... }:
-let
-  cfg = config.tarow.bootLoader;
-in
 {
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}: let
+  cfg = config.tarow.bootLoader;
+in {
   options.tarow.bootLoader = {
     enable = lib.options.mkEnableOption "Bootloader Config";
   };

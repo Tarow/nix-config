@@ -1,9 +1,13 @@
-{ pkgs, lib, config, inputs, ... }:
-let
-  cfg = config.tarow.wsl;
-in
 {
-  imports = [ inputs.nixos-wsl.nixosModules.default ];
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}: let
+  cfg = config.tarow.wsl;
+in {
+  imports = [inputs.nixos-wsl.nixosModules.default];
 
   options.tarow.wsl = {
     enable = lib.options.mkOption {

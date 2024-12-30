@@ -1,8 +1,11 @@
-{ lib, pkgs, config, ... }:
-let
-  cfg = config.tarow.vscode;
-in
 {
+  lib,
+  pkgs,
+  config,
+  ...
+}: let
+  cfg = config.tarow.vscode;
+in {
   options.tarow.vscode = {
     enable = lib.options.mkEnableOption "VSCode";
   };
@@ -32,14 +35,17 @@ in
       "editor.fontLigatures" = true;
     };
 
-    programs.vscode.extensions = with pkgs.vscode-marketplace; with pkgs.vscode-marketplace-release; [
+    programs.vscode.extensions = with pkgs.vscode-marketplace;
+    with pkgs.vscode-marketplace-release; [
       jnoortheen.nix-ide
       esbenp.prettier-vscode
     ];
 
-    programs.vscode.keybindings = [{
-      "key" = "ctrl+e";
-      "command" = "terminal.focus";
-    }];
+    programs.vscode.keybindings = [
+      {
+        "key" = "ctrl+e";
+        "command" = "terminal.focus";
+      }
+    ];
   };
 }

@@ -1,8 +1,11 @@
-{ config, pkgs, lib, ... }:
-let
-  cfg = config.tarow.core;
-in
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
+  cfg = config.tarow.core;
+in {
   options.tarow.core = {
     enable = lib.options.mkEnableOption "Core Programs and Configs";
     configLocation = lib.options.mkOption {
@@ -16,8 +19,6 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       neovim
-      nixpkgs-fmt
-      nil
       jq
       yq-go
     ];

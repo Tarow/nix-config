@@ -43,58 +43,61 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs =
-    { self
-    , nixpkgs
-    , home-manager
-    , arion
-    , ...
-    }@inputs:
-    let
-      inherit (self) outputs;
-      lib = nixpkgs.lib.extend (final: prev: (import ./lib final) // home-manager.lib);
-      packages = inputs.nixpkgs.legacyPackages;
+  outputs = {
+    self,
+    nixpkgs,
+    home-manager,
+    arion,
+    ...
+  } @ inputs: let
+    inherit (self) outputs;
+    lib = nixpkgs.lib.extend (final: prev: (import ./lib final) // home-manager.lib);
+    packages = inputs.nixpkgs.legacyPackages;
 
-      mkSystem = { system ? "x86_64-linux", cfgPath }:
-        nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit inputs outputs lib;
-          };
-          modules = [
-            { nixpkgs.hostPlatform = system; }
-            ./modules/nixos
-            arion.nixosModules.arion
-            cfgPath
-          ];
+    mkSystem = {
+      system ? "x86_64-linux",
+      cfgPath,
+    }:
+      nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          inherit inputs outputs lib;
         };
-
-      mkHome = { system ? "x86_64-linux", cfgPath }:
-        home-manager.lib.homeManagerConfiguration {
-          pkgs = packages.${system};
-          extraSpecialArgs = { inherit inputs outputs lib; };
-          modules = [
-            ./modules/home-manager
-            ./hosts/shared/home.nix
-            cfgPath
-          ];
-        };
-    in
-    {
-      overlays = (import ./overlays {
-        inherit inputs;
-      });
-
-      nixosConfigurations = {
-        wsl2 = mkSystem { cfgPath = ./hosts/wsl2/configuration.nix; };
-        thinkpad = mkSystem { cfgPath = ./hosts/thinkpad/configuration.nix; };
-        desktop = mkSystem { cfgPath = ./hosts/desktop/configuration.nix; };
+        modules = [
+          {nixpkgs.hostPlatform = system;}
+          ./modules/nixos
+          arion.nixosModules.arion
+          cfgPath
+        ];
       };
 
-      homeConfigurations = {
-        wsl2 = mkHome { cfgPath = ./hosts/wsl2/home.nix; };
-        thinkpad = mkHome { cfgPath = ./hosts/thinkpad/home.nix; };
-        desktop = mkHome { cfgPath = ./hosts/desktop/home.nix; };
+    mkHome = {
+      system ? "x86_64-linux",
+      cfgPath,
+    }:
+      home-manager.lib.homeManagerConfiguration {
+        pkgs = packages.${system};
+        extraSpecialArgs = {inherit inputs outputs lib;};
+        modules = [
+          ./modules/home-manager
+          ./hosts/shared/home.nix
+          cfgPath
+        ];
       };
+  in {
+    overlays = import ./overlays {
+      inherit inputs;
     };
-}
 
+    nixosConfigurations = {
+      wsl2 = mkSystem {cfgPath = ./hosts/wsl2/configuration.nix;};
+      thinkpad = mkSystem {cfgPath = ./hosts/thinkpad/configuration.nix;};
+      desktop = mkSystem {cfgPath = ./hosts/desktop/configuration.nix;};
+    };
+
+    homeConfigurations = {
+      wsl2 = mkHome {cfgPath = ./hosts/wsl2/home.nix;};
+      thinkpad = mkHome {cfgPath = ./hosts/thinkpad/home.nix;};
+      desktop = mkHome {cfgPath = ./hosts/desktop/home.nix;};
+    };
+  };
+}

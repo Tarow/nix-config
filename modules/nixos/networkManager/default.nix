@@ -1,8 +1,12 @@
-{ pkgs, lib, config, inputs, ... }:
-let
-  cfg = config.tarow.networkManager;
-in
 {
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}: let
+  cfg = config.tarow.networkManager;
+in {
   options.tarow.networkManager = {
     enable = lib.options.mkEnableOption "NetworkManager";
   };
