@@ -60,6 +60,7 @@ in {
         edge-tiling = true;
       };
 
+      # Favorite apps in bottom bar
       "org/gnome/shell".favorite-apps = [
         (lib.optionalString config.tarow.ghostty.enable "com.mitchellh.ghostty.desktop")
         "org.gnome.Nautilus.desktop"
@@ -71,8 +72,25 @@ in {
         (lib.optionalString (builtins.elem pkgs.obsidian config.home.packages) "obsidian.desktop")
         "org.gnome.Calendar.desktop"
       ];
+
+      # Extension settings
+      "org/gnome/shell/extensions/pano" = {
+        "global-shortcut" = ["<Control><Alt>v"];
+        "play-audio-on-copy" = false;
+        "send-notification-on-copy" = false;
+      };
     };
 
+    # Install & enable extensions
+    programs.gnome-shell = {
+      enable = true;
+      extensions = with pkgs.gnomeExtensions; [
+        {package = blur-my-shell;}
+        {package = system-monitor;}
+        {package = caffeine;}
+        {package = pano;}
+      ];
+    };
     # GNOME does not see new applications installed with HM unless until next login.
     # Workaround to make GNOME find applications without needing to relogin again
     # See https://github.com/NixOS/nixpkgs/issues/12757#issuecomment-2253490852
