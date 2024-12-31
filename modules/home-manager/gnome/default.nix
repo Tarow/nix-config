@@ -86,7 +86,7 @@ in {
       enable = true;
       extensions = with pkgs.gnomeExtensions; [
         {package = blur-my-shell;}
-        {package = system-monitor;}
+        {package = vitals;}
         {package = caffeine;}
         {package = pano;}
       ];
