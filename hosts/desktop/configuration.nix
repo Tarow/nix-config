@@ -25,6 +25,7 @@
       "pipewire"
       "printing"
       "shells"
+      "stylix"
     ])
     {core.configLocation = "~/nix-config#desktop";}
   ];
