@@ -48,5 +48,12 @@
     teams-for-linux
   ];
 
+  programs.zsh.plugins = [
+    {
+      name = "powerlevel10k";
+      src = pkgs.zsh-powerlevel10k;
+    }
+  ];
+
   #systemd.user.sessionVariables = config.home.sessionVariables;
 }

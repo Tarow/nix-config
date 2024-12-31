@@ -6,9 +6,10 @@
   config,
   osConfig ? {},
   pkgs,
-  vars,
   ...
-}: {
+}: let
+  isStandalone = !config.submoduleSupport.enable;
+in {
   imports = [
     inputs.nix-index-database.hmModules.nix-index
     {
@@ -18,7 +19,7 @@
   ];
 
   nix = {
-    package = pkgs.nix;
+    package = lib.mkIf isStandalone pkgs.nix;
     gc.automatic = true;
     # Run garbage collection every day at 12:30
     gc.frequency =
@@ -34,7 +35,7 @@
   systemd.user.startServices = "sd-switch";
 
   # Disable nixpkgs overlays, if home-manager is running as submodule with useGlobalPkgs=true
-  nixpkgs = lib.mkIf (!(config.submoduleSupport.enable && osConfig.home-manager.useGlobalPkgs)) {
+  nixpkgs = lib.mkIf (isStandalone || !osConfig.home-manager.useGlobalPkgs) {
     # You can add overlays here
     overlays = [
       inputs.nix-vscode-extensions.overlays.default

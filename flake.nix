@@ -47,7 +47,6 @@
     self,
     nixpkgs,
     home-manager,
-    arion,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -56,18 +55,29 @@
 
     mkSystem = {
       system ? "x86_64-linux",
-      cfgPath,
+      systemConfig,
+      userConfigs ? null,
     }:
       nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit inputs outputs lib;
         };
-        modules = [
-          {nixpkgs.hostPlatform = system;}
-          ./modules/nixos
-          arion.nixosModules.arion
-          cfgPath
-        ];
+        modules =
+          [
+            {nixpkgs.hostPlatform = system;}
+            ./modules/nixos
+            systemConfig
+          ]
+          ++ lib.lists.optionals (userConfigs != null) [
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.sharedModules = [./modules/home-manager ./hosts/shared/home.nix];
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = {inherit inputs outputs lib;};
+              home-manager.users = userConfigs;
+            }
+          ];
       };
 
     mkHome = {
@@ -89,9 +99,9 @@
     };
 
     nixosConfigurations = {
-      wsl2 = mkSystem {cfgPath = ./hosts/wsl2/configuration.nix;};
-      thinkpad = mkSystem {cfgPath = ./hosts/thinkpad/configuration.nix;};
-      desktop = mkSystem {cfgPath = ./hosts/desktop/configuration.nix;};
+      wsl2 = mkSystem {systemConfig = ./hosts/wsl2/configuration.nix;};
+      thinkpad = mkSystem {systemConfig = ./hosts/thinkpad/configuration.nix;};
+      desktop = mkSystem {systemConfig = ./hosts/desktop/configuration.nix;};
     };
 
     homeConfigurations = {

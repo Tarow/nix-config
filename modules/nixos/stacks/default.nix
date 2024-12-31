@@ -7,7 +7,7 @@
 }: let
   cfg = config.tarow.stacks;
 in {
-  imports = lib.tarow.readSubdirs ./.;
+  imports = lib.tarow.readSubdirs ./. ++ [inputs.arion.nixosModules.arion];
 
   options.tarow.stacks = {
     storageBaseDir = lib.mkOption {

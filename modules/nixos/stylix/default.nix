@@ -14,9 +14,11 @@ in {
   imports = [inputs.stylix.nixosModules.stylix];
 
   config = lib.mkIf cfg.enable {
+    stylix.homeManagerIntegration.autoImport = false;
     stylix = {
       enable = true;
-      image = pkgs.nixos-artwork.wallpapers.simple-dark-gray.gnomeFilePath;
+      #image = pkgs.nixos-artwork.wallpapers.simple-dark-gray.gnomeFilePath;
+      image = ./wallpaper.png;
       base16Scheme = "${pkgs.base16-schemes}/share/themes/ayu-dark.yaml";
 
       polarity = "dark";
