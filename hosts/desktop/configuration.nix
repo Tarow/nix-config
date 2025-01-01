@@ -38,6 +38,7 @@
     extraGroups = ["wheel" (lib.mkIf config.tarow.networkManager.enable "networkmanager")];
     shell = pkgs.fish;
   };
+  nix.settings.trusted-users = ["@wheel"];
 
   hardware.graphics = {
     enable = true;

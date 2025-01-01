@@ -16,9 +16,11 @@
       "git"
       "gnome"
       "golang"
+      "hyprland"
       "java"
       "npm"
       "react"
+      "walker"
       "shells"
       "sshClient"
       "stylix"
@@ -48,12 +50,12 @@
     teams-for-linux
   ];
 
-  programs.zsh.plugins = [
-    {
-      name = "powerlevel10k";
-      src = pkgs.zsh-powerlevel10k;
-    }
-  ];
+  wayland.windowManager.hyprland.settings = {
+    monitor = [
+      "DP-1, 3440x1440@143.97, 0x0, 1"
+      "HDMI-A-1, 2560x1440@59.95, 3440x0, 1"
+    ];
+  };
 
   #systemd.user.sessionVariables = config.home.sessionVariables;
 }
