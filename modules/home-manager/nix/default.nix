@@ -64,6 +64,9 @@ in {
         "formatting" = {
           "command" = ["alejandra"];
         };
+        "hiddenLanguageServerErrors" = [
+          "textDocument/definition"
+        ];
       };
     };
   };

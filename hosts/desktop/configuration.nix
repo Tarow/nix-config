@@ -19,6 +19,7 @@
       "bootLoader"
       "gaming"
       "gnome"
+      "hyprland"
       "keyboard"
       "locale"
       "networkManager"
