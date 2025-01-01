@@ -56,6 +56,9 @@ in {
   programs.vscode.userSettings = {
     "nix.serverPath" = "nixd";
     "nix.enableLanguageServer" = true;
+    "nix.hiddenLanguageServerErrors" = [
+      "textDocument/formatting"
+    ];
     "nix.serverSettings" = {
       "nixd" = {
         "nixpkgs" = {
@@ -64,9 +67,6 @@ in {
         "formatting" = {
           "command" = ["alejandra"];
         };
-        "hiddenLanguageServerErrors" = [
-          "textDocument/definition"
-        ];
       };
     };
   };
