@@ -12,6 +12,8 @@ jobs:
 
       - name: Install Nix
         uses: cachix/install-nix-action@v30
+        with:
+          extra_nix_config: "experimental-features = nix-command flakes pipe-operators"
 
       - name: Check Flake
         run: nix flake check
