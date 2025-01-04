@@ -17,7 +17,7 @@
 
   tarow = lib.mkMerge [
     (lib.tarow.enableModules [
-      "basics"
+      "core"
       "bootLoader"
       "gnome"
       "keyboard"
@@ -27,7 +27,7 @@
       "printing"
       "shells"
     ])
-    {basics.configLocation = "~/nix-config#thinkpad";}
+    {core.configLocation = "~/nix-config#thinkpad";}
   ];
 
   networking.hostName = "nixos";

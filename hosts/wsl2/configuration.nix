@@ -10,12 +10,12 @@
 
   tarow = lib.mkMerge [
     (lib.tarow.enableModules [
-      "basics"
+      "core"
       "docker"
       "shells"
       "wsl"
     ])
-    {basics.configLocation = "~/projects/nix-config#wsl2";}
+    {core.configLocation = "~/projects/nix-config#wsl2";}
   ];
 
   environment.systemPackages = [pkgs.wget];

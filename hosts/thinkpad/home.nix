@@ -11,7 +11,7 @@
   tarow = lib.mkMerge [
     (lib.tarow.enableModules [
       "angular"
-      "basics"
+      "core"
       "git"
       "shells"
       "golang"
@@ -25,7 +25,7 @@
       "vscode"
     ])
     {
-      basics.configLocation = "~/nix-config#thinkpad";
+      core.configLocation = "~/nix-config#thinkpad";
       git-clone.repos.pkm = {
         uri = "git@github.com:Tarow/pkm.git";
         location = "~";
