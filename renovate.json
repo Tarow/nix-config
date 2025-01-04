@@ -1,15 +1,16 @@
 {
-    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": ["config:recommended"],
-    "timezone": "Europe/Berlin",
-    "lockFileMaintenance": { 
-        "enabled": true,
-        "schedule": ["before 2am on sunday"]
-    },
-    "nix": {
-        "enabled": true
-    },
-    "platformAutomerge": true,
-    "automerge": true,
-    "automergeType": "pr"
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "prHourlyLimit": 0,
+  "extends": ["config:recommended"],
+  "timezone": "Europe/Berlin",
+  "lockFileMaintenance": { 
+      "enabled": true,
+      "schedule": ["before 2am on sunday"]
+  },
+  "nix": {
+      "enabled": true
+  },
+  "platformAutomerge": true,
+  "automerge": true,
+  "automergeType": "pr"
 }
