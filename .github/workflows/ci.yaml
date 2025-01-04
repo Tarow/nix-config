@@ -4,11 +4,14 @@ on:
   push:
 
 jobs:
-  - name: Checkout
-    uses: actions/checkout@v3
+  check_flake:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-  - name: Install Nix
-    uses: cachix/install-nix-action@v20
+      - name: Install Nix
+        uses: cachix/install-nix-action@v20
 
-  - name: Check Flake
-    run: nix flake check
+      - name: Check Flake
+        run: nix flake check
