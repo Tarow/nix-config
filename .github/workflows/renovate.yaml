@@ -14,9 +14,9 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install Nix
-        uses: cachix/install-nix-action
+        uses: cachix/install-nix-action@master
 
       - name: Run Renovate
-        uses: renovatebot/github-action
+        uses: renovatebot/github-action@main
         with:
           config-file: renovate.json
