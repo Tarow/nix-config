@@ -4,5 +4,8 @@
     "lockFileMaintenance": { "enabled": true },
     "nix": {
         "enabled": true
-    }
+    },
+    "platformAutomerge": true,
+    "automerge": true,
+    "automergeType": "pr"
 }
