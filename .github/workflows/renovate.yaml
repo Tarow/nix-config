@@ -19,4 +19,4 @@ jobs:
       - name: Run Renovate
         uses: renovatebot/github-action@main
         with:
-          config-file: renovate.json
+          configurationFile: renovate.json
