@@ -1,0 +1,14 @@
+name: "Verify Nix Config"
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  - name: Checkout
+    uses: actions/checkout@v3
+
+  - name: Install Nix
+    uses: cachix/install-nix-action@v20
+
+  - name: Check Flake
+    run: nix flake check
