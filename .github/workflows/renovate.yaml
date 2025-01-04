@@ -1,4 +1,4 @@
-name: Update Flake with Renovate
+name: Run Renovate
 
 on:
   schedule:
@@ -14,9 +14,9 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install Nix
-        uses: cachix/install-nix-action@latest
+        uses: cachix/install-nix-action
 
       - name: Run Renovate
-        uses: renovatebot/github-action@latest
+        uses: renovatebot/github-action
         with:
           config-file: renovate.json
