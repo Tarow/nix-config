@@ -30,7 +30,6 @@ in {
           "$mod SHIFT, q, killactive"
           "$mod SHIFT, e, exit"
           "$mod SHIFT, l, exec, hyprlock"
-          "$mod, SPACE, exec, walker"
 
           # Screen focus
           "$mod, v, togglefloating"

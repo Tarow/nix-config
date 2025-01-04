@@ -26,5 +26,7 @@ in {
         list.max_items = 20;
       };
     };
+
+    wayland.windowManager.hyprland.settings.bind = ["$mod, SPACE, exec, walker"];
   };
 }
