@@ -16,7 +16,7 @@
       "git"
       "gnome"
       "golang"
-      #"hyprland"
+      "hyprland"
       "java"
       "npm"
       "react"
