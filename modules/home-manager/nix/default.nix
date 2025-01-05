@@ -58,6 +58,7 @@ in {
     "nix.enableLanguageServer" = true;
     "nix.hiddenLanguageServerErrors" = [
       "textDocument/formatting"
+      "textDocument/definition"
     ];
     "nix.serverSettings" = {
       "nixd" = {

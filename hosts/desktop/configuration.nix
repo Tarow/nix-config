@@ -19,13 +19,14 @@
       "bootLoader"
       "gaming"
       "gnome"
-      "hyprland"
+      #"hyprland"
       "keyboard"
       "locale"
       "networkManager"
       "pipewire"
       "printing"
       "shells"
+      "soundblaster"
       "stylix"
     ])
     {core.configLocation = "~/nix-config#desktop";}
