@@ -29,6 +29,7 @@
       "stylix"
     ])
     {core.configLocation = "~/nix-config#desktop";}
+    {monitors.configuration = ./monitors.xml;}
   ];
 
   networking.hostName = "nixos";

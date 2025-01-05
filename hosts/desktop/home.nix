@@ -38,6 +38,7 @@
           location = "~";
         };
       };
+      monitors.configuration = ./monitors.xml;
     }
   ];
 
