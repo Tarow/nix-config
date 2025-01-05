@@ -11,7 +11,9 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    programs.hyprlock.enable = true;
+    # Hyprlock/hyperidle currently setup through NixOS Module
+    programs.hyprlock.enable = false;
+    services.hypridle.enable = false;
     home.packages = with pkgs; [walker];
     wayland.windowManager.hyprland = {
       enable = true;
