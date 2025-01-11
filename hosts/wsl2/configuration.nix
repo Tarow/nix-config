@@ -13,6 +13,7 @@
       "core"
       "docker"
       "shells"
+      "stylix"
       "wsl"
     ])
     {core.configLocation = "~/projects/nix-config#wsl2";}

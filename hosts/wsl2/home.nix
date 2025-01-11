@@ -22,18 +22,19 @@
 
     tarow = lib.mkMerge [
       (lib.tarow.enableModules [
+        "angular"
         "core"
         "git"
-        "shells"
         "golang"
-        "npm"
         "java"
+        "npm"
         "react"
-        "angular"
+        "shells"
+        "stylix"
         "vscode"
       ])
       {
-        core.configLocation = "~/projects/nix-config#wsl2";
+        core.configLocation = "~/nix-config#wsl2";
         git-clone.repos.nix-config = {
           uri = "https://github.com/Tarow/nix-config.git";
           location = "~/projects";
