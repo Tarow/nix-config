@@ -23,6 +23,11 @@ in {
       enable = true;
       settings = {
         vim = {
+          globals = {
+            mapleader = " ";
+            maplocalleader = " ";
+          };
+
           statusline.lualine.enable = true;
           telescope.enable = true;
           autocomplete.nvim-cmp.enable = true;
