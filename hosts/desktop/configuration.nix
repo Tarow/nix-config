@@ -103,4 +103,7 @@
       sortKey = "z_windows";
     };
   };
+
+  # Necessary for file browsers to browse samba shares
+  services.gvfs.enable = true;
 }
