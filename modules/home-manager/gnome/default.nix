@@ -32,6 +32,12 @@ in {
         cycle-group = ["<Super>Escape"];
       };
 
+      "org/gnome/desktop/peripherals/mouse" = {
+        # Turn off mouse acceleration
+        accel-profile = "flat";
+        speed = 0.0;
+      };
+
       "org/gnome/desktop/wm/preferences" = {
         button-layout = "appmenu:minimize,maximize,close";
         auto-raise = true;

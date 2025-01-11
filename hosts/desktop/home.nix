@@ -18,6 +18,7 @@
       "golang"
       #"hyprland"
       "java"
+      "neovim"
       "npm"
       "react"
       "walker"
