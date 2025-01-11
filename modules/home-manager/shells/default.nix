@@ -96,9 +96,6 @@ in {
     };
 
     home.shellAliases = {
-      v = "nvim";
-      vi = "nvim";
-      vim = "nvim";
       ls = "eza";
       ll = "eza -l";
       la = "eza -la";

@@ -27,6 +27,7 @@
         "git"
         "golang"
         "java"
+        "neovim"
         "npm"
         "react"
         "shells"
