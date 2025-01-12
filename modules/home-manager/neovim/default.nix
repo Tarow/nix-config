@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  pkgs,
   inputs,
   ...
 }: let
@@ -21,20 +20,51 @@ in {
     };
     programs.nvf = {
       enable = true;
-      settings = {
-        vim = {
-          globals = {
-            mapleader = " ";
-            maplocalleader = " ";
-          };
+      enableManpages = true;
+      settings.vim = {
+        options = {
+          autoindent = true;
+          tabstop = 4;
+          shiftwidth = 4;
+        };
 
-          statusline.lualine.enable = true;
-          telescope.enable = true;
-          autocomplete.nvim-cmp.enable = true;
+        globals = {
+          mapleader = " ";
+          maplocalleader = " ";
+        };
 
-          languages = {
-            enableLSP = true;
-            enableTreesitter = true;
+        languages = {
+          enableLSP = true;
+          enableTreesitter = true;
+        };
+
+        lsp = {
+          enable = true;
+          formatOnSave = true;
+        };
+
+        lineNumberMode = "number";
+        preventJunkFiles = true;
+        useSystemClipboard = true;
+
+        binds = {
+          whichKey.enable = true;
+
+          cheatsheet.enable = true;
+        };
+        startPlugins = ["cheatsheet-nvim"];
+
+        statusline.lualine.enable = true;
+        telescope.enable = true;
+        autocomplete.nvim-cmp.enable = true;
+        minimap.codewindow.enable = true;
+
+        ui = {
+          colorizer.enable = true;
+          breadcrumbs = {
+            enable = true;
+            lualine.winbar.alwaysRender = true;
+            navbuddy.enable = true;
           };
         };
       };
