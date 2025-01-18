@@ -58,6 +58,7 @@ in {
         telescope.enable = true;
         autocomplete.nvim-cmp.enable = true;
         minimap.codewindow.enable = true;
+        filetree.nvimTree.enable = true;
 
         ui = {
           colorizer.enable = true;
