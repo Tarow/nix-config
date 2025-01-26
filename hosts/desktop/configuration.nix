@@ -96,13 +96,24 @@
   systemd.services."autovt@tty1".enable = false;
 
   boot.loader.systemd-boot = {
-    edk2-uefi-shell.enable = true;
     windows."win11" = {
       title = "Windows 11";
       efiDeviceHandle = "HD0b";
-      sortKey = "z_windows";
+      sortKey = "z0";
+    };
+    edk2-uefi-shell = {
+      enable = true;
+      sortKey = "z1";
     };
   };
+  environment.systemPackages = [
+    (pkgs.writeShellScriptBin "windows" ''
+      set -euo pipefail
+      bootctl set-oneshot windows_win11.conf
+      bootctl set-timeout-oneshot 1
+      reboot
+    '')
+  ];
 
   # Necessary for file browsers to browse samba shares
   services.gvfs.enable = true;
