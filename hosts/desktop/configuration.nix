@@ -17,6 +17,7 @@
     (lib.tarow.enableModules [
       "core"
       "bootLoader"
+      "docker"
       "gaming"
       "gnome"
       #"hyprland"
@@ -31,6 +32,11 @@
     ])
     {core.configLocation = "~/nix-config#desktop";}
     {monitors.configuration = ./monitors.xml;}
+    {
+      stacks = {
+        homepage.enable = true;
+      };
+    }
   ];
 
   networking.hostName = "nixos";
