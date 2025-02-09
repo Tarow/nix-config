@@ -34,7 +34,7 @@
     {monitors.configuration = ./monitors.xml;}
     {
       stacks = {
-        homepage.enable = true;
+        #homepage.enable = true;
       };
     }
   ];
