@@ -1,34 +1,33 @@
 {
-  lib,
   config,
+  lib,
   ...
 }: let
-  name = "adguard";
+  name = "filebrowser";
   cfg = config.tarow.stacks.${name};
   storage = "${config.tarow.stacks.storageBaseDir}/${name}";
 
   stack = {
     services.${name}.service = {
-      image = "adguard/adguardhome:latest";
+      image = "filebrowser/filebrowser:s6";
       volumes = [
-        "${storage}/work:/opt/adguardhome/work"
-        "${storage}/conf:/opt/adguardhome/conf"
+        "${storage}/database:/database"
+        "${storage}/config:/config"
+        "/:/srv"
       ];
-      ports = [
-        "53:53/tcp"
-        "53:53/udp"
-        "853:853/tcp"
-      ];
+      environment = {
+        PUID = config.tarow.stacks.uid;
+        PGID = config.tarow.stacks.gid;
+      };
     };
   };
 in {
   imports = [
     (import ../base.nix {
       inherit name;
-      port = 3000;
+      port = 80;
     })
   ];
-
   config = lib.mkIf cfg.enable {
     virtualisation.arion.projects.${name}.settings = stack;
   };
