@@ -3,21 +3,14 @@
   config,
   ...
 }: let
-  name = "adguard";
+  name = "dozzle";
   cfg = config.tarow.stacks.${name};
-  storage = "${config.tarow.stacks.storageBaseDir}/${name}";
 
   stack = {
     services.${name}.service = {
-      image = "adguard/adguardhome:latest";
+      image = "amir20/dozzle:latest";
       volumes = [
-        "${storage}/work:/opt/adguardhome/work"
-        "${storage}/conf:/opt/adguardhome/conf"
-      ];
-      ports = [
-        "53:53/tcp"
-        "53:53/udp"
-        "853:853/tcp"
+        "/var/run/docker.sock:/var/run/docker.sock:ro"
       ];
     };
   };
@@ -25,7 +18,7 @@ in {
   imports = [
     (import ../base.nix {
       inherit name;
-      port = 3000;
+      port = 8080;
     })
   ];
 

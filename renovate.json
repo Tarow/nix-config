@@ -3,9 +3,11 @@
   "prHourlyLimit": 0,
   "extends": ["config:recommended"],
   "timezone": "Europe/Berlin",
+  "reviewers": ["Tarow"],
+  "gitIgnoredAuthors": ["195547385+tarow[bot]@users.noreply.github.com"],
   "lockFileMaintenance": { 
       "enabled": true,
-      "schedule": ["before 2am on sunday"]
+      "schedule": "before 2am on sunday"
   },
   "nix": {
       "enabled": true

@@ -1,8 +1,6 @@
 {
-  pkgs,
   lib,
   config,
-  inputs,
   ...
 }: let
   name = "traefik";
@@ -17,6 +15,7 @@ in {
     network = lib.options.mkOption {
       type = lib.types.str;
       description = "Network for the Traefik docker provider";
+      default = "traefik-proxy";
     };
   };
 

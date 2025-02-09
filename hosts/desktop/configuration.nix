@@ -12,25 +12,30 @@
   ];
 
   system.stateVersion = "24.11";
-
+  services.avahi.enable = false;
   tarow = lib.mkMerge [
     (lib.tarow.enableModules [
       "core"
       "bootLoader"
-      "gaming"
-      "gnome"
+     # "docker"
+   #   "gaming"
+     "gnome"
       #"hyprland"
       "keyboard"
       "locale"
       "networkManager"
-      "pipewire"
-      "printing"
+ #     "pipewire"
       "shells"
-      "soundblaster"
+ #     "soundblaster"
       "stylix"
     ])
     {core.configLocation = "~/nix-config#desktop";}
     {monitors.configuration = ./monitors.xml;}
+  #  {
+  #    stacks = {
+#        healthchecks.enable = true;
+ #     };
+  #  }
   ];
 
   networking.hostName = "nixos";
@@ -92,8 +97,8 @@
   # Workaround for
   # https://github.com/NixOS/nixpkgs/issues/103746
   # https://discourse.nixos.org/t/gnome-display-manager-fails-to-login-until-wi-fi-connection-is-established/50513/11
-  systemd.services."getty@tty1".enable = false;
-  systemd.services."autovt@tty1".enable = false;
+#  systemd.services."getty@tty1".enable = false;
+#  systemd.services."autovt@tty1".enable = false;
 
   boot.loader.systemd-boot = {
     windows."win11" = {
@@ -116,5 +121,5 @@
   ];
 
   # Necessary for file browsers to browse samba shares
-  services.gvfs.enable = true;
+  #services.gvfs.enable = true;
 }
