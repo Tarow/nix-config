@@ -7,7 +7,7 @@
   "gitIgnoredAuthors": ["195547385+tarow[bot]@users.noreply.github.com"],
   "lockFileMaintenance": { 
       "enabled": true,
-      "schedule": "before 2am on sunday"
+      "schedule": ["* 0-3 * * 0"]
   },
   "nix": {
       "enabled": true
