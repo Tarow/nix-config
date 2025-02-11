@@ -6,13 +6,26 @@
   "reviewers": ["Tarow"],
   "gitIgnoredAuthors": ["195547385+tarow[bot]@users.noreply.github.com"],
   "lockFileMaintenance": { 
-      "enabled": true,
-      "schedule": "before 2am on sunday"
+    "enabled": true,
+    "schedule": ["* 0-3 * * 0"],
+    "automergeType": "branch"
   },
   "nix": {
-      "enabled": true
+    "enabled": true
   },
   "platformAutomerge": true,
   "automerge": true,
-  "automergeType": "pr"
+  "automergeType": "pr",
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true,
+      "automergeType": "branch"
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "automergeType": "pr"
+    }
+  ]
 }
