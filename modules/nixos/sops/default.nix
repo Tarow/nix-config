@@ -6,6 +6,7 @@
   ...
 }: let
   cfg = config.tarow.sops;
+  #secrets =
 in {
   options.tarow.sops = {
     enable = lib.options.mkEnableOption "sops-nix";

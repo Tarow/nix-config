@@ -1,4 +1,4 @@
-lib: {
+lib: pkgs: {
   tarow = with lib; {
     mkIfElse = p: yes: no:
       mkMerge [
@@ -34,5 +34,38 @@ lib: {
               value = {enable = true;};
             }))
           |> (builtins.listToAttrs);
+
+    flattenAttrs = prefix: delim: attrs:
+      attrs
+      |> builtins.mapAttrs (key: value:
+        let
+          newPrefix = if prefix == "" then key else "${prefix}${delim}${key}";
+        in
+          if builtins.isAttrs value then
+            flattenAttrs newPrefix delim value
+          else
+            [ newPrefix ]
+      )
+      |> builtins.attrValues
+      |> builtins.concatLists;
+
+    fromYAML = yaml:
+      pkgs.runCommand "from-yaml"
+        {
+          inherit yaml;
+          allowSubstitutes = false;
+          preferLocalBuild = true;
+        }
+        ''
+          ${pkgs.remarshal}/bin/remarshal \
+            -if yaml \
+            -i <(echo "$yaml") \
+            -of json \
+            -o $out
+        ''
+      |> builtins.readFile
+      |> builtins.fromJSON;
+
+    readYAML = path: fromYAML (builtins.readFile path);
   };
 }

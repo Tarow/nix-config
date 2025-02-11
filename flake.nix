@@ -59,13 +59,14 @@
     ...
   } @ inputs: let
     inherit (self) outputs;
-    lib = nixpkgs.lib.extend (final: prev: (import ./lib final) // home-manager.lib);
-    packages = inputs.nixpkgs.legacyPackages;
+    mkLib = pkgs: nixpkgs.lib.extend (final: prev: (import ./lib final pkgs) // home-manager.lib);
+    packages = nixpkgs.legacyPackages;
 
     mkSystem = {
       system ? "x86_64-linux",
       systemConfig,
       userConfigs ? null,
+      lib ? mkLib packages.${system},
     }:
       nixpkgs.lib.nixosSystem {
         specialArgs = {
@@ -92,6 +93,7 @@
     mkHome = {
       system ? "x86_64-linux",
       cfgPath,
+      lib ? mkLib packages.${system},
     }:
       home-manager.lib.homeManagerConfiguration {
         pkgs = packages.${system};
