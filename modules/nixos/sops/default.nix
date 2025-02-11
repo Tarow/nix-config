@@ -6,7 +6,26 @@
   ...
 }: let
   cfg = config.tarow.sops;
-  #secrets =
+
+  # Read encrypted secrets from secret file (without sops config key)
+  secrets = lib.removeAttrs (lib.tarow.readYAML config.sops.defaultSopsFile) ["sops"];
+
+  /* Flatten and extract all nested keys, e.g
+    a:
+      b:
+        c: 1
+    d: 2
+    => ["a/b/c", "d"]
+  */
+  secretKeys = lib.tarow.flattenAttrs "" "/" secrets;
+  
+  /* Map all keys to a default secret config. E.g.
+    ["a/b/c", "d"] => { "a/b/c" = {owner = ...; group = ...;}; "d" = {owner = ...; group = ...;}; }
+  */
+  secretCfg = secretKeys |> map (k: { name = k; value = let owner = config.users.users.niklas; in {
+    owner = owner.name;
+    group = owner.group;
+  }; }) |> builtins.listToAttrs;
 in {
   options.tarow.sops = {
     enable = lib.options.mkEnableOption "sops-nix";
@@ -25,8 +44,7 @@ in {
       defaultSopsFormat = "yaml";
       age.keyFile = cfg.keyFile;
 
-      secrets = {
-      };
+      secrets = secretCfg;
     };
   };
 }
