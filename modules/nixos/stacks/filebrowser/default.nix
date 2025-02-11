@@ -13,7 +13,7 @@
       volumes = [
         "${storage}/database:/database"
         "${storage}/config:/config"
-        "/:/srv"
+        "/home/:/srv/home/"
       ];
       environment = {
         PUID = config.tarow.stacks.uid;

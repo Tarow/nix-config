@@ -27,14 +27,18 @@
       "pipewire"
       "printing"
       "shells"
+      "sops"
       "soundblaster"
       "stylix"
     ])
+    {sops.keyFile = "/home/niklas/.config/sops/age/keys.txt";}
     {core.configLocation = "~/nix-config#desktop";}
     {monitors.configuration = ./monitors.xml;}
     {
       stacks = {
-        #homepage.enable = true;
+        #adguard.enable = true;
+        #
+        filebrowser.enable = true;
       };
     }
   ];

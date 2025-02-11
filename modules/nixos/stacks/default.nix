@@ -1,12 +1,9 @@
 {
-  pkgs,
   lib,
   config,
   inputs,
   ...
-}: let
-  cfg = config.tarow.stacks;
-in {
+}: {
   imports = lib.tarow.readSubdirs ./. ++ [inputs.arion.nixosModules.arion];
 
   options.tarow.stacks = {
