@@ -41,6 +41,11 @@
       };
       monitors.configuration = ./monitors.xml;
     }
+    {
+      stacks.traefik.enable = true;
+      stacks.traefik.domain = "test.de";
+      stacks.adguard.enable = true;
+    }
   ];
 
   programs.firefox.enable = true;

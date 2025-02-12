@@ -72,7 +72,7 @@ in {
     # Dependencies for Abbreviations and plugins
     home.packages = with pkgs; [xclip less gnugrep] ++ [bat eza fd fzf];
 
-    programs.fish.shellAbbrs = {
+    programs.fish.shellAbbrs = rec {
       C = {
         position = "anywhere";
         expansion = "| xclip %";
@@ -93,6 +93,11 @@ in {
         expansion = "| fzf %";
         setCursor = true;
       };
+      sctl = "systemctl";
+      suctl = sctl + " --user";
+
+      jctl = "journalctl";
+      juctl = jctl + " --user";
     };
 
     home.shellAliases = {

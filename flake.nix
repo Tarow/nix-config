@@ -13,8 +13,11 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
-      inputs.nixpkgs.follows = "nixpkgs";
+      #url = "github:nix-community/home-manager/release-24.11";
+      #inputs.nixpkgs.follows = "nixpkgs";
+
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     sops-nix = {
@@ -61,6 +64,7 @@
     inherit (self) outputs;
     mkLib = pkgs: nixpkgs.lib.extend (final: prev: (import ./lib final pkgs) // home-manager.lib);
     packages = nixpkgs.legacyPackages;
+    hmPackages = inputs.nixpkgs-unstable.legacyPackages;
 
     mkSystem = {
       system ? "x86_64-linux",
@@ -93,10 +97,10 @@
     mkHome = {
       system ? "x86_64-linux",
       cfgPath,
-      lib ? mkLib packages.${system},
+      lib ? mkLib hmPackages.${system},
     }:
       home-manager.lib.homeManagerConfiguration {
-        pkgs = packages.${system};
+        pkgs = hmPackages.${system};
         extraSpecialArgs = {inherit inputs outputs lib;};
         modules = [
           ./modules/home-manager

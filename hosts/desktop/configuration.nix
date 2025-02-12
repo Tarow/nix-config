@@ -17,7 +17,6 @@
     (lib.tarow.enableModules [
       "core"
       "bootLoader"
-      "docker"
       "gaming"
       "gnome"
       #"hyprland"
@@ -34,13 +33,7 @@
     {sops.keyFile = "/home/niklas/.config/sops/age/keys.txt";}
     {core.configLocation = "~/nix-config#desktop";}
     {monitors.configuration = ./monitors.xml;}
-    {
-      stacks = {
-        #adguard.enable = true;
-        #
-        filebrowser.enable = true;
-      };
-    }
+
   ];
 
   networking.hostName = "nixos";
