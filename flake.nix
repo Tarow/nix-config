@@ -13,11 +13,11 @@
     };
 
     home-manager = {
-      #url = "github:nix-community/home-manager/release-24.11";
-      #inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/home-manager/release-24.11";
+      inputs.nixpkgs.follows = "nixpkgs";
 
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      #url = "github:nix-community/home-manager";
+      #inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     sops-nix = {
@@ -58,13 +58,14 @@
   outputs = {
     self,
     nixpkgs,
+    nixpkgs-unstable,
     home-manager,
     ...
   } @ inputs: let
     inherit (self) outputs;
-    mkLib = pkgs: nixpkgs.lib.extend (final: prev: (import ./lib final pkgs) // home-manager.lib);
+    mkLib = pkgs: pkgs.lib.extend (final: prev: (import ./lib final pkgs) // home-manager.lib);
     packages = nixpkgs.legacyPackages;
-    hmPackages = inputs.nixpkgs-unstable.legacyPackages;
+    hmPackages = home-manager.inputs.nixpkgs.legacyPackages;
 
     mkSystem = {
       system ? "x86_64-linux",
