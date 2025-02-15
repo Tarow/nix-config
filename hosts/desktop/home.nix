@@ -3,50 +3,55 @@
   pkgs,
   ...
 }: {
-  home.stateVersion = "24.11";
-
-  home.username = "niklas";
-  home.homeDirectory = "/home/niklas";
-
-  tarow = lib.mkMerge [
-    (lib.tarow.enableModules [
-      "angular"
-      "core"
-      "ghostty"
-      "git"
-      "gnome"
-      "golang"
-      #"hyprland"
-      "java"
-      "neovim"
-      "npm"
-      "react"
-      "walker"
-      "shells"
-      "sshClient"
-      "stylix"
-      "vscode"
-    ])
+  imports = [
     {
-      core.configLocation = "~/nix-config#desktop";
-      git-clone.repos = {
-        nix-config = {
-          uri = "https://github.com/Tarow/nix-config.git";
-          location = "~";
-        };
-        pkm = {
-          uri = "https://github.com/Tarow/pkm.git";
-          location = "~";
-        };
-      };
-      monitors.configuration = ./monitors.xml;
-    }
-    {
-      stacks.traefik.enable = true;
-      stacks.traefik.domain = "test.de";
-      stacks.adguard.enable = true;
+      tarow = lib.tarow.enableModules [
+        "angular"
+        "core"
+        "ghostty"
+        "git"
+        "gnome"
+        "golang"
+        #"hyprland"
+        "java"
+        "neovim"
+        "npm"
+        "react"
+        "walker"
+        "shells"
+        "sshClient"
+        "stacks"
+        "stylix"
+        "vscode"
+      ];
     }
   ];
+
+  tarow = {
+    core.configLocation = "~/nix-config#desktop";
+    git-clone.repos = {
+      nix-config = {
+        uri = "https://github.com/Tarow/nix-config.git";
+        location = "~";
+      };
+      pkm = {
+        uri = "https://github.com/Tarow/pkm.git";
+        location = "~";
+      };
+    };
+    monitors.configuration = ./monitors.xml;
+
+    stacks = {
+      enable = true;
+      traefik.enable = true;
+      traefik.domain = "test.de";
+      adguard.enable = true;
+    };
+  };
+
+  home.stateVersion = "24.11";
+  home.username = "niklas";
+  home.homeDirectory = "/home/niklas";
 
   programs.firefox.enable = true;
   home.packages = with pkgs; [

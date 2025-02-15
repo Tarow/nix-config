@@ -18,7 +18,13 @@
 
   finalContainer = lib.mkMerge [
     {
-      extraConfig.Service.ExecStartPre = map (v: "${pkgs.coreutils}/bin/mkdir -p ${v}") volumeDirs;
+      extraConfig.Service = {
+        ExecStartPre = "${lib.getExe (pkgs.writeShellApplication {
+          name = "setupVolumes";
+          runtimeInputs = [pkgs.coreutils];
+          text = (map (v: "[ -e ${v} ] || mkdir -p ${v}") volumeDirs) |> lib.concatStringsSep "\n";
+        })}";
+      };
     }
     {
       ports = lib.lists.optional (!cfg.addToTraefik && port != null) "${toString hostPort}:${toString port}";
@@ -43,7 +49,7 @@ in {
     };
   };
 
-  config = lib.mkIf stackCfg.enable {
+  config = lib.mkIf (config.tarow.stacks.enable && stackCfg.enable) {
     services.podman.enable = true;
     services.podman.containers.${name} = finalContainer;
     services.podman.networks.${name} = {};
