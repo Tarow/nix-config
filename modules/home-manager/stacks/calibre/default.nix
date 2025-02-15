@@ -8,7 +8,12 @@
       "${storage}/config:/config"
       "${storage}/books:/books"
     ];
-    environment.OAUTHLIB_RELAX_TOKEN_SCOPE = 1;
+    environment = {
+      PUID = config.tarow.stacks.defaultUid;
+      PGID = config.tarow.stacks.defaultGid;
+      TZ = config.tarow.stacks.defaultGid;
+      OAUTHLIB_RELAX_TOKEN_SCOPE = 1;
+    };
   };
 in {
   imports = [
