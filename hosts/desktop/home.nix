@@ -42,6 +42,7 @@
     monitors.configuration = ./monitors.xml;
 
     stacks = {
+      #enable = lib.mkForce false;
       traefik.enable = false;
       traefik.domain = "test.de";
       adguard.enable = true;

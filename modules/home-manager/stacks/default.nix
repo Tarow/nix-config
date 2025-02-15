@@ -35,5 +35,7 @@ in {
   };
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [podman];
+    # Enable podman socket systemd service in order for containers like Traefik to work
+    xdg.configFile."systemd/user/sockets.target.wants/podman.socket".source = "${pkgs.podman}/share/systemd/user/podman.socket";
   };
 }
