@@ -9,10 +9,9 @@
       "${storage}/conf:/opt/adguardhome/conf"
     ];
     ports = [
-      #"53:53/tcp"
-      #"53:53/udp"
-      #"853:853/tcp"
-      "3000:3000"
+      "53:53/tcp"
+      "53:53/udp"
+      "853:853/tcp"
     ];
   };
 in {

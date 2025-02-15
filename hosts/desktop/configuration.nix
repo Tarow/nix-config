@@ -33,7 +33,6 @@
     {sops.keyFile = "/home/niklas/.config/sops/age/keys.txt";}
     {core.configLocation = "~/nix-config#desktop";}
     {monitors.configuration = ./monitors.xml;}
-
   ];
 
   networking.hostName = "nixos";
@@ -42,7 +41,10 @@
     description = "Niklas";
     extraGroups = ["wheel" (lib.mkIf config.tarow.networkManager.enable "networkmanager")];
     shell = pkgs.fish;
+    linger = true;
   };
+  boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = lib.mkForce 0;
+
   nix.settings.trusted-users = ["@wheel"];
 
   hardware.graphics = {

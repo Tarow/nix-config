@@ -42,10 +42,10 @@
     monitors.configuration = ./monitors.xml;
 
     stacks = {
-      enable = true;
-      traefik.enable = true;
+      traefik.enable = false;
       traefik.domain = "test.de";
       adguard.enable = true;
+      calibre.enable = true;
     };
   };
 
