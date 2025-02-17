@@ -1,12 +1,17 @@
 {config, ...}: let
-  name = "calibre";
-  storage = "${config.tarow.stacks.storageBaseDir}/${name}";
+  name = "homepage";
+  mediaStorage = config.tarow.stacks.mediaStorageBaseDir;
 
   container = {
-    image = "lscr.io/linuxserver/calibre-web";
+    image = "ghcr.io/gethomepage/homepage:latest";
     volumes = [
-      "${storage}/config:/config"
-      "${storage}/books:/books"
+      "${mediaStorage}:/mnt/hdd1:ro"
+      "${./config/docker.yaml}:/app/config/docker.yaml"
+      "${./config/services.yaml}:/app/config/services.yaml"
+      "${./config/settings.yaml}:/app/config/settings.yaml"
+      "${./config/widgets.yaml}:/app/config/widgets.yaml"
+
+      "/run/user/1000/podman/podman.sock:/var/run/docker.sock:ro"
     ];
     environment = {
       PUID = config.tarow.stacks.defaultUid;
@@ -17,7 +22,7 @@ in {
   imports = [
     (import ../mkContainer.nix {
       inherit name container;
-      port = 8083;
+      port = 3000;
     })
   ];
 }
