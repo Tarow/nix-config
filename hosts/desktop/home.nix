@@ -20,6 +20,7 @@
         "walker"
         "shells"
         "sshClient"
+        "sops"
         "stacks"
         "stylix"
         "vscode"
@@ -49,6 +50,7 @@
       calibre.enable = true;
       homepage.enable = true;
     };
+    sops.keyFile = "/home/niklas/.config/sops/age/keys.txt";
   };
 
   home.stateVersion = "24.11";
