@@ -43,13 +43,21 @@
     monitors.configuration = ./monitors.xml;
 
     stacks = {
-      #enable = lib.mkForce false;
-      traefik.enable = false;
-      traefik.domain = "test.de";
-      #adguard.enable = true;
+      traefik.enable = true;
+      traefik.domain = "ntasler.de";
+      adguard = {
+        enable = true;
+      };
       calibre.enable = true;
       homepage.enable = true;
     };
+
+    #services.podman = {
+    #  containers.test = {
+    ##    image = "docker.io/ealen/echo-server";
+    #  };
+    #};
+
     sops.keyFile = "/home/niklas/.config/sops/age/keys.txt";
   };
 
