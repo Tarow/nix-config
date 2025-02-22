@@ -70,9 +70,14 @@ in {
     '';
 
     # Dependencies for Abbreviations and plugins
-    home.packages = with pkgs; [less gnugrep] ++ [bat eza fd fzf];
+    home.packages = with pkgs; [xclip less gnugrep] ++ [bat eza fd fzf];
 
-    programs.fish.shellAbbrs = {
+    programs.fish.shellAbbrs = rec {
+      C = {
+        position = "anywhere";
+        expansion = "| xclip %";
+        setCursor = true;
+      };
       L = {
         position = "anywhere";
         expansion = "% | less";
@@ -88,17 +93,20 @@ in {
         expansion = "| fzf %";
         setCursor = true;
       };
+      sctl = "systemctl";
+      suctl = sctl + " --user";
+
+      jctl = "journalctl";
+      juctl = jctl + " --user";
     };
 
     home.shellAliases = {
-      v = "nvim";
-      vi = "nvim";
-      vim = "nvim";
       ls = "eza";
       ll = "eza -l";
       la = "eza -la";
       cat = "bat --paging=never";
       tree = "eza -T";
+      xclip = "xclip -selection clipboard";
     };
   };
 }

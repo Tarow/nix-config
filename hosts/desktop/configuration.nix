@@ -19,14 +19,20 @@
       "bootLoader"
       "gaming"
       "gnome"
+      #"hyprland"
       "keyboard"
       "locale"
       "networkManager"
       "pipewire"
       "printing"
       "shells"
+      "sops"
+      "soundblaster"
+      "stylix"
     ])
+    {sops.keyFile = "/home/niklas/.config/sops/age/keys.txt";}
     {core.configLocation = "~/nix-config#desktop";}
+    {monitors.configuration = ./monitors.xml;}
   ];
 
   networking.hostName = "nixos";
@@ -35,7 +41,11 @@
     description = "Niklas";
     extraGroups = ["wheel" (lib.mkIf config.tarow.networkManager.enable "networkmanager")];
     shell = pkgs.fish;
+    linger = true;
   };
+  boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = lib.mkForce 0;
+
+  nix.settings.trusted-users = ["@wheel"];
 
   hardware.graphics = {
     enable = true;
@@ -91,11 +101,25 @@
   systemd.services."autovt@tty1".enable = false;
 
   boot.loader.systemd-boot = {
-    edk2-uefi-shell.enable = true;
     windows."win11" = {
       title = "Windows 11";
       efiDeviceHandle = "HD0b";
-      sortKey = "z_windows";
+      sortKey = "z0";
+    };
+    edk2-uefi-shell = {
+      enable = true;
+      sortKey = "z1";
     };
   };
+  environment.systemPackages = [
+    (pkgs.writeShellScriptBin "windows" ''
+      set -euo pipefail
+      bootctl set-oneshot windows_win11.conf
+      bootctl set-timeout-oneshot 1
+      reboot
+    '')
+  ];
+
+  # Necessary for file browsers to browse samba shares
+  services.gvfs.enable = true;
 }

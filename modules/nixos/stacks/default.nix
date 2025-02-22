@@ -1,15 +1,21 @@
 {
-  pkgs,
   lib,
   config,
   inputs,
   ...
-}: let
-  cfg = config.tarow.stacks;
-in {
-  imports = lib.tarow.readSubdirs ./.;
+}: {
+  imports = lib.tarow.readSubdirs ./. ++ [inputs.arion.nixosModules.arion];
 
   options.tarow.stacks = {
+    uid = lib.mkOption {
+      type = lib.types.int;
+      default = 1000;
+    };
+    gid = lib.mkOption {
+      type = lib.types.int;
+      default = 100;
+    };
+
     storageBaseDir = lib.mkOption {
       type = lib.types.str;
       default = "/var/lib/stacks";

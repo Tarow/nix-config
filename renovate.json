@@ -1,0 +1,31 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "prHourlyLimit": 0,
+  "extends": ["config:recommended"],
+  "timezone": "Europe/Berlin",
+  "reviewers": ["Tarow"],
+  "gitIgnoredAuthors": ["195547385+tarow[bot]@users.noreply.github.com"],
+  "lockFileMaintenance": { 
+    "enabled": true,
+    "schedule": ["* 0-3 * * 0"],
+    "automergeType": "branch"
+  },
+  "nix": {
+    "enabled": true
+  },
+  "platformAutomerge": true,
+  "automerge": true,
+  "automergeType": "pr",
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true,
+      "automergeType": "branch"
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "automergeType": "pr"
+    }
+  ]
+}

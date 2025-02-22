@@ -15,6 +15,24 @@
     home-manager = {
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
+
+      #url = "github:nix-community/home-manager";
+      #inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    stylix = {
+      url = "github:danth/stylix/release-24.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nvf = {
+      url = "github:notashelf/nvf";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     nix-vscode-extensions = {
@@ -32,50 +50,58 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    ghostty = {
-      url = "github:ghostty-org/ghostty";
-      inputs.nixpkgs-stable.follows = "nixpkgs";
-      inputs.nixpkgs-unstable.follows = "nixpkgs-unstable";
-    };
-
-    stylix = {
-      url = "github:danth/stylix";
+    walker = {
+      url = "github:abenz1267/walker";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
   outputs = {
     self,
     nixpkgs,
+    nixpkgs-unstable,
     home-manager,
-    arion,
     ...
   } @ inputs: let
     inherit (self) outputs;
-    lib = nixpkgs.lib.extend (final: prev: (import ./lib final) // home-manager.lib);
-    packages = inputs.nixpkgs.legacyPackages;
+    mkLib = pkgs: pkgs.lib.extend (final: prev: (import ./lib final pkgs) // home-manager.lib);
+    packages = nixpkgs.legacyPackages;
+    hmPackages = home-manager.inputs.nixpkgs.legacyPackages;
 
     mkSystem = {
       system ? "x86_64-linux",
-      cfgPath,
+      systemConfig,
+      userConfigs ? null,
+      lib ? mkLib packages.${system},
     }:
       nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit inputs outputs lib;
         };
-        modules = [
-          {nixpkgs.hostPlatform = system;}
-          ./modules/nixos
-          arion.nixosModules.arion
-          cfgPath
-        ];
+        modules =
+          [
+            {nixpkgs.hostPlatform = system;}
+            ./modules/nixos
+            systemConfig
+          ]
+          ++ lib.lists.optionals (userConfigs != null) [
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.sharedModules = [./modules/home-manager ./hosts/shared/home.nix];
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = {inherit inputs outputs lib;};
+              home-manager.users = userConfigs;
+            }
+          ];
       };
 
     mkHome = {
       system ? "x86_64-linux",
       cfgPath,
+      lib ? mkLib hmPackages.${system},
     }:
       home-manager.lib.homeManagerConfiguration {
-        pkgs = packages.${system};
+        pkgs = hmPackages.${system};
         extraSpecialArgs = {inherit inputs outputs lib;};
         modules = [
           ./modules/home-manager
@@ -89,9 +115,9 @@
     };
 
     nixosConfigurations = {
-      wsl2 = mkSystem {cfgPath = ./hosts/wsl2/configuration.nix;};
-      thinkpad = mkSystem {cfgPath = ./hosts/thinkpad/configuration.nix;};
-      desktop = mkSystem {cfgPath = ./hosts/desktop/configuration.nix;};
+      wsl2 = mkSystem {systemConfig = ./hosts/wsl2/configuration.nix;};
+      thinkpad = mkSystem {systemConfig = ./hosts/thinkpad/configuration.nix;};
+      desktop = mkSystem {systemConfig = ./hosts/desktop/configuration.nix;};
     };
 
     homeConfigurations = {

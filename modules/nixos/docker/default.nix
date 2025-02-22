@@ -1,8 +1,6 @@
 {
-  pkgs,
   lib,
   config,
-  inputs,
   ...
 }: let
   cfg = config.tarow.docker;
@@ -13,6 +11,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     virtualisation.docker = {
+      enable = true;
       rootless = {
         enable = true;
         setSocketVariable = true;

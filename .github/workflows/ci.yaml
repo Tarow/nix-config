@@ -1,0 +1,19 @@
+name: "Verify Nix Config"
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  check_flake:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v30
+        with:
+          extra_nix_config: "experimental-features = nix-command flakes pipe-operators"
+
+      - name: Check Flake
+        run: nix flake check

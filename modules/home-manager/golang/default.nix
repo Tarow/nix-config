@@ -53,5 +53,11 @@ in {
         "go.toolsManagement.autoUpdate" = true;
       };
     };
+
+    programs.nvf.settings.vim.languages = {
+      go = {
+        enable = true;
+      };
+    };
   };
 }

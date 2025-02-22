@@ -18,6 +18,11 @@ in {
           hostname = "ntasler.de";
           user = "niklas";
         };
+        jkammering = {
+          host = "jkammering jkammering.de";
+          hostname = "jkammering.de";
+          user = "jonvus";
+        };
       };
     };
   };

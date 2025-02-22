@@ -33,6 +33,9 @@ in {
       };
       "editor.linkedEditing" = true;
       "editor.fontLigatures" = true;
+
+      # TODO: Disable after https://github.com/microsoft/vscode/issues/239838 is fixed
+      "terminal.integrated.gpuAcceleration" = "off";
     };
 
     programs.vscode.extensions = with pkgs.vscode-marketplace;

@@ -2,7 +2,6 @@
   lib,
   pkgs,
   config,
-  inputs,
   ...
 }: let
   cfg = config.tarow.ghostty;
@@ -11,7 +10,7 @@ in {
     enable = lib.options.mkEnableOption "Ghostty";
   };
   config = lib.mkIf cfg.enable {
-    home.packages = [inputs.ghostty.packages.x86_64-linux.default];
+    home.packages = [pkgs.ghostty];
     xdg.configFile."ghostty/config".text = lib.generators.toKeyValue {} {
       font-size = 11;
       theme = "ayu";
