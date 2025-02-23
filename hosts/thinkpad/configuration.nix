@@ -17,8 +17,8 @@
 
   tarow = lib.mkMerge [
     (lib.tarow.enableModules [
-      "core"
       "bootLoader"
+      "core"
       "gnome"
       "keyboard"
       "locale"
