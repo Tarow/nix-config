@@ -8,10 +8,11 @@
       tarow = lib.tarow.enableModules [
         "angular"
         "core"
+        "direnv"
         "ghostty"
         "git"
         "gnome"
-        "golang"
+        #"golang"
         #"hyprland"
         "java"
         "neovim"
@@ -52,12 +53,6 @@
       homepage.enable = true;
     };
 
-    #services.podman = {
-    #  containers.test = {
-    ##    image = "docker.io/ealen/echo-server";
-    #  };
-    #};
-
     sops.keyFile = "/home/niklas/.config/sops/age/keys.txt";
   };
 
@@ -82,4 +77,19 @@
   };
 
   #systemd.user.sessionVariables = config.home.sessionVariables;
+
+  services.podman = {
+    networks.test = {
+      driver = "bridge";
+    };
+
+    containers = rec {
+      alpine1 = {
+        image = "docker.io/alpine";
+        exec = "sleep inf";
+        network = ["test"];
+      };
+      alpine2 = alpine1;
+    };
+  };
 }

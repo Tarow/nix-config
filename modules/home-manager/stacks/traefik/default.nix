@@ -28,8 +28,8 @@ in {
 
   config = lib.mkIf cfg.enable {
     services.podman.networks.${cfg.network} = {
+      driver = "bridge";
       extraPodmanArgs = [
-        "--dns 1.1.1.1"
       ];
     };
 
