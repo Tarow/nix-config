@@ -26,9 +26,17 @@ in {
           default = null;
         };
         traefik = with lib; {
-          name = options.mkOption {
+          name = mkOption {
             type = types.nullOr types.str;
             default = null;
+          };
+          subDomain = mkOption {
+            type = types.str;
+            apply = lib.trim;
+            default =
+              if traefikCfg.name != null
+              then traefikCfg.name
+              else "";
           };
         };
       };
@@ -37,11 +45,15 @@ in {
         enableTraefik = stackCfg.enable && traefikCfg.name != null;
         hostPort = getPort port 0;
         containerPort = getPort port 1;
+        fullHost =
+          if (traefikCfg.subDomain == "")
+          then stackCfg.domain
+          else "${traefikCfg.name}.${stackCfg.domain}";
       in {
         labels = lib.optionalAttrs enableTraefik {
           "traefik.enable" = "true";
-          "traefik.http.routers.${name}.rule" = ''Host(\`${traefikCfg.name}.${stackCfg.domain}\`)'';
-          "traefik.http.routers.${name}.entrypoints" = "web";
+          "traefik.http.routers.${name}.rule" = ''Host(\`${fullHost}\`)'';
+          "traefik.http.routers.${name}.entrypoints" = "websecure";
           "traefik.http.services.${name}.loadbalancer.server.port" = containerPort;
         };
         network = lib.optional enableTraefik stackCfg.network;

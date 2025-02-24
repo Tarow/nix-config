@@ -45,7 +45,7 @@
 
     stacks = {
       traefik.enable = true;
-      traefik.domain = "ntasler.de";
+      traefik.domain = "nopshift.de";
       adguard = {
         enable = true;
       };
@@ -78,18 +78,8 @@
 
   #systemd.user.sessionVariables = config.home.sessionVariables;
 
-  services.podman = {
-    networks.test = {
-      driver = "bridge";
-    };
-
-    containers = rec {
-      alpine1 = {
-        image = "docker.io/alpine";
-        exec = "sleep inf";
-        network = ["test"];
-      };
-      alpine2 = alpine1;
-    };
-  };
+  xdg.configFile."containers/containers.conf".text = ''
+    [network]
+    dns_bind_port = 1153
+  '';
 }

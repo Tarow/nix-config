@@ -25,29 +25,8 @@
         then a < b
         else orderA < orderB
     ) (builtins.attrNames attrs));
-
-  homepageContainers = builtins.filter (c: c.homepage.settings != {}) (builtins.attrValues config.services.podman.containers);
-
-  mergedServices =
-    builtins.foldl' (
-      acc: c: let
-        category = c.homepage.category;
-        serviceName = c.homepage.name;
-        serviceSettings = c.homepage.settings;
-        existingServices = acc.${category} or {};
-      in
-        acc
-        // {
-          "${category}" = existingServices // {"${serviceName}" = serviceSettings;};
-        }
-    ) {}
-    homepageContainers;
 in {
-  imports = [
-    {
-      tarow.stacks.homepage.services = mergedServices;
-    }
-  ];
+  imports = [./extension.nix];
 
   options.services.podman.containers = lib.mkOption {
     type = lib.types.attrsOf (lib.types.submodule ({...}: {
@@ -76,7 +55,7 @@ in {
     };
     services = lib.mkOption {
       type = lib.types.attrsOf (lib.types.attrsOf lib.types.anything);
-      apply = x: toOrderedList x;
+      apply = toOrderedList;
       default = {};
     };
     widgets = lib.mkOption {
@@ -111,7 +90,10 @@ in {
       };
       environmentFile = [config.sops.secrets."homepage/env".path];
       port = 3000;
-      traefik.name = name;
+      traefik = {
+        inherit name;
+        subDomain = "";
+      };
     };
 
     tarow.stacks.${name} = {

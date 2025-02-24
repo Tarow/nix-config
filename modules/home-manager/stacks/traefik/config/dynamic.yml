@@ -30,22 +30,12 @@ http:
         middlewares:
           - ipwhitelist-internal
 
-    ipwhitelist-docker:
-      ipAllowList:
-        sourceRange:
-          - "172.16.0.0/16" # Docker networks
-
     ipwhitelist-internal:
       ipAllowList:
         sourceRange:
-          - "172.16.0.0/16" # Docker networks
-          - "10.1.1.0/24" # Local network
-          - "172.20.0.0/24" # Wireguard
-          - "127.0.0.1/32" # Localhost
-    ipwhitelist-vpn:
-      ipAllowList:
-        sourceRange:
-          - "172.20.0.0/24" # Wireguard
+          - "10.0.0.0/8"
+          - "172.16.0.0/12"
+          - "192.168.0.0/16"
 
     crowdsec-bouncer:
       forwardauth:
