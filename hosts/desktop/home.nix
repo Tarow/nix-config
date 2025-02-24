@@ -52,6 +52,7 @@
       calibre.enable = true;
       homepage.enable = true;
       audiobookshelf.enable = true;
+      dozzle.enable = true;
     };
 
     sops.keyFile = "/home/niklas/.config/sops/age/keys.txt";
