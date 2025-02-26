@@ -30,6 +30,7 @@
   ];
 
   tarow = {
+    facts = import ../facts.nix;
     core.configLocation = "~/nix-config#desktop";
     git-clone.repos = {
       nix-config = {
@@ -62,8 +63,6 @@
   };
 
   home.stateVersion = "24.11";
-  home.username = "niklas";
-  home.homeDirectory = "/home/niklas";
 
   programs.firefox.enable = true;
   home.packages = with pkgs; [
