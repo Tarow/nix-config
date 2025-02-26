@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   pkgs,
   ...
@@ -59,7 +60,7 @@
       healthchecks.enable = true;
     };
 
-    sops.keyFile = "/home/niklas/.config/sops/age/keys.txt";
+    sops.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
   };
 
   home.stateVersion = "24.11";

@@ -68,16 +68,6 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [unstable.podman];
-    services.podman.enable = true;
-    # Enable podman socket systemd service in order for containers like Traefik to work
-    xdg.configFile."systemd/user/sockets.target.wants/podman.socket".source = "${pkgs.podman}/share/systemd/user/podman.socket";
-
-    # Fix for https://github.com/nix-community/home-manager/issues/6146
-    # TODO: Remove after 25.05
-    xdg.configFile."systemd/user/podman-user-wait-network-online.service.d/50-exec-search-path.conf".text = ''
-      [Service]
-      ExecSearchPath=${lib.makeBinPath (with pkgs; [bashInteractive systemd coreutils])}:/bin
-    '';
+     tarow.podman.enable = true;
   };
 }
