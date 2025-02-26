@@ -46,7 +46,6 @@ in {
           name = "Paperless NGX";
           settings = {
             description = "Document management system";
-            href = "https://${name}.${config.tarow.stacks.traefik.domain}";
             icon = "paperless-ngx";
           };
         };

@@ -21,7 +21,6 @@ in {
         name = "Dozzle";
         settings = {
           description = "Minimal real-time log viewer for containers";
-          href = "https://${name}.${config.tarow.stacks.traefik.domain}";
           icon = "dozzle";
         };
       };

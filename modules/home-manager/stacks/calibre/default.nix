@@ -29,7 +29,6 @@ in {
         name = "Calibre";
         settings = {
           description = "Ebook Library";
-          href = "https://${name}.${config.tarow.stacks.traefik.domain}";
           icon = "calibre-web";
         };
       };

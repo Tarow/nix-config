@@ -30,7 +30,6 @@ in {
         name = "File Browser";
         settings = {
           description = "Web-based file manager";
-          href = "https://${name}.${config.tarow.stacks.traefik.domain}";
           icon = "filebrowser";
         };
       };

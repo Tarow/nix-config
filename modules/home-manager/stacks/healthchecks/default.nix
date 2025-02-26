@@ -41,7 +41,6 @@ in {
           name = "Healthchecks";
           settings = {
             description = "Cron job monitoring";
-            href = "https://${name}.${config.tarow.stacks.traefik.domain}";
             icon = "healthchecks";
           };
         };

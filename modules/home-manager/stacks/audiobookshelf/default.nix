@@ -26,7 +26,6 @@ in {
         name = "Audiobookshelf";
         settings = {
           description = "Self-hosted audiobook and podcast server";
-          href = "https://${name}.${config.tarow.stacks.traefik.domain}";
           icon = "audiobookshelf";
         };
       };
