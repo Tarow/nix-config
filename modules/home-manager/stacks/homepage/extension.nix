@@ -1,4 +1,8 @@
-{config, ...}: let
+{
+  config,
+  lib,
+  ...
+}: let
   homepageContainers = builtins.filter (c: c.homepage.settings != {}) (builtins.attrValues config.services.podman.containers);
 
   mergedServices =
@@ -21,4 +25,31 @@ in {
       tarow.stacks.homepage.services = mergedServices;
     }
   ];
+
+  options.services.podman.containers = lib.mkOption {
+    type = lib.types.attrsOf (lib.types.submodule ({config, ...}: {
+      options.homepage = with lib; {
+        category = options.mkOption {
+          type = types.nullOr types.str;
+          default = null;
+        };
+        name = options.mkOption {
+          type = types.nullOr types.str;
+          default = null;
+        };
+        settings = options.mkOption {
+          type = types.attrsOf types.anything;
+          default = {};
+          apply = settings:
+            if settings == {}
+            then {}
+            else
+              ({
+                  href = config.traefik.serviceDomain or "";
+                }
+                // settings);
+        };
+      };
+    }));
+  };
 }

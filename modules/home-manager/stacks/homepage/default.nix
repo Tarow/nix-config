@@ -28,25 +28,6 @@
 in {
   imports = [./extension.nix];
 
-  options.services.podman.containers = lib.mkOption {
-    type = lib.types.attrsOf (lib.types.submodule ({...}: {
-      options.homepage = with lib; {
-        category = options.mkOption {
-          type = types.nullOr types.str;
-          default = null;
-        };
-        name = options.mkOption {
-          type = types.nullOr types.str;
-          default = null;
-        };
-        settings = options.mkOption {
-          type = types.attrsOf types.anything;
-          default = {};
-        };
-      };
-    }));
-  };
-
   options.tarow.stacks.${name} = {
     enable = lib.mkEnableOption name;
     bookmarks = lib.mkOption {

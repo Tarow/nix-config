@@ -18,6 +18,10 @@ in {
     }: let
       traefikCfg = config.traefik;
       port = config.port;
+      fullHost =
+        if (traefikCfg.subDomain == "")
+        then stackCfg.domain
+        else "${traefikCfg.name}.${stackCfg.domain}";
     in {
       options = with lib; {
         # Main port that will be used by traefik. If traefik is disabled, it will be added to the "ports" section
@@ -38,6 +42,12 @@ in {
               then traefikCfg.name
               else "";
           };
+          serviceDomain = mkOption {
+            type = lib.types.str;
+            default = fullHost;
+            readOnly = true;
+            apply = d: "https://${d}";
+          };
         };
       };
 
@@ -45,10 +55,6 @@ in {
         enableTraefik = stackCfg.enable && traefikCfg.name != null;
         hostPort = getPort port 0;
         containerPort = getPort port 1;
-        fullHost =
-          if (traefikCfg.subDomain == "")
-          then stackCfg.domain
-          else "${traefikCfg.name}.${stackCfg.domain}";
       in {
         labels = lib.optionalAttrs enableTraefik {
           "traefik.enable" = "true";

@@ -28,7 +28,6 @@ in {
         name = "AdGuard Home";
         settings = {
           description = "Adblocker";
-          href = "https://${name}.${config.tarow.stacks.traefik.domain}";
           icon = "adguard-home";
         };
       };
