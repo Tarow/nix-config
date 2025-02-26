@@ -80,6 +80,8 @@ in {
     tarow.stacks.${name} = {
       docker.local.socket = "/var/run/docker.sock";
 
+      settings.statusStyle = "dot";
+
       widgets = [
         {
           resources = {

@@ -27,7 +27,11 @@ in {
   ];
 
   options.services.podman.containers = lib.mkOption {
-    type = lib.types.attrsOf (lib.types.submodule ({config, ...}: {
+    type = lib.types.attrsOf (lib.types.submodule ({
+      name,
+      config,
+      ...
+    }: {
       options.homepage = with lib; {
         category = options.mkOption {
           type = types.nullOr types.str;
@@ -46,6 +50,8 @@ in {
             else
               ({
                   href = config.traefik.serviceDomain or "";
+                  server = "local";
+                  container = name;
                 }
                 // settings);
         };

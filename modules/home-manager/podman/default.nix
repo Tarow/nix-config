@@ -10,7 +10,7 @@ in {
     enable = mkEnableOption "Podman";
     package = mkOption {
       type = types.package;
-      default = pkgs.podman;
+      default = pkgs.unstable.podman;
     };
     enableSocket = lib.mkOption {
       type = lib.types.bool;
