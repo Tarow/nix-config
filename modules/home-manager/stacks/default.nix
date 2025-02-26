@@ -17,25 +17,27 @@ in {
         dependsOn = lib.mkOption {
           type = lib.types.listOf lib.types.str;
           default = [];
-          apply = map (d: "podman-${d}.service");      
+          apply = map (d: "podman-${d}.service");
         };
       };
 
       config = {
+        # TODO: Can be removed with new Quadlet generator?
+        # https://github.com/containers/podman/issues/24637
+        dependsOn = ["user-wait-network-online"];
         extraConfig = {
           Unit.Requires = config.dependsOn;
           Unit.After = config.dependsOn;
 
           # Automatically create host directories for volumes if they don't exist
-          Service.ExecStartPre = let 
+          Service.ExecStartPre = let
             volumes = map (v: lib.head (lib.splitString ":" v)) (config.volumes or []);
-            volumeDirs = lib.filter (v: lib.hasInfix "/" v) volumes; 
-          in 
-            "${lib.getExe (pkgs.writeShellApplication {
-              name = "setupVolumes";
-              runtimeInputs = [pkgs.coreutils];
-              text = (map (v: "[ -e ${v} ] || mkdir -p ${v}") volumeDirs) |> lib.concatStringsSep "\n";
-            })}";
+            volumeDirs = lib.filter (v: lib.hasInfix "/" v) volumes;
+          in "${lib.getExe (pkgs.writeShellApplication {
+            name = "setupVolumes";
+            runtimeInputs = [pkgs.coreutils];
+            text = (map (v: "[ -e ${v} ] || mkdir -p ${v}") volumeDirs) |> lib.concatStringsSep "\n";
+          })}";
         };
       };
     }));
@@ -45,7 +47,7 @@ in {
     enable = lib.mkEnableOption "stacks";
     defaultUid = lib.mkOption {
       type = lib.types.int;
-      default = 0; 
+      default = 0;
     };
     defaultGid = lib.mkOption {
       type = lib.types.int;
@@ -75,7 +77,7 @@ in {
     # TODO: Remove after 25.05
     xdg.configFile."systemd/user/podman-user-wait-network-online.service.d/50-exec-search-path.conf".text = ''
       [Service]
-      ExecSearchPath=${pkgs.bashInteractive}/bin:${pkgs.systemd}/bin:/bin
+      ExecSearchPath=${lib.makeBinPath (with pkgs; [bashInteractive systemd coreutils])}:/bin
     '';
   };
 }
