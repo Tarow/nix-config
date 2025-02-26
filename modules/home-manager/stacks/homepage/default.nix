@@ -63,7 +63,7 @@ in {
         "${yaml.generate "settings.yaml" cfg.settings}:/app/config/settings.yaml"
         "${yaml.generate "widgets.yaml" cfg.widgets}:/app/config/widgets.yaml"
         "${yaml.generate "bookmarks.yaml" cfg.bookmarks}:/app/config/bookmarks.yaml"
-        "/run/user/1000/podman/podman.sock:/var/run/docker.sock:ro"
+        "${config.tarow.podman.socketLocation}:/var/run/docker.sock:ro"
       ];
       environment = {
         PUID = config.tarow.stacks.defaultUid;

@@ -18,7 +18,7 @@ in {
     };
     socketLocation = lib.mkOption {
       type = lib.types.str;
-      default = "/run/user/${config.tarow.facts.uid}/podman/podman.sock";
+      default = "/run/user/${toString config.tarow.facts.uid}/podman/podman.sock";
       readOnly = true;
     };
   };

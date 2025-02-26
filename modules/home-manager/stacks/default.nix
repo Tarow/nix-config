@@ -57,7 +57,6 @@ in {
       type = lib.types.str;
       default = "Europe/Berlin";
     };
-
     storageBaseDir = lib.mkOption {
       type = lib.types.str;
       default = "/home/niklas/.stacks";

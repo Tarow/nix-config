@@ -12,7 +12,7 @@ in {
     services.podman.containers.${name} = {
       image = "docker.io/amir20/dozzle:latest";
       volumes = [
-        "/run/user/1000/podman/podman.sock:/var/run/docker.sock:ro"
+        "${config.tarow.podman.socketLocation}:/var/run/docker.sock:ro"
       ];
       port = 8080;
       traefik.name = name;
