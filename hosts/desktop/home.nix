@@ -58,6 +58,7 @@
       filebrowser.enable = true;
       paperless.enable = true;
       healthchecks.enable = true;
+      immich.enable = true;
     };
 
     sops.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
