@@ -25,7 +25,6 @@ in {
   options.tarow.stacks.${name}.enable = lib.mkEnableOption name;
 
   config = lib.mkIf cfg.enable {
-    services.podman.networks.${name} = {};
     services.podman.containers = {
       ${name} = {
         image = "ghcr.io/immich-app/immich-server:release";
@@ -36,7 +35,8 @@ in {
 
         dependsOn = [redisName dbName];
         port = 2283;
-        network = [name];
+
+        stack = name;
         traefik.name = name;
         homepage = {
           category = "Media";
@@ -50,7 +50,8 @@ in {
 
       ${redisName} = {
         image = "docker.io/redis:6.2";
-        network = [name];
+
+        stack = name;
       };
 
       ${dbName} = {
@@ -63,13 +64,14 @@ in {
           POSTGRES_DB = env.DB_DATABASE_NAME;
         };
 
-        network = [name];
+        stack = name;
       };
 
       ${mlName} = {
         image = "ghcr.io/immich-app/immich-machine-learning:release";
         volumes = ["${storage}/model-cache:/cache"];
-        network = [name];
+
+        stack = name;
       };
     };
   };

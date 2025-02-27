@@ -15,7 +15,6 @@ in {
   options.tarow.stacks.${name}.enable = lib.mkEnableOption name;
 
   config = lib.mkIf cfg.enable {
-    services.podman.networks.${name} = {};
     services.podman.containers = {
       ${name} = {
         image = "docker.io/healthchecks/healthchecks:latest";
@@ -33,8 +32,9 @@ in {
           APPRISE_ENABLED = "True";
         };
         environmentFile = [config.sops.secrets."healthchecks/env".path];
-        network = [name];
         port = 8000;
+
+        stack = name;
         traefik.name = name;
         homepage = {
           category = "Monitoring";
@@ -53,7 +53,8 @@ in {
           POSTGRES_DB = DB_NAME;
         };
         environmentFile = [config.sops.secrets."healthchecks/db_env".path];
-        network = [name];
+
+        stack = name;
       };
     };
   };

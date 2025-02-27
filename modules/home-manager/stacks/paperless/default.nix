@@ -14,7 +14,6 @@ in {
   options.tarow.stacks.${name}.enable = lib.mkEnableOption name;
 
   config = lib.mkIf cfg.enable {
-    services.podman.networks.${name} = {};
     services.podman.containers = {
       ${name} = {
         image = "ghcr.io/paperless-ngx/paperless-ngx:latest";
@@ -40,6 +39,8 @@ in {
         };
         environmentFile = [config.sops.secrets."paperless/env".path];
         port = 8000;
+
+        stack = name;
         traefik.name = name;
         homepage = {
           category = "Productivity";
@@ -49,12 +50,12 @@ in {
             icon = "paperless-ngx";
           };
         };
-        network = [name];
       };
 
       ${brokerName} = {
         image = "docker.io/redis:6.0";
-        network = [name];
+
+        stack = name;
       };
 
       ${dbName} = {
@@ -65,7 +66,8 @@ in {
           POSTGRES_USER = "paperless";
         };
         environmentFile = [config.sops.secrets."paperless/db_env".path];
-        network = [name];
+
+        stack = name;
       };
 
       ${ftpName} = let
