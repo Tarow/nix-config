@@ -49,7 +49,7 @@ in {
             then {}
             else
               ({
-                  href = config.traefik.serviceDomain;
+                  href = lib.mkIf (config.traefik.name != null) config.traefik.serviceDomain;
                   server = "local";
                   container = name;
                 }

@@ -60,6 +60,7 @@
       healthchecks.enable = true;
       immich.enable = true;
       mealie.enable = true;
+      monitoring.enable = true;
     };
 
     sops.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";

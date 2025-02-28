@@ -23,7 +23,7 @@ in {
           DB_ENGINE = "sqlite";
         };
 
-        stack = name;
+        port = 9000;
         traefik.name = name;
         homepage = {
           category = "Utilities";
