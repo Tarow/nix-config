@@ -48,7 +48,6 @@ in {
         "${storage}/plugins:/plugins"
       ];
       labels = {
-        "logging.promtail" = "true";
         "traefik.enable" = "true";
         "traefik.http.routers.api.entrypoints" = "websecure";
         "traefik.http.routers.api.rule" = ''Host(\`${name}.${cfg.domain}\`)'';
@@ -56,6 +55,8 @@ in {
         "traefik.http.routers.api.service" = "api@internal";
       };
       network = [cfg.network];
+
+      alloy.enable = true;
       homepage = {
         category = "General";
         name = "Traefik";

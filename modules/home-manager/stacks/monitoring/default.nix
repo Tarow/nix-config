@@ -4,21 +4,23 @@
   pkgs,
   ...
 }: let
-  name = "monitoring";
-  cfg = config.tarow.stacks.${name};
+  stackName = "monitoring";
+  cfg = config.tarow.stacks.${stackName};
 
   grafanaName = "grafana";
   lokiName = "loki";
-  promtailName = "promtail";
-  storage = "${config.tarow.stacks.storageBaseDir}/${name}";
+  alloyName = "alloy";
+  storage = "${config.tarow.stacks.storageBaseDir}/${stackName}";
 
   lokiPort = 3100;
   lokiUrl = "http://${lokiName}:${toString lokiPort}";
   grafanaDatasources = pkgs.writeText "datasources.yaml" (import ./grafana_datasources.nix lokiUrl);
   lokiConfig = pkgs.writeText "config-local.yaml" (import ./loki_local_config.nix lokiPort);
-  promtailConfig = pkgs.writeText "config.yaml" (import ./promtail_config.nix lokiUrl);
+  alloyConfig = pkgs.writeText "config.alloy" (import ./alloy_config.nix lokiUrl);
 in {
-  options.tarow.stacks.${name}.enable = lib.mkEnableOption name;
+  imports = [./extension.nix];
+
+  options.tarow.stacks.${stackName}.enable = lib.mkEnableOption stackName;
 
   config = lib.mkIf cfg.enable {
     services.podman.containers = {
@@ -36,8 +38,8 @@ in {
         };
 
         port = 3000;
-        stack = name;
-        traefik.name = name;
+        stack = stackName;
+        traefik.name = grafanaName;
         homepage = {
           category = "Monitoring";
           name = "Grafana";
@@ -56,7 +58,8 @@ in {
           "${storage}/loki/data:/loki"
           "${lokiConfig}:/etc/loki/local-config.yaml"
         ];
-        stack = name;
+
+        stack = stackName;
         homepage = {
           category = "Monitoring";
           name = "Loki";
@@ -67,21 +70,26 @@ in {
         };
       };
 
-      ${promtailName} = {
-        image = "grafana/promtail:latest";
+      ${alloyName} = let
+        port = 12345;
+        configDst = "/etc/alloy/config.alloy";
+      in {
+        image = "grafana/alloy:latest";
         volumes = [
-          "${promtailConfig}:/etc/promtail/config.yaml"
+          "${alloyConfig}:${configDst}"
           "${config.tarow.podman.socketLocation}:/var/run/docker.sock:ro"
         ];
-        exec = "-config.file=/etc/promtail/config.yaml";
-        dependsOn = [lokiName];
-        stack = name;
+        exec = "run --server.http.listen-addr=0.0.0.0:${toString port} --storage.path=/var/lib/alloy/data ${configDst}";
+
+        stack = stackName;
+        inherit port;
+        traefik.name = alloyName;
         homepage = {
           category = "Monitoring";
-          name = "Promtail";
+          name = "Alloy";
           settings = {
-            description = "Log collection agent for Loki";
-            icon = "loki";
+            description = "Open-source observability pipeline";
+            icon = "alloy";
           };
         };
       };
