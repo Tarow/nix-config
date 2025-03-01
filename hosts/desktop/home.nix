@@ -61,6 +61,11 @@
       immich.enable = true;
       mealie.enable = true;
       monitoring.enable = true;
+      samba.enable = false;
+      scrutiny = {
+        enable = true;
+        devices = ["/dev/nvme0"];
+      };
     };
 
     sops.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
