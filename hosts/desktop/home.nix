@@ -66,6 +66,7 @@
         enable = true;
         devices = ["/dev/nvme0"];
       };
+      stirling-pdf.enable = true;
     };
 
     sops.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
