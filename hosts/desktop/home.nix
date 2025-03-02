@@ -68,6 +68,7 @@
       };
       stirling-pdf.enable = true;
       streaming.enable = true;
+      wg-easy.enable = true;
     };
 
     sops.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";

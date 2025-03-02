@@ -122,4 +122,7 @@
 
   # Necessary for file browsers to browse samba shares
   services.gvfs.enable = true;
+
+  networking.firewall.allowedUDPPorts = [80 443 51820];
+  networking.firewall.allowedTCPPorts = [80 443];
 }

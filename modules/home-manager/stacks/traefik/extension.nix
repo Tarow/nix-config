@@ -21,7 +21,7 @@ in {
       fullHost =
         if (traefikCfg.subDomain == "")
         then stackCfg.domain
-        else "${traefikCfg.name}.${stackCfg.domain}";
+        else "${traefikCfg.subDomain}.${stackCfg.domain}";
     in {
       options = with lib; {
         # Main port that will be used by traefik. If traefik is disabled, it will be added to the "ports" section
