@@ -7,9 +7,15 @@
 
   gluetunName = "gluetun";
   qbittorrentName = "qbittorrent";
+  jellyfinName = "jellyfin";
+  sonarrName = "sonarr";
+  radarrName = "radarr";
+  bazarrName = "bazarr";
+  prowlarrName = "prowlarr";
 
   cfg = config.tarow.stacks.${stackName};
   storage = "${config.tarow.stacks.storageBaseDir}/${stackName}";
+  mediaStorage = "${config.tarow.stacks.mediaSorageBaseDir}";
 in {
   options.tarow.stacks.${stackName}.enable = lib.mkEnableOption stackName;
 
@@ -53,7 +59,7 @@ in {
         network = lib.mkForce ["container:gluetun"];
         volumes = [
           "${storage}/${qbittorrentName}:/config"
-          "${config.tarow.stacks.mediaStorageBaseDir}:/media"
+          "${mediaStorage}:/media"
         ];
         environment = {
           PUID = config.tarow.stacks.defaultUid;
@@ -71,6 +77,32 @@ in {
           settings = {
             description = "BitTorrent client with Web UI";
             icon = "qbittorrent";
+          };
+        };
+      };
+
+      ${jellyfinName} = {
+        image = "lscr.io/linuxserver/jellyfin:latest";
+        volumes = [
+          "${storage}/${jellyfinName}/config:/config"
+          "${mediaStorage}:/media"
+        ];
+        devices = ["/dev/dri:/dev/dri"];
+        environment = {
+          PUID = config.tarow.stacks.defaultUid;
+          PGID = config.tarow.stacks.defaultGid;
+          TZ = config.tarow.stacks.defaultTz;
+          JELLYFIN_PublishedServerUrl = config.services.podman.containers.${jellyfinName}.traefik.serviceDomain;
+        };
+
+        port = 8096;
+        traefik.name = jellyfinName;
+        homepage = {
+          category = "Media";
+          name = "Jellyfin";
+          settings = {
+            description = "Self-hosted media server";
+            icon = "jellyfin";
           };
         };
       };
