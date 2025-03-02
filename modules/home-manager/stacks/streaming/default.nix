@@ -156,6 +156,30 @@ in {
           };
         };
       };
+
+      ${bazarrName} = {
+        image = "lscr.io/linuxserver/bazarr:latest";
+        volumes = [
+          "${storage}/${bazarrName}/config:/config"
+          "${mediaStorage}:/media"
+        ];
+        environment = {
+          PUID = config.tarow.stacks.defaultUid;
+          PGID = config.tarow.stacks.defaultGid;
+          TZ = config.tarow.stacks.defaultTz;
+        };
+
+        port = 6767;
+        traefik.name = bazarrName;
+        homepage = {
+          category = "Media";
+          name = "Bazarr";
+          settings = {
+            description = "Subtitle Management";
+            icon = "bazarr";
+          };
+        };
+      };
     };
   };
 }
