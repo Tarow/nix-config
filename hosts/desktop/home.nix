@@ -63,7 +63,7 @@
       monitoring.enable = true;
       samba.enable = false;
       scrutiny = {
-        enable = true;
+        enable = false;
         devices = ["/dev/nvme0"];
       };
       stirling-pdf.enable = true;

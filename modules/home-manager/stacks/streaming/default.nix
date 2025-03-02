@@ -15,7 +15,7 @@
 
   cfg = config.tarow.stacks.${stackName};
   storage = "${config.tarow.stacks.storageBaseDir}/${stackName}";
-  mediaStorage = "${config.tarow.stacks.mediaSorageBaseDir}";
+  mediaStorage = "${config.tarow.stacks.mediaStorageBaseDir}";
 in {
   options.tarow.stacks.${stackName}.enable = lib.mkEnableOption stackName;
 
@@ -40,6 +40,7 @@ in {
           HTTPPROXY = "on";
           HEALTH_VPN_DURATION_INITIAL = "60s";
         };
+        network = [config.tarow.stacks.traefik.network];
 
         stack = stackName;
         port = 8888;
@@ -56,7 +57,7 @@ in {
       ${qbittorrentName} = {
         image = "docker.io/linuxserver/qbittorrent:latest";
         dependsOn = ["gluetun"];
-        network = lib.mkForce ["container:gluetun"];
+        network = lib.mkForce ["container:${gluetunName}"];
         volumes = [
           "${storage}/${qbittorrentName}:/config"
           "${mediaStorage}:/media"
@@ -96,6 +97,7 @@ in {
         };
 
         port = 8096;
+        stack = stackName;
         traefik.name = jellyfinName;
         homepage = {
           category = "Media";
@@ -103,6 +105,54 @@ in {
           settings = {
             description = "Self-hosted media server";
             icon = "jellyfin";
+          };
+        };
+      };
+
+      ${sonarrName} = {
+        image = "lscr.io/linuxserver/sonarr:latest";
+        volumes = [
+          "${storage}/${sonarrName}/config:/config"
+          "${mediaStorage}:/media"
+        ];
+        environment = {
+          PUID = config.tarow.stacks.defaultUid;
+          PGID = config.tarow.stacks.defaultGid;
+          TZ = config.tarow.stacks.defaultTz;
+        };
+
+        port = 8989;
+        traefik.name = sonarrName;
+        homepage = {
+          category = "Media";
+          name = "Sonarr";
+          settings = {
+            description = "Series Management";
+            icon = "sonarr";
+          };
+        };
+      };
+
+      ${radarrName} = {
+        image = "lscr.io/linuxserver/radarr:latest";
+        volumes = [
+          "${storage}/${radarrName}/config:/config"
+          "${mediaStorage}:/media"
+        ];
+        environment = {
+          PUID = config.tarow.stacks.defaultUid;
+          PGID = config.tarow.stacks.defaultGid;
+          TZ = config.tarow.stacks.defaultTz;
+        };
+
+        port = 7878;
+        traefik.name = radarrName;
+        homepage = {
+          category = "Media";
+          name = "Radarr";
+          settings = {
+            description = "Movie Management";
+            icon = "radarr";
           };
         };
       };
