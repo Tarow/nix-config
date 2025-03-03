@@ -31,7 +31,7 @@
       "soundblaster"
       "stylix"
     ])
-    {facts.ip4Address = "10.1.1.201";}
+    {facts.ip4Address = "10.1.1.210";}
     {sops.keyFile = "${config.tarow.facts.userhome}/.config/sops/age/keys.txt";}
     {core.configLocation = "~/nix-config#desktop";}
     {monitors.configuration = ./monitors.xml;}
