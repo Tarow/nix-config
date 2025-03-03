@@ -38,14 +38,6 @@
   ];
 
   networking.hostName = "nixos";
-  networking.interfaces.wlp13s0 = {
-    ipv4.addresses = lib.mkIf (config.tarow.facts.ip4Address != null) [
-      {
-        address = config.tarow.facts.ip4Address;
-        prefixLength = 24;
-      }
-    ];
-  };
 
   boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = lib.mkForce 0;
 
