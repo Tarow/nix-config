@@ -69,6 +69,7 @@
       stirling-pdf.enable = true;
       streaming.enable = true;
       wg-easy.enable = true;
+      uptime-kuma.enable = true;
     };
 
     sops.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
