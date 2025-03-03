@@ -62,6 +62,7 @@ in {
           "${storage}/${qbittorrentName}:/config"
           "${mediaStorage}:/media"
         ];
+        environmentFile = [config.sops.secrets."qbittorrent/env".path];
         environment = {
           PUID = config.tarow.stacks.defaultUid;
           PGID = config.tarow.stacks.defaultGid;
