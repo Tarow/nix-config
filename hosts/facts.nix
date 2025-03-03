@@ -1,5 +1,5 @@
 {
   username = "niklas";
   uid = 1000;
-  gid = 100;
+  gid = 1000;
 }
