@@ -31,7 +31,7 @@
       "stylix"
     ])
     {facts = import ../facts.nix;}
-    {sops.keyFile = "/home/niklas/.config/sops/age/keys.txt";}
+    {sops.keyFile = "${config.tarow.facts.userhome}/.config/sops/age/keys.txt";}
     {core.configLocation = "~/nix-config#desktop";}
     {monitors.configuration = ./monitors.xml;}
   ];

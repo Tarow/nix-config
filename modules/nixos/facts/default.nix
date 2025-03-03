@@ -11,6 +11,11 @@ in {
       type = types.str;
       readOnly = true;
     };
+    userhome = mkOption {
+      type = types.str;
+      readOnly = true;
+      default = config.users.users.${cfg.username}.home;
+    };
     uid = mkOption {
       type = types.int;
       readOnly = true;
