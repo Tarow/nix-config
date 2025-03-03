@@ -24,6 +24,10 @@ in {
       type = types.int;
       readOnly = true;
     };
+    ip4Address = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+    };
   };
 
   config = {

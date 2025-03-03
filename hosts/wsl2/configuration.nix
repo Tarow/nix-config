@@ -6,6 +6,8 @@
   outputs,
   ...
 }: {
+  imports = [../shared/configuration.nix];
+
   system.stateVersion = "24.05";
 
   tarow = lib.mkMerge [
@@ -20,7 +22,4 @@
   ];
 
   environment.systemPackages = [pkgs.wget];
-  users.users.${config.wsl.defaultUser} = {
-    shell = pkgs.fish;
-  };
 }

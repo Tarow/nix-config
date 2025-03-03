@@ -8,6 +8,7 @@
   ...
 }: {
   imports = [
+    ../shared/configuration.nix
     ./hardware-configuration.nix
   ];
 
@@ -19,7 +20,7 @@
       "bootLoader"
       "gaming"
       "gnome"
-      #"hyprland"
+
       "keyboard"
       "locale"
       "networkManager"
@@ -30,13 +31,21 @@
       "soundblaster"
       "stylix"
     ])
-    {facts = import ../facts.nix;}
+    {facts.ip4Address = "10.1.1.201";}
     {sops.keyFile = "${config.tarow.facts.userhome}/.config/sops/age/keys.txt";}
     {core.configLocation = "~/nix-config#desktop";}
     {monitors.configuration = ./monitors.xml;}
   ];
 
   networking.hostName = "nixos";
+  networking.interfaces.wlp13s0 = {
+    ipv4.addresses = lib.mkIf (config.tarow.facts.ip4Address != null) [
+      {
+        address = config.tarow.facts.ip4Address;
+        prefixLength = 24;
+      }
+    ];
+  };
 
   boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = lib.mkForce 0;
 

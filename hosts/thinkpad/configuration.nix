@@ -9,6 +9,7 @@
   ...
 }: {
   imports = [
+    ../shared/configuration.nix
     ./hardware-configuration.nix
     inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x13-amd
   ];
@@ -31,12 +32,6 @@
   ];
 
   networking.hostName = "nixos";
-  users.users.niklas = {
-    isNormalUser = true;
-    description = "Niklas";
-    extraGroups = ["wheel" (lib.mkIf config.tarow.networkManager.enable "networkmanager")];
-    shell = pkgs.fish;
-  };
 
   services.fprintd.enable = false;
 }

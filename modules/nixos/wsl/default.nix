@@ -20,6 +20,6 @@ in {
 
   config = lib.mkIf cfg.enable {
     wsl.enable = true;
-    wsl.defaultUser = "niklas";
+    wsl.defaultUser = config.tarow.facts.username;
   };
 }
