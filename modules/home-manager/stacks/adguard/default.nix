@@ -16,10 +16,12 @@ in {
         "${storage}/work:/opt/adguardhome/work"
         "${storage}/conf:/opt/adguardhome/conf"
       ];
-      ports = [
-        "53:53/tcp"
-        "53:53/udp"
-        "853:853/tcp"
+      ports = let
+        ip = config.tarow.facts.ip4Address;
+      in [
+        "${ip}:53:53/tcp"
+        "${ip}:53:53/udp"
+        "${ip}:853:853/tcp"
       ];
       port = 3000;
       traefik.name = name;
