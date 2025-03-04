@@ -32,7 +32,11 @@ in {
     };
 
     # Enable podman socket systemd service in order for containers like Traefik to work
-    xdg.configFile."systemd/user/sockets.target.wants/podman.socket".source = lib.mkIf cfg.enableSocket "${pkgs.podman}/share/systemd/user/podman.socket";
+    xdg.configFile."systemd/user/sockets.target.wants/podman.socket".source = lib.mkIf cfg.enableSocket "${cfg.package}/share/systemd/user/podman.socket";
+    xdg.configFile."systemd/user" = {
+      source = lib.mkIf cfg.enableSocket "${cfg.package}/share/systemd/user";
+      recursive = true;
+    };
 
     # Fix for https://github.com/nix-community/home-manager/issues/6146
     # TODO: Remove after 25.05
