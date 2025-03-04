@@ -65,7 +65,7 @@ in {
     # Setup tide if its not initialized yet
     home.extraActivationPath = [pkgs.fish];
     home.activation.shells = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      run fish -c 'set -q tide_prompt_transient_enabled || tide configure --auto --style=Lean --prompt_colors="True color" --show_time="24-hour format" \
+      run fish -c 'set -q _tide_left_items || tide configure --auto --style=Lean --prompt_colors="True color" --show_time="24-hour format" \
        --lean_prompt_height="Two lines" --prompt_connection=Disconnected --prompt_spacing=Compact --icons="Few icons" --transient=No'
     '';
 

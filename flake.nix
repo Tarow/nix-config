@@ -119,6 +119,7 @@
       wsl2 = mkHome {cfgPath = ./hosts/wsl2/home.nix;};
       thinkpad = mkHome {cfgPath = ./hosts/thinkpad/home.nix;};
       desktop = mkHome {cfgPath = ./hosts/desktop/home.nix;};
+      homeserver = mkHome {cfgPath = ./hosts/homeserver/home.nix;};
     };
   };
 }
