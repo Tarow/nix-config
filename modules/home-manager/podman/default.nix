@@ -10,7 +10,9 @@ in {
     enable = mkEnableOption "Podman";
     package = mkOption {
       type = types.package;
-      default = pkgs.unstable.podman;
+      default = pkgs.unstable.podman.override {
+        extraPackages = [pkgs.nftables];
+      };
     };
     enableSocket = lib.mkOption {
       type = lib.types.bool;
@@ -43,6 +45,12 @@ in {
     xdg.configFile."systemd/user/podman-user-wait-network-online.service.d/50-exec-search-path.conf".text = ''
       [Service]
       ExecSearchPath=${lib.makeBinPath (with pkgs; [bashInteractive systemd coreutils])}:/bin
+    '';
+
+    xdg.configFile."containers/containers.conf".text = ''
+      [network]
+      dns_bind_port=1153
+      firewall_driver="nftables"
     '';
   };
 }

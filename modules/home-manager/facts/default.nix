@@ -19,8 +19,7 @@ in {
       readOnly = true;
     };
     ip4Address = mkOption {
-      type = types.nullOr types.str;
-      default = null;
+      type = types.str;
     };
   };
 

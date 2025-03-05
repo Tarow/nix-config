@@ -31,7 +31,7 @@
   ];
 
   tarow = {
-    facts = import ../facts.nix;
+    facts = import ../facts.nix // {ip4Address = "10.1.1.210";};
     core.configLocation = "~/nix-config#desktop";
     git-clone.repos = {
       nix-config = {
@@ -94,9 +94,4 @@
   };
 
   #systemd.user.sessionVariables = config.home.sessionVariables;
-
-  xdg.configFile."containers/containers.conf".text = ''
-    [network]
-    dns_bind_port = 1153
-  '';
 }

@@ -12,6 +12,8 @@
     ./hardware-configuration.nix
   ];
 
+  networking.nftables.enable = true;
+
   system.stateVersion = "24.11";
 
   tarow = lib.mkMerge [
