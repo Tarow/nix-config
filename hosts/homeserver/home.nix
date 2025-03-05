@@ -17,7 +17,7 @@
         enable = true;
         audiobookshelf.enable = true;
       };
-      containers.audiobookshelf.port = lib.mkForce 8081;
+      containers.audiobookshelf.port = lib.mkForce "8081:80";
     }
   ];
 }

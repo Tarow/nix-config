@@ -47,10 +47,30 @@ in {
       ExecSearchPath=${lib.makeBinPath (with pkgs; [bashInteractive systemd coreutils])}:/bin
     '';
 
-    xdg.configFile."containers/containers.conf".text = ''
-      [network]
-      dns_bind_port=1153
-      firewall_driver="nftables"
-    '';
+    xdg.configFile = {
+      "containers/containers.conf".text = ''
+        [network]
+        dns_bind_port=1153
+        firewall_driver="nftables"
+      '';
+      "containers/policy.json".text = ''
+        {
+          "default": [
+            {
+              "type": "insecureAcceptAnything"
+            }
+          ],
+          "transports": {
+            "docker-daemon": {
+              "": [
+                {
+                  "type": "insecureAcceptAnything"
+                }
+              ]
+            }
+          }
+        }
+      '';
+    };
   };
 }

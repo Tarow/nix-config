@@ -25,7 +25,7 @@ in {
     };
     storageBaseDir = lib.mkOption {
       type = lib.types.str;
-      default = "/home/niklas/.stacks";
+      default = "${config.home.homeDirectory}/stacks";
     };
     mediaStorageBaseDir = lib.mkOption {
       type = lib.types.str;
