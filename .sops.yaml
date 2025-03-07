@@ -1,7 +1,9 @@
 keys:
-  - &primary age1p4e0revwefgws4dl5tuwharh5wylv2sy2xxszevng8ej7du9sp5q84t4zg
+  - &desktop age1p4e0revwefgws4dl5tuwharh5wylv2sy2xxszevng8ej7du9sp5q84t4zg
+  - &homeserver age19fjwfcv7uv9dz2c9ukcv70qsascz57v9mhppy2tj8qyr86cskvks7nk2sk
 creation_rules:
   - path_regex: secrets/secrets.yaml$
     key_groups:
       - age:
-          - *primary
+          - *desktop
+          - *homeserver
