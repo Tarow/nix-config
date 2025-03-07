@@ -6,6 +6,7 @@
       "core"
       "git"
       "shells"
+      "sops"
       "stylix"
     ])
     {
@@ -20,8 +21,11 @@
         #dozzle.enable = true;
         #filebrowser.enable = true;
         healthchecks.enable = true;
+
+        traefik = {
+          domain = "ntasler.de";
+        };
       };
-      containers.filebrowser.port = lib.mkForce "8080:80";
     }
   ];
 }

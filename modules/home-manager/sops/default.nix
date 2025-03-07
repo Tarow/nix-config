@@ -29,6 +29,7 @@ in {
     keyFile = lib.options.mkOption {
       type = lib.types.str;
       description = "Path to the key file used to encrypt/decrypt secrets";
+      default = "${config.xdg.configHome}/sops/age/keys.txt";
     };
   };
 

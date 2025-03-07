@@ -4,6 +4,7 @@
   ...
 }: let
   stackCfg = config.tarow.stacks.traefik;
+  ip4Address = config.tarow.facts.ip4Address;
 
   getPort = port: index:
     if (builtins.isInt port)
@@ -46,7 +47,10 @@ in {
             type = lib.types.str;
             default = fullHost;
             readOnly = true;
-            apply = d: "https://${d}";
+            apply = d:
+              if stackCfg.enable
+              then "https://${d}"
+              else "http://${ip4Address}:${getPort port 0}";
           };
         };
       };
