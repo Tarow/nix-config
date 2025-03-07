@@ -24,7 +24,6 @@ in {
           REGISTRATION_OPEN = "False";
           INTEGRATIONS_ALLOW_PRIVATE_IPS = "True";
           APPRISE_ENABLED = "True";
-          SUPERUSER_EMAIL = "admin@${config.tarow.stacks.traefik.domain}";
         };
         environmentFile = [config.sops.secrets."healthchecks/env".path];
         port = 8000;
