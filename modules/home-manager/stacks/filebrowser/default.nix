@@ -20,8 +20,8 @@ in {
         "${storage}/config:/config"
       ];
       environment = {
-        PUID = toString config.tarow.stacks.defaultUid;
-        PGID = toString config.tarow.stacks.defaultGid;
+        PUID = config.tarow.stacks.defaultUid;
+        PGID = config.tarow.stacks.defaultGid;
       };
       port = 80;
       traefik.name = name;

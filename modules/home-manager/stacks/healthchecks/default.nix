@@ -17,17 +17,21 @@ in {
   config = lib.mkIf cfg.enable {
     services.podman.containers = {
       ${name} = {
-        image = "docker.io/healthchecks/healthchecks:latest";
+        image = "lscr.io/linuxserver/healthchecks:latest";
         dependsOn = [dbName];
-        exec = "bash -c 'while !</dev/tcp/${dbName}/5432; do sleep 1; done; uwsgi /opt/healthchecks/docker/uwsgi.ini'";
         volumes = ["${storage}/data:/data"];
+        #environmentFile
         environment = {
+          PUID = config.tarow.stacks.defaultUid;
+          PGID = config.tarow.stacks.defaultGid;
+          TZ = config.tarow.stacks.defaultTz;
           inherit DB DB_HOST DB_NAME;
-          ALLOWED_HOSTS = "healthchecks.${config.tarow.stacks.traefik.domain}";
           DEBUG = "False";
-          SITE_ROOT = "https://healthchecks.${config.tarow.stacks.traefik.domain}";
-          REGISTRATION_OPEN = "False";
+          #ALLOWED_HOSTS = "${name}.${config.tarow.stacks.traefik.domain}";
+          SUPERUSER_EMAIL = "admin@${config.tarow.stacks.traefik.domain}";
+          SITE_ROOT = "https://${name}.${config.tarow.stacks.traefik.domain}";
           SITE_NAME = "Healthchecks";
+          REGISTRATION_OPEN = "False";
           INTEGRATIONS_ALLOW_PRIVATE_IPS = "True";
           APPRISE_ENABLED = "True";
         };

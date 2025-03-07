@@ -15,9 +15,13 @@
     {
       stacks = {
         enable = true;
-        audiobookshelf.enable = true;
+        #audiobookshelf.enable = true;
+        #calibre.enable = true;
+        #dozzle.enable = true;
+        #filebrowser.enable = true;
+        healthchecks.enable = true;
       };
-      containers.audiobookshelf.port = lib.mkForce "8081:80";
+      containers.filebrowser.port = lib.mkForce "8080:80";
     }
   ];
 }
