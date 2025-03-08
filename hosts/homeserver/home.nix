@@ -19,7 +19,7 @@
 
     stacks = {
       enable = true;
-      adguard.enable = false;
+      adguard.enable = true;
       audiobookshelf.enable = true;
       calibre.enable = true;
       dozzle.enable = true;

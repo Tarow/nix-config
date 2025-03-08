@@ -25,6 +25,11 @@
         # https://github.com/containers/podman/issues/24637
         dependsOn = ["user-wait-network-online"];
         extraConfig = {
+          # Theres some issues with healthchecks transient systemd service not being created. Disable for now
+          # TODO: Investigate why transient services are missing
+          Container.HealthCmd = "none";
+          Container.HealthStartupCmd = "none";
+
           Unit.Requires = config.dependsOn;
           Unit.After = config.dependsOn;
 
