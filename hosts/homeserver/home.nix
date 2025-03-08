@@ -23,6 +23,7 @@
       audiobookshelf.enable = true;
       calibre.enable = true;
       dozzle.enable = true;
+      dockdns.enable = true;
       filebrowser.enable = true;
       healthchecks.enable = true;
       homepage.enable = true;
