@@ -28,6 +28,8 @@
       homepage.enable = true;
       streaming.enable = true;
       immich.enable = true;
+      paperless.enable = true;
+      wg-easy.enable = true;
       traefik = {
         enable = true;
         domain = "ntasler.de";

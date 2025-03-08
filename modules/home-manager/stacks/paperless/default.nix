@@ -34,7 +34,7 @@ in {
           PAPERLESS_OCR_LANGUAGES = "eng deu";
           PAPERLESS_TIME_ZONE = config.tarow.stacks.defaultTz;
           PAPERLESS_OCR_LANGUAGE = "deu";
-          PAPERLESS_FILENAME_FORMAT = "{created_year}/{correspondent}/{title}";
+          PAPERLESS_FILENAME_FORMAT = "{{created_year}}/{{correspondent}}/{{title}}";
           PAPERLESS_URL = "https://${name}.${config.tarow.stacks.traefik.domain}";
         };
         environmentFile = [config.sops.secrets."paperless/env".path];
