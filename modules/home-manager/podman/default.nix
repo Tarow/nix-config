@@ -71,6 +71,16 @@ in {
           }
         }
       '';
+      "containers/registries.conf".text = ''
+        [registries.block]
+        registries = []
+
+        [registries.insecure]
+        registries = []
+
+        [registries.search]
+        registries = ["docker.io"]
+      '';
     };
   };
 }

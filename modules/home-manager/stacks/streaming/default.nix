@@ -31,7 +31,7 @@ in {
         ];
         environmentFile = [config.sops.secrets."gluetun/env".path];
         environment = {
-          WIREGUARD_MTU = 1380;
+          WIREGUARD_MTU = 1320;
           HTTP_CONTROL_SERVER_LOG = "off";
           VPN_SERVICE_PROVIDER = "airvpn";
           VPN_TYPE = "wireguard";
