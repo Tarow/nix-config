@@ -25,11 +25,11 @@ jobs:
           extra_nix_config: "experimental-features = nix-command flakes pipe-operators"
         
       - name: Build NixOS Configuration
-        if: ${{ contains(toJSON(matrix), 'nixosCfgKey') && matrix.nixosCfgKey != '') }}
+        if: ${{ contains(toJSON(matrix), 'nixosCfgKey') && matrix.nixosCfgKey != '' }}
         run: nix build --flake .#nixosConfigurations.${{ matrix.nixosCfgKey }}.config.system.build.toplevel
 
       - name: Build Home-Manager Cofiguration
-        if: ${{ contains(toJSON(matrix), 'homeCfgKey') && matrix.homeCfgKey != '') }}
+        if: ${{ contains(toJSON(matrix), 'homeCfgKey') && matrix.homeCfgKey != '' }}
         run: nix build --flake .#homeConfigurations.${{ matrix.homeCfgKey }}.activationPackage
 
   check_flake:
