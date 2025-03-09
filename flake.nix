@@ -129,10 +129,5 @@
       desktop = mkHome {cfgPath = ./hosts/desktop/home.nix;};
       homeserver = mkHome {cfgPath = ./hosts/homeserver/home.nix;};
     };
-
-    packages = forAllSystems (system: let
-      pkgs = packages.${system};
-    in {
-    });
   };
 }

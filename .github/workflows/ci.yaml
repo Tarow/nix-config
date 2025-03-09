@@ -12,6 +12,22 @@ jobs:
             nixosCfgKey: desktop
             homeCfgKey: desktop
             os-label: ubuntu-latest
+
+          - hostName: WSL2
+            nixosCfgKey: wsl2
+            homeCfgKey: wsl2
+            os-label: ubuntu-latest
+
+          - hostName: Thinkpad
+            nixosCfgKey: thinkpad
+            homeCfgKey: thinkpad
+            os-label: ubuntu-latest
+
+          - hostName: Homeserver
+            nixosCfgKey:
+            homeCfgKey: homeserver
+            os-label: ubuntu-latest
+
       fail-fast: false
 
     name: Build ${{ matrix.hostName }}
