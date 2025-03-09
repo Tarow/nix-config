@@ -26,11 +26,11 @@ jobs:
         
       - name: Build NixOS Configuration
         if: ${{ contains(toJSON(matrix), 'nixosCfgKey') && matrix.nixosCfgKey != '' }}
-        run: nix build --flake .#nixosConfigurations.${{ matrix.nixosCfgKey }}.config.system.build.toplevel
+        run: nix build .#nixosConfigurations.${{ matrix.nixosCfgKey }}.config.system.build.toplevel
 
       - name: Build Home-Manager Cofiguration
         if: ${{ contains(toJSON(matrix), 'homeCfgKey') && matrix.homeCfgKey != '' }}
-        run: nix build --flake .#homeConfigurations.${{ matrix.homeCfgKey }}.activationPackage
+        run: nix build .#homeConfigurations.${{ matrix.homeCfgKey }}.activationPackage
 
   check_flake:
     runs-on: ubuntu-24.04
