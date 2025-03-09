@@ -62,6 +62,14 @@
     packages = nixpkgs.legacyPackages;
     hmPackages = home-manager.inputs.nixpkgs.legacyPackages;
 
+    forAllSystems = nixpkgs.lib.genAttrs [
+      "aarch64-linux"
+      "i686-linux"
+      "x86_64-linux"
+      "aarch64-darwin"
+      "x86_64-darwin"
+    ];
+
     mkSystem = {
       system ? "x86_64-linux",
       systemConfig,
@@ -121,5 +129,10 @@
       desktop = mkHome {cfgPath = ./hosts/desktop/home.nix;};
       homeserver = mkHome {cfgPath = ./hosts/homeserver/home.nix;};
     };
+
+    packages = forAllSystems (system: let
+      pkgs = packages.${system};
+    in {
+    });
   };
 }

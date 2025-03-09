@@ -4,6 +4,34 @@ on:
   push:
 
 jobs:
+  build-config:
+    strategy:
+      matrix:
+        include:
+          - hostName: Desktop
+            nixosCfgKey: desktop
+            homeCfgKey: desktop
+            os-label: ubuntu-latest
+      fail-fast: false
+
+    name: Build ${{ matrix.hostName }}
+    runs-on: ${{ matrix.os-label }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v30
+        with:
+          extra_nix_config: "experimental-features = nix-command flakes pipe-operators"
+        
+      - name: Build NixOS Configuration
+        if: ${{ contains(toJSON(matrix), 'nixosCfgKey') && matrix.nixosCfgKey != '') }}
+        run: nix build --flake .#nixosConfigurations.${{ matrix.nixosCfgKey }}.config.system.build.toplevel
+
+      - name: Build Home-Manager Cofiguration
+        if: ${{ contains(toJSON(matrix), 'homeCfgKey') && matrix.homeCfgKey != '') }}
+        run: nix build --flake .#homeConfigurations.${{ matrix.homeCfgKey }}.activationPackage
+
   check_flake:
     runs-on: ubuntu-24.04
     steps:
@@ -16,4 +44,4 @@ jobs:
           extra_nix_config: "experimental-features = nix-command flakes pipe-operators"
 
       - name: Check Flake
-        run: nix flake check
+        run: nix flake check --keep-going

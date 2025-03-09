@@ -52,7 +52,7 @@ in {
     };
   };
 
-  home.packages = with pkgs; [nixd alejandra];
+  home.packages = with pkgs; [unstable.nixd alejandra];
   programs.vscode.userSettings = {
     "nix.serverPath" = "nixd";
     "nix.enableLanguageServer" = true;
