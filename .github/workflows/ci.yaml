@@ -36,7 +36,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v30
+        uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: "experimental-features = nix-command flakes pipe-operators"
         
@@ -55,7 +55,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v30
+        uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: "experimental-features = nix-command flakes pipe-operators"
 
