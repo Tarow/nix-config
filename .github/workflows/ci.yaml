@@ -2,6 +2,9 @@ name: "Verify Nix Config"
 on:
   workflow_dispatch:
   push:
+    - paths:
+        - "**.nix"
+        - "flake.lock"
 
 jobs:
   build-config:
