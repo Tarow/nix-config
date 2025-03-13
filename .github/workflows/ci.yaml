@@ -33,13 +33,22 @@ jobs:
     name: Build ${{ matrix.hostName }}
     runs-on: ${{ matrix.os-label }}
     steps:
+      - name: Free diskspace
+        uses: easimon/maximize-build-space@master
+        with:
+          build-mount-path: /nix
+          root-reserve-mb: 5120
+          remove-dotnet: true
+          remove-android: true
+          remove-haskell: true
+
       - uses: actions/checkout@v4
 
       - name: Install Nix
         uses: cachix/install-nix-action@v30
         with:
           extra_nix_config: "experimental-features = nix-command flakes pipe-operators"
-        
+
       - name: Build NixOS Configuration
         if: ${{ contains(toJSON(matrix), 'nixosCfgKey') && matrix.nixosCfgKey != '' }}
         run: nix build .#nixosConfigurations.${{ matrix.nixosCfgKey }}.config.system.build.toplevel
