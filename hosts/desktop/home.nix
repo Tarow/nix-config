@@ -31,7 +31,7 @@
   ];
 
   tarow = {
-    facts = import ../facts.nix // {ip4Address = "10.1.1.210";};
+    facts.ip4Address = "10.1.1.210";
     core.configLocation = "~/nix-config#desktop";
     git-clone.repos = {
       nix-config = {
@@ -45,33 +45,6 @@
     };
     monitors.configuration = ./monitors.xml;
 
-    stacks = {
-      traefik.enable = true;
-      traefik.domain = "nopshift.de";
-      adguard = {
-        enable = true;
-      };
-      calibre.enable = true;
-      homepage.enable = true;
-      audiobookshelf.enable = true;
-      dozzle.enable = true;
-      filebrowser.enable = true;
-      paperless.enable = true;
-      healthchecks.enable = true;
-      immich.enable = true;
-      mealie.enable = true;
-      monitoring.enable = true;
-      samba.enable = false;
-      scrutiny = {
-        enable = false;
-        devices = ["/dev/nvme0"];
-      };
-      stirling-pdf.enable = true;
-      streaming.enable = true;
-      wg-easy.enable = true;
-      uptime-kuma.enable = true;
-    };
-
     sops.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
   };
 
@@ -84,6 +57,7 @@
     obsidian
     telegram-desktop
     teams-for-linux
+    unstable.bitwarden-desktop
   ];
 
   wayland.windowManager.hyprland.settings = {
