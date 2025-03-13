@@ -39,7 +39,8 @@ nixos-rebuild switch --flake .#<host>
 ```
 
 </br>
-Install Home Configurartion:
+
+Install Home Configuration:
 
 ```bash
 home-manager switch -b bak --flake .#<host>
