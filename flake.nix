@@ -15,9 +15,6 @@
     home-manager = {
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
-
-      #url = "github:nix-community/home-manager";
-      #inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     sops-nix = {
@@ -129,5 +126,7 @@
       desktop = mkHome {cfgPath = ./hosts/desktop/home.nix;};
       homeserver = mkHome {cfgPath = ./hosts/homeserver/home.nix;};
     };
+
+    devShells = forAllSystems (system: import ./shell.nix {pkgs = nixpkgs.legacyPackages.${system};});
   };
 }
