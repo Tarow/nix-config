@@ -32,15 +32,13 @@ mkdir -p ~/.config/sops/age && ssh-to-age -private-key -i ~/.ssh/id_ed25519 -o ~
 
 ---
 
-Install System Configuration:
+#### Install System Configuration:
 
 ```bash
 nixos-rebuild switch --flake .#<host>
 ```
 
-</br>
-
-Install Home Configuration:
+#### Install Home Configuration:
 
 ```bash
 home-manager switch -b bak --flake .#<host>
