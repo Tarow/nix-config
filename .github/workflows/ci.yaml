@@ -5,6 +5,7 @@ on:
     paths:
       - "**.nix"
       - "flake.lock"
+      - ".github/workflows/ci.yaml"
 
 jobs:
   build-config:
