@@ -1,5 +1,5 @@
 [![built with nix](https://img.shields.io/static/v1?logo=nixos&logoColor=white&label=&message=Built%20with%20Nix&color=41439a)](https://builtwithnix.org)
-![example workflow](https://github.com/tarow/nix-config/actions/workflows/ci.yaml/badge.svg)
+![Build](https://github.com/tarow/nix-config/actions/workflows/ci.yaml/badge.svg)
 [![Renovate](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com)
 
 # nix-config
