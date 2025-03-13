@@ -4,7 +4,7 @@
     name = "Niklas Tasler";
   };
 
-  tarow.facts = import ../facts.nix {inherit pkgs;};
+  tarow.facts = import ../facts.nix;
 
   home.sessionVariables = {
     EDITOR = "nvim";
