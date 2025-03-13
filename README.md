@@ -4,6 +4,8 @@
 
 # nix-config
 
+My personal [NixOS](https://nixos.org/) and [Home Manager](https://github.com/nix-community/home-manager) configurations.
+
 ## Tooling
 
 - [NixOS](https://nixos.org/) - System Configuration
