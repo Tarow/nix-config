@@ -12,4 +12,35 @@
 
 ## Bootstrap
 
-TODO
+Drop into nix devshell:
+
+```bash
+ nix develop github:Tarow/nix-config
+```
+
+Clone repository:
+
+```bash
+git clone https://github.com/Tarow/nix-config.git ~/nix-config && cd ~/nix-config
+```
+
+Manually restore SSH private key and use it to generate age key used by [sops-nix](https://github.com/Mic92/sops-nix).
+
+```bash
+mkdir -p ~/.config/sops/age && ssh-to-age -private-key -i ~/.ssh/id_ed25519 -o ~/.config/sops/age/keys.txt
+```
+
+---
+
+Install System Configuration:
+
+```bash
+nixos-rebuild switch --flake .#<host>
+```
+
+</br>
+Install Home Configurartion:
+
+```bash
+home-manager switch -b bak --flake .#<host>
+```
