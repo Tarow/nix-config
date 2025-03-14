@@ -15,7 +15,7 @@ My personal [NixOS](https://nixos.org/) and [Home Manager](https://github.com/ni
 
 ## Bootstrap
 
-Drop into nix devshell:
+Drop into devshell:
 
 ```bash
  nix develop github:Tarow/nix-config
