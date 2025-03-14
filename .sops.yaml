@@ -7,3 +7,8 @@ creation_rules:
       - age:
           - *desktop
           - *homeserver
+
+  - path_regex: secrets/desktop/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *desktop

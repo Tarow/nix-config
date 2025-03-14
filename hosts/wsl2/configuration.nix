@@ -6,8 +6,6 @@
   outputs,
   ...
 }: {
-  imports = [../shared/configuration.nix];
-
   system.stateVersion = "24.05";
 
   tarow = lib.mkMerge [

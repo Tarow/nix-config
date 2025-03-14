@@ -7,8 +7,9 @@
 }: let
   cfg = config.tarow.sops;
 
+
   # Read encrypted secrets from secret file (without sops config key)
-  secrets = lib.removeAttrs (lib.tarow.readYAML config.sops.defaultSopsFile) ["sops"];
+  readSecrets = file: lib.removeAttrs (lib.tarow.readYAML file) ["sops"];
 
   /* Flatten and extract all nested keys, e.g
     a:
@@ -17,19 +18,34 @@
     d: 2
     => ["a/b/c", "d"]
   */
-  secretKeys = lib.tarow.flattenAttrs "" "/" secrets;
+  getSecretKeys = secrets:  lib.tarow.flattenAttrs "" "/" secrets;
   
   /* Map all keys to a default secret config. E.g.
-    ["a/b/c", "d"] => { "a/b/c" = { }; "d" = { }; }
+    ["a/b/c", "d"] => { "a/b/c" = {owner = ...; group = ...;}; "d" = {owner = ...; group = ...;}; }
   */
-  secretCfg = secretKeys |> map (k: { name = k; value = { }; }) |> builtins.listToAttrs;
+  mapSecrets = secretKeys: secretKeys |> map (k: { name = k; value = {}; }) |> builtins.listToAttrs;
+
+  getSecretCfg = sopsFile: readSecrets sopsFile
+    |> getSecretKeys
+    |> mapSecrets
+    |> lib.mapAttrs (_: v: v // {inherit sopsFile;});
+
+  fullCfg = ([config.sops.defaultSopsFile]++cfg.extraSopsFiles) 
+    |> map getSecretCfg 
+    |> lib.mergeAttrsList;
+
 in {
   options.tarow.sops = {
     enable = lib.options.mkEnableOption "sops-nix";
+    extraSopsFiles = lib.options.mkOption {
+      type = lib.types.listOf lib.types.path;
+      default = [];
+      description = "Path to extra sops files containing encrypted secrets";
+    };
     keyFile = lib.options.mkOption {
       type = lib.types.str;
-      description = "Path to the key file used to encrypt/decrypt secrets";
-      default = "${config.xdg.configHome}/sops/age/keys.txt";
+      description = "Path to the key file used to decrypt secrets";
+      default= "${config.xdg.configHome}/sops/age/keys.txt";
     };
   };
 
@@ -42,7 +58,7 @@ in {
       defaultSopsFormat = "yaml";
       age.keyFile = cfg.keyFile;
 
-      secrets = secretCfg;
+      secrets = fullCfg;
     };
   };
 }

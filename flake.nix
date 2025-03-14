@@ -81,6 +81,9 @@
           [
             {nixpkgs.hostPlatform = system;}
             ./modules/nixos
+            ./modules/shared
+            ./hosts/shared/shared.nix
+            ./hosts/shared/configuration.nix
             systemConfig
           ]
           ++ lib.lists.optionals (userConfigs != null) [
@@ -105,6 +108,8 @@
         extraSpecialArgs = {inherit inputs outputs lib;};
         modules = [
           ./modules/home-manager
+          ./modules/shared
+          ./hosts/shared/shared.nix
           ./hosts/shared/home.nix
           cfgPath
         ];

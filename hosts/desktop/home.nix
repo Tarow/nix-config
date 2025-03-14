@@ -45,7 +45,7 @@
     };
     monitors.configuration = ./monitors.xml;
 
-    sops.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
+    sops.extraSopsFiles = [../../secrets/desktop/secrets.yaml];
   };
 
   home.stateVersion = "24.11";

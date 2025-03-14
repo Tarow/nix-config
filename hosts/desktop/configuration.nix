@@ -8,7 +8,6 @@
   ...
 }: {
   imports = [
-    ../shared/configuration.nix
     ./hardware-configuration.nix
   ];
 
@@ -32,14 +31,15 @@
       "stylix"
     ])
     {facts.ip4Address = "10.1.1.210";}
-    {sops.keyFile = "${config.tarow.facts.userhome}/.config/sops/age/keys.txt";}
+
     {core.configLocation = "~/nix-config#desktop";}
     {monitors.configuration = ./monitors.xml;}
+    {
+      sops.extraSopsFiles = [../../secrets/desktop/secrets.yaml];
+    }
   ];
 
   networking.hostName = "nixos";
-
-  boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = lib.mkForce 0;
 
   nix.settings.trusted-users = ["@wheel"];
 
@@ -119,6 +119,23 @@
   # Necessary for file browsers to browse samba shares
   services.gvfs.enable = true;
 
+  boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = lib.mkForce 0;
   networking.firewall.allowedUDPPorts = [80 443 51820];
   networking.firewall.allowedTCPPorts = [80 443];
+
+  services.borgbackup.jobs = {
+    remote = {
+      paths = [
+        "/home/niklas/stacks"
+      ];
+
+      repo = "ssh://u363719@u363719.your-storagebox.de:23/./backups/desktop";
+      encryption = {
+        mode = "repokey-blake2";
+        passCommand = "cat ${config.sops.secrets."borg/passphrase".path}";
+      };
+      compression = "auto,lzma";
+      startAt = "daily";
+    };
+  };
 }

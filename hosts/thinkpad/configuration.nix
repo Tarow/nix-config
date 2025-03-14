@@ -9,7 +9,6 @@
   ...
 }: {
   imports = [
-    ../shared/configuration.nix
     ./hardware-configuration.nix
     inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x13-amd
   ];

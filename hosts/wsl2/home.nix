@@ -1,9 +1,6 @@
 {
-  inputs,
-  outputs,
   lib,
   config,
-  pkgs,
   ...
 } @ args: {
   config = {
