@@ -28,6 +28,7 @@
       healthchecks.enable = true;
       homepage.enable = true;
       streaming.enable = true;
+      stirling-pdf.enable = true;
       immich.enable = true;
       paperless.enable = true;
       wg-easy.enable = true;
