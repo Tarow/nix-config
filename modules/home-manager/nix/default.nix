@@ -54,6 +54,9 @@ in {
 
   home.packages = with pkgs; [unstable.nixd alejandra];
   programs.vscode.userSettings = {
+    "[nix]" = {
+      "editor.defaultFormatter" = "jnoortheen.nix-ide";
+    };
     "nix.serverPath" = "nixd";
     "nix.enableLanguageServer" = true;
     "nix.hiddenLanguageServerErrors" = [
