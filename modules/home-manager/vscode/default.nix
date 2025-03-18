@@ -16,6 +16,8 @@ in {
     programs.vscode.enableUpdateCheck = false;
     # Enable basic, shared settings here. Each module can add module-specific VSCode settings.
     programs.vscode.userSettings = {
+      "editor.defaultFormatter" = "esbenp.prettier-vscode";
+
       "terminal.integrated.defaultProfile.linux" = "fish";
 
       "terminal.integrated.commandsToSkipShell" = [
@@ -33,9 +35,6 @@ in {
       };
       "editor.linkedEditing" = true;
       "editor.fontLigatures" = true;
-
-      # TODO: Disable after https://github.com/microsoft/vscode/issues/239838 is fixed
-      "terminal.integrated.gpuAcceleration" = "off";
     };
 
     programs.vscode.extensions = with pkgs.vscode-marketplace;

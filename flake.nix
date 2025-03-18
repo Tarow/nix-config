@@ -54,7 +54,7 @@
     home-manager,
     ...
   } @ inputs: let
-    inherit (self) outputs;
+    outputs = self;
     mkLib = pkgs: pkgs.lib.extend (final: prev: (import ./lib final pkgs) // home-manager.lib);
     packages = nixpkgs.legacyPackages;
     hmPackages = home-manager.inputs.nixpkgs.legacyPackages;
