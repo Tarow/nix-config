@@ -16,6 +16,7 @@
         #"golang"
         #"hyprland"
         "java"
+        "mpv"
         "neovim"
         "npm"
         "react"
@@ -58,6 +59,7 @@
     telegram-desktop
     teams-for-linux
     unstable.bitwarden-desktop
+    jellyfin-media-player
   ];
 
   wayland.windowManager.hyprland.settings = {

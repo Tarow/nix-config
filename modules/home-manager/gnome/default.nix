@@ -97,6 +97,7 @@ in {
         {package = pano;}
       ];
     };
+
     # GNOME does not see new applications installed with HM unless until next login.
     # Workaround to make GNOME find applications without needing to relogin again
     # See https://github.com/NixOS/nixpkgs/issues/12757#issuecomment-2253490852
