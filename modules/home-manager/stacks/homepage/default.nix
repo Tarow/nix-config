@@ -68,6 +68,7 @@ in {
       environment = {
         PUID = config.tarow.stacks.defaultUid;
         PGID = config.tarow.stacks.defaultGid;
+        HOMEPAGE_ALLOWED_HOSTS = config.services.podman.containers.${name}.traefik.serviceHost;
       };
       environmentFile = [config.sops.secrets."homepage/env".path];
       port = 3000;

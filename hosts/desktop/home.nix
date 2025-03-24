@@ -60,6 +60,7 @@
     teams-for-linux
     unstable.bitwarden-desktop
     jellyfin-media-player
+    stremio
   ];
 
   wayland.windowManager.hyprland.settings = {

@@ -85,7 +85,7 @@ in {
       };
       G = {
         position = "anywhere";
-        expansion = "| grep %";
+        expansion = "| grep -i %";
         setCursor = true;
       };
       F = {

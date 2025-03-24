@@ -43,6 +43,15 @@ in {
               then traefikCfg.name
               else "";
           };
+          serviceHost = mkOption {
+            type = lib.types.str;
+            default = fullHost;
+            readOnly = true;
+            apply = d:
+              if stackCfg.enable
+              then d
+              else "${ip4Address}:${getPort port 0}";
+          };
           serviceDomain = mkOption {
             type = lib.types.str;
             default = fullHost;

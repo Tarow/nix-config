@@ -33,6 +33,7 @@
       immich.enable = true;
       paperless.enable = true;
       wg-easy.enable = true;
+      uptime-kuma.enable = true;
       traefik = {
         enable = true;
         domain = "ntasler.de";
