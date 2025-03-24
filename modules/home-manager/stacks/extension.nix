@@ -20,6 +20,8 @@
       };
 
       config = {
+        autoUpdate = lib.mkDefault "registry";
+
         network = lib.optional (config.stack  != null) config.stack;
         # TODO: Can be removed with new Quadlet generator?
         # https://github.com/containers/podman/issues/24637
