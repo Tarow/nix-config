@@ -34,7 +34,7 @@ in {
       };
 
       sockpuppetbrowser = {
-        image = "dgtlmoon/sockpuppetbrowser:latest";
+        image = "docker.io/dgtlmoon/sockpuppetbrowser:latest";
         environment = {
           SCREEN_WIDTH = 1920;
           SCREEN_HEIGHT = 1024;
