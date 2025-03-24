@@ -16,6 +16,11 @@ in {
         "${storage}/data:/app/data"
         "${config.tarow.podman.socketLocation}:/var/run/docker.sock:ro"
       ];
+      environment = {
+        UPTIME_KUMA_DB_TYPE = "sqlite";
+        PUID = config.tarow.stacks.defaultUid;
+        PGID = config.tarow.stacks.defaultGid;
+      };
 
       port = 3001;
       traefik = {
