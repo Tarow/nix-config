@@ -35,6 +35,8 @@ in {
       };
       "editor.linkedEditing" = true;
       "editor.fontLigatures" = true;
+
+      "update.mode" = "none";
     };
 
     programs.vscode.extensions = with pkgs.vscode-marketplace;
