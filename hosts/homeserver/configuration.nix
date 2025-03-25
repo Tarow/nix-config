@@ -14,7 +14,7 @@
   ];
 
   tarow.bootLoader.enable = true;
-
+  tarow.shells.enable = true;
   services.openssh.enable = true;
 
   environment.systemPackages = map lib.lowPrio [
