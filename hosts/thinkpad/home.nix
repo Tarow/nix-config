@@ -40,6 +40,7 @@
     obsidian
     telegram-desktop
     teams-for-linux
+    stremio
   ];
 
   #systemd.user.sessionVariables = config.home.sessionVariables;
