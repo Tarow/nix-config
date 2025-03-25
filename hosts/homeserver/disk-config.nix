@@ -8,6 +8,7 @@
           type = "gpt";
           partitions = {
             esp = {
+              name = "ESP";
               type = "EF00";
               size = "500M";
               content = {
