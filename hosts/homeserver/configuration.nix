@@ -25,6 +25,7 @@
   boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = lib.mkForce 0;
   networking.firewall.allowedUDPPorts = [80 443 51820];
   networking.firewall.allowedTCPPorts = [80 443];
+  networking.hostName = "homeserver";
 
   system.stateVersion = "24.11";
 }
