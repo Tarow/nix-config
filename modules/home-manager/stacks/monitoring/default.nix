@@ -25,7 +25,7 @@ in {
   config = lib.mkIf cfg.enable {
     services.podman.containers = {
       ${grafanaName} = {
-        image = "grafana/grafana:latest";
+        image = "docker.io/grafana/grafana:latest";
         user = config.tarow.stacks.defaultUid;
         volumes = [
           "${grafanaDatasources}:/etc/grafana/provisioning/datasources/datasources.yaml"
@@ -51,7 +51,7 @@ in {
       };
 
       ${lokiName} = {
-        image = "grafana/loki:latest";
+        image = "docker.io/grafana/loki:latest";
         exec = "-config.file=/etc/loki/local-config.yaml";
         user = config.tarow.stacks.defaultUid;
         volumes = [
@@ -74,7 +74,7 @@ in {
         port = 12345;
         configDst = "/etc/alloy/config.alloy";
       in {
-        image = "grafana/alloy:latest";
+        image = "docker.io/grafana/alloy:latest";
         volumes = [
           "${alloyConfig}:${configDst}"
           "${config.tarow.podman.socketLocation}:/var/run/docker.sock:ro"
@@ -90,6 +90,30 @@ in {
           settings = {
             description = "Open-source observability pipeline";
             icon = "alloy";
+          };
+        };
+      };
+
+      prometheus = let
+        configDst = "/etc/prometheus/prometheus.yml";
+      in {
+        image = "docker.io/prom/prometheus:latest";
+        exec = "--config.file=${configDst}";
+        user = config.tarow.stacks.defaultUid;
+        volumes = [
+          "${storage}/prometheus/data:/prometheus"
+          "${./prometheus_config.yml}:${configDst}"
+        ];
+
+        port = 9090;
+        stack = stackName;
+        traefik.name = "prometheus";
+        homepage = {
+          category = "Monitoring";
+          name = "Prometheus";
+          settings = {
+            description = "Open-source monitoring system";
+            icon = "prometheus";
           };
         };
       };

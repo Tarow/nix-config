@@ -28,6 +28,7 @@
       filebrowser.enable = true;
       healthchecks.enable = true;
       homepage.enable = true;
+      monitoring.enable = true;
       streaming.enable = true;
       stirling-pdf.enable = true;
       immich.enable = true;

@@ -22,6 +22,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    inputs.disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     stylix = {
       url = "github:danth/stylix/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -123,6 +128,7 @@
       wsl2 = mkSystem {systemConfig = ./hosts/wsl2/configuration.nix;};
       thinkpad = mkSystem {systemConfig = ./hosts/thinkpad/configuration.nix;};
       desktop = mkSystem {systemConfig = ./hosts/desktop/configuration.nix;};
+      homeserver = mkSystem {systemConfig = ./hosts/homeserver/configuration.nix;};
     };
 
     homeConfigurations = {
