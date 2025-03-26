@@ -122,6 +122,18 @@ in {
           };
         };
       };
+
+      pod-exporter = {
+        image = "quay.io/navidys/prometheus-podman-exporter:latest";
+        volumes = [
+          "${config.tarow.podman.socketLocation}:/var/run/podman/podman.sock"
+        ];
+        environment.CONTAINER_HOST = "unix:///var/run/podman/podman.sock";
+        user = config.tarow.stacks.defaultUid;
+        extraPodmanArgs = ["--security-opt=label=disable"];
+
+        stack = stackName;
+      };
     };
   };
 }
