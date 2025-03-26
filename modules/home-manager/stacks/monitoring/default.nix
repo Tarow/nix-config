@@ -19,7 +19,6 @@
   prometheusPort = 9090;
   prometheusUrl = "http://${prometheusName}:${toString prometheusPort}";
 
-  grafanaDatasources = pkgs.writeText "datasources.yaml" (import ./grafana_datasources.nix lokiUrl prometheusUrl);
   lokiConfig = pkgs.writeText "config-local.yaml" (import ./loki_local_config.nix lokiPort);
   alloyConfig = pkgs.writeText "config.alloy" (import ./alloy_config.nix lokiUrl);
 in {
@@ -29,13 +28,31 @@ in {
 
   config = lib.mkIf cfg.enable {
     services.podman.containers = {
-      ${grafanaName} = {
+      ${grafanaName} = let
+        grafanaDatasources = pkgs.writeText "datasources.yaml" (import ./grafana_datasources.nix lokiUrl prometheusUrl);
+        dashboardPath = "/var/lib/grafana/dashboards";
+        dashboardProvider = pkgs.writeText "provider.yml" ''
+          apiVersion: 1
+          providers:
+            - name: "Dashboard provider"
+              orgId: 1
+              type: file
+              disableDeletion: false
+              updateIntervalSeconds: 10
+              allowUiUpdates: false
+              options:
+                path: ${dashboardPath}
+                foldersFromFilesStructure: true
+        '';
+      in {
         image = "docker.io/grafana/grafana:latest";
         user = config.tarow.stacks.defaultUid;
         volumes = [
-          "${grafanaDatasources}:/etc/grafana/provisioning/datasources/datasources.yaml"
           "${storage}/grafana/data:/var/lib/grafana"
-        ];
+          "${grafanaDatasources}:/etc/grafana/provisioning/datasources/datasources.yaml"
+          "${dashboardProvider}:/etc/grafana/provisioning/dashboards/provider.yml"
+        ] ++ (builtins.readDir ./dashboards |> builtins.attrNames |> map (file: "${./dashboards}/${file}:${dashboardPath}/${file}"));
+
         environment = {
           GF_AUTH_ANONYMOUS_ENABLED = "true";
           GF_AUTH_ANONYMOUS_ORG_ROLE = "Admin";
