@@ -60,8 +60,11 @@ in {
       defaultSopsFile = ../../../secrets/secrets.yaml;
       defaultSopsFormat = "yaml";
       age.keyFile = cfg.keyFile;
-
       secrets = fullCfg;
+
+      # Do not use generated host keys to decrypt secrets (e.g. /etc/ssh/ssh_host_ed25519_key)
+      age.sshKeyPaths = [];
+      gnupg.sshKeyPaths = [];
     };
   };
 }
