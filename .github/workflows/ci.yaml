@@ -28,7 +28,7 @@ jobs:
             os-label: ubuntu-latest
 
           - hostName: Homeserver
-            nixosCfgKey:
+            nixosCfgKey: homeserver
             homeCfgKey: homeserver
             os-label: ubuntu-latest
 
