@@ -15,9 +15,9 @@
     }
   ];
 
-  sops.secrets."ssh_authorized_keys".path = "${config.home.homeDirectory}/.ssh/authorized_keys";
-
   home.stateVersion = "24.11";
+
+  sops.secrets."ssh_authorized_keys".path = "${config.home.homeDirectory}/.ssh/authorized_keys";
 
   tarow = {
     facts.ip4Address = "10.1.1.99";
@@ -47,4 +47,8 @@
       };
     };
   };
+
+  # Also expose port on localhost, because we configure NixOS node-exporter to publish metrics
+  #services.podman.containers.prometheus.ports = lib.mkIf (config.tarow.stacks.monitoring.enable) ["9090:9090"];
+  #services.podman.containers = lib.mkForce {};
 }

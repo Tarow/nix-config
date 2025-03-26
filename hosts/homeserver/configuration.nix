@@ -8,16 +8,15 @@
     ./hardware-configuration.nix
   ];
 
+  system.stateVersion = "24.11";
+
   tarow = {
     core = {
       enable = true;
       configLocation = "~/nix-config#homeserver";
     };
-
     bootLoader.enable = true;
-
     shells.enable = true;
-
     sops = {
       enable = true;
       extraSopsFiles = [../../secrets/homeserver/secrets.yaml];
@@ -32,12 +31,18 @@
     };
   };
 
-  time.timeZone = lib.mkDefault "Europe/Berlin";
+  time.timeZone = "Europe/Berlin";
 
   boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = lib.mkForce 0;
-  networking.firewall.allowedUDPPorts = [80 443 51820];
-  networking.firewall.allowedTCPPorts = [80 443];
+  networking.firewall.allowedUDPPorts = [53 80 443 51820];
+  networking.firewall.allowedTCPPorts = [53 80 443];
   networking.hostName = "homeserver";
+
+  services.prometheus.exporters.node = {
+      enable = true;
+      port = 9191;
+      enabledCollectors = [ "systemd" ];
+  };
 
   services.borgbackup.jobs = let
     base = {
@@ -66,5 +71,5 @@
     local.repo = "/mnt/hdd1/backups/homeserver";
   } |> lib.mapAttrs (_: job: (base // job));
 
-  system.stateVersion = "24.11";
+
 }

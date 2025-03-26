@@ -9,12 +9,17 @@
 
   grafanaName = "grafana";
   lokiName = "loki";
+  prometheusName = "prometheus";
   alloyName = "alloy";
   storage = "${config.tarow.stacks.storageBaseDir}/${stackName}";
 
   lokiPort = 3100;
   lokiUrl = "http://${lokiName}:${toString lokiPort}";
-  grafanaDatasources = pkgs.writeText "datasources.yaml" (import ./grafana_datasources.nix lokiUrl);
+
+  prometheusPort = 9090;
+  prometheusUrl = "http://${prometheusName}:${toString prometheusPort}";
+
+  grafanaDatasources = pkgs.writeText "datasources.yaml" (import ./grafana_datasources.nix lokiUrl prometheusUrl);
   lokiConfig = pkgs.writeText "config-local.yaml" (import ./loki_local_config.nix lokiPort);
   alloyConfig = pkgs.writeText "config.alloy" (import ./alloy_config.nix lokiUrl);
 in {
@@ -94,7 +99,7 @@ in {
         };
       };
 
-      prometheus = let
+      ${prometheusName} = let
         configDst = "/etc/prometheus/prometheus.yml";
       in {
         image = "docker.io/prom/prometheus:latest";
@@ -105,7 +110,7 @@ in {
           "${./prometheus_config.yml}:${configDst}"
         ];
 
-        port = 9090;
+        port = prometheusPort;
         stack = stackName;
         traefik.name = "prometheus";
         homepage = {
