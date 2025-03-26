@@ -9,16 +9,25 @@
     ./hardware-configuration.nix
   ];
 
-  tarow.bootLoader.enable = true;
-  tarow.shells.enable = true;
-  services.openssh.enable = true;
+  tarow = {
+    core = {
+      enable = true;
+      configLocation = "~/nix-config#homeserver";
+    };
+    bootLoader.enable = true;
+    shells.enable = true;
+    sops.enable = true;
+  };
 
-  environment.systemPackages = map lib.lowPrio [
-    pkgs.curl
-    pkgs.gitMinimal
-  ];
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = false;
+    };
+  };
 
-  users.users.root.openssh.authorizedKeys.keys = [
+  users.mainUser.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILWjCdg7504Sgb/yZGjTBvm5OdRHEv7a7BiP4fOdYo2v niklas@nixos"
   ];
 

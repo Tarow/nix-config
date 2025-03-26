@@ -6,6 +6,8 @@
 }: let
   cfg = config.tarow.facts;
 in {
+  imports = [(lib.mkAliasOptionModule ["users" "mainUser"] ["users" "users" cfg.username])];
+
   config = {
     users.groups.${cfg.username} = {
       inherit (cfg) gid;
