@@ -12,3 +12,8 @@ creation_rules:
     key_groups:
       - age:
           - *desktop
+
+  - path_regex: secrets/homeserver/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *homeserver

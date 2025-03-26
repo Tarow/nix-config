@@ -1,4 +1,8 @@
-{lib, ...}: {
+{
+  lib,
+  config,
+  ...
+}: {
   imports = [
     {
       tarow = lib.tarow.enableModules [
@@ -10,6 +14,8 @@
       ];
     }
   ];
+
+  sops.secrets."ssh_authorized_keys".path = "${config.home.homeDirectory}/.ssh/authorized_keys";
 
   home.stateVersion = "24.11";
 

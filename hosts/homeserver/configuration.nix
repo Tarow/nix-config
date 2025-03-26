@@ -1,7 +1,6 @@
 {
+  config,
   lib,
-  pkgs,
-  inputs,
   ...
 }: {
   imports = [
@@ -23,12 +22,12 @@
     enable = true;
     settings = {
       PermitRootLogin = "no";
-      PasswordAuthentication = false;
+      PasswordAuthentication = true;
     };
   };
 
-  users.mainUser.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILWjCdg7504Sgb/yZGjTBvm5OdRHEv7a7BiP4fOdYo2v niklas@nixos"
+  users.mainUser.openssh.authorizedKeys.keyFiles = [
+    config.sops.secrets."ssh_authorized_keys".path
   ];
 
   boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = lib.mkForce 0;
