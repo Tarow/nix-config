@@ -5,31 +5,31 @@
   ...
 }: let
   cfg = config.tarow.aichat;
-
-  wrapper = pkgs.symlinkJoin {
-    name = "aichat";
-    paths = [
-      (pkgs.writeShellScriptBin "aichat" ''
-        export GEMINI_API_KEY=''$(cat ${config.sops.secrets.GEMINI_API_KEY.path})
-        exec ${lib.getExe pkgs.aichat} "$@"
-      '')
-      pkgs.aichat
-    ];
-  };
 in {
   options.tarow.aichat = {
     enable = lib.options.mkEnableOption "aichat";
   };
   config = lib.mkIf cfg.enable {
-    home.packages = [wrapper];
+    home.packages = [pkgs.aichat];
     home.shellAliases = {
-      "ai" = lib.getExe wrapper;
+      "ai" = lib.getExe pkgs.aichat;
     };
 
-    xdg.configFile."aichat/config.yaml".text = ''
-      model: gemini:gemini-1.5-flash-latest
-      clients:
-      - type: gemini
-    '';
+    sops.templates."aichat-config" = {
+      content = ''
+        model: gemini:gemini-1.5-flash-latest
+
+        clients:
+          - type: gemini
+            name: gemini
+            api_key: ${config.sops.placeholder.GEMINI_API_KEY}
+
+          - type: openai-compatible
+            name: deepseek
+            api_base: https://api.deepseek.com
+            api_key: ${config.sops.placeholder.DEEPSEEK_API_KEY}
+      '';
+      path = "${config.xdg.configHome}/aichat/config.yaml";
+    };
   };
 }
