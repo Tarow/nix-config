@@ -71,4 +71,9 @@
   };
 
   #systemd.user.sessionVariables = config.home.sessionVariables;
+
+  #services.podman.containers."podman1-exporter" = {
+  #  image = "ealen/echo-server";
+  #};
+  programs.zellij.enable = true;
 }
