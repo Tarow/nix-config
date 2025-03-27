@@ -20,6 +20,8 @@ in {
           PLAYWRIGHT_DRIVER_URL = "ws://sockpuppetbrowser:3000";
         };
 
+        extraPodmanArgs = ["--memory=2g"];
+
         stack = name;
         port = 5000;
         traefik.name = name;
