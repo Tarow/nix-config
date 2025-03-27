@@ -22,9 +22,12 @@ in {
   };
   config = lib.mkIf cfg.enable {
     home.packages = [wrapper];
+    home.shellAliases = {
+      "ai" = lib.getExe wrapper;
+    };
 
     xdg.configFile."aichat/config.yaml".text = ''
-      model: gemini
+      model: gemini:gemini-1.5-flash-latest
       clients:
       - type: gemini
     '';
