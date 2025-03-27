@@ -7,6 +7,7 @@
   imports = [
     {
       tarow = lib.tarow.enableModules [
+        "aichat"
         "angular"
         "core"
         "direnv"
