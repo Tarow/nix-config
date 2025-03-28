@@ -19,7 +19,7 @@
       "bootLoader"
       "gaming"
       "gnome"
-
+      "docker"
       "keyboard"
       "locale"
       "networkManager"

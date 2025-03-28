@@ -10,10 +10,12 @@
         "aichat"
         "angular"
         "core"
+        "copilot"
         "direnv"
         "ghostty"
         "git"
         "gnome"
+
         #"golang"
         #"hyprland"
         "java"
