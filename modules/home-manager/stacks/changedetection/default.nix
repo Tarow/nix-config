@@ -20,7 +20,7 @@ in {
           PLAYWRIGHT_DRIVER_URL = "ws://sockpuppetbrowser:3000";
         };
 
-        extraPodmanArgs = ["--memory=2g"];
+        extraPodmanArgs = ["--memory=1g"];
 
         stack = name;
         port = 5000;
