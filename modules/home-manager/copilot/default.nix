@@ -23,6 +23,16 @@ in {
         key = "alt+right";
         command = "editor.action.inlineSuggest.commit";
       }
+      {
+        key = "tab";
+        command = "-editor.action.inlineSuggest.commit";
+        when = "inlineEditIsVisible && tabShouldAcceptInlineEdit && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible || inlineSuggestionHasIndentationLessThanTabSize && inlineSuggestionVisible && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible || inlineEditIsVisible && inlineSuggestionHasIndentationLessThanTabSize && inlineSuggestionVisible && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible || inlineEditIsVisible && inlineSuggestionVisible && tabShouldAcceptInlineEdit && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible";
+      }
+      {
+        key = "tab";
+        command = "-editor.action.inlineSuggest.commit";
+        when = "inInlineEditsPreviewEditor";
+      }
     ];
   };
 }
