@@ -15,9 +15,6 @@
         "ghostty"
         "git"
         "gnome"
-
-        #"golang"
-        #"hyprland"
         "java"
         "mpv"
         "neovim"
@@ -30,6 +27,7 @@
         "stacks"
         "stylix"
         "vscode"
+        "zen-browser"
       ];
     }
   ];
@@ -54,7 +52,6 @@
 
   home.stateVersion = "24.11";
 
-  programs.firefox.enable = true;
   home.packages = with pkgs; [
     bruno
     discord
