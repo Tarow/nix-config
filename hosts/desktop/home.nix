@@ -62,6 +62,8 @@
     unstable.bitwarden-desktop
     jellyfin-media-player
     stremio
+    pinta
+    glow
   ];
 
   wayland.windowManager.hyprland.settings = {
