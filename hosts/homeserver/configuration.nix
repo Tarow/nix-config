@@ -35,7 +35,7 @@
 
   boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = lib.mkForce 0;
   networking.firewall.allowedUDPPorts = [53 80 443 51820];
-  networking.firewall.allowedTCPPorts = [53 80 443];
+  networking.firewall.allowedTCPPorts = [21 53 80 443] ++ (lib.range 40000 40009);
   networking.hostName = "homeserver";
 
   services.prometheus.exporters.node = {

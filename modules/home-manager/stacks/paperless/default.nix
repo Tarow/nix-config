@@ -88,7 +88,7 @@ in {
           "${storage}/consume:${home}"
         ];
         environment = {
-          #PUBLIC_IP = "0.0.0.0"; # TODO; Make configurable
+          PUBLIC_IP = config.tarow.facts.ip4Address;
           FTP_USER = user;
           UID = uid;
           GID = gid;
