@@ -10,12 +10,11 @@
         "aichat"
         "angular"
         "core"
+        "copilot"
         "direnv"
         "ghostty"
         "git"
         "gnome"
-        #"golang"
-        #"hyprland"
         "java"
         "mpv"
         "neovim"
@@ -28,6 +27,7 @@
         "stacks"
         "stylix"
         "vscode"
+        "zen-browser"
       ];
     }
   ];
@@ -62,6 +62,8 @@
     unstable.bitwarden-desktop
     jellyfin-media-player
     stremio
+    pinta
+    glow
   ];
 
   wayland.windowManager.hyprland.settings = {

@@ -22,6 +22,9 @@ in {
     programs.vscode.userSettings = {
       "java.jdt.ls.java.home" = jdk.home;
       "java.import.gradle.java.home" = jdk.home;
+      "[java]" = {
+        "editor.defaultFormatter" = "redhat.java";
+      };
     };
   };
 }

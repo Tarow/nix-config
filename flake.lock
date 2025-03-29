@@ -501,6 +501,22 @@
         "type": "github"
       }
     },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1742288794,
+        "narHash": "sha256-Txwa5uO+qpQXrNG4eumPSD+hHzzYi/CdaM80M9XRLCo=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "b6eaf97c6960d97350c584de1b6dcff03c9daf42",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nvf": {
       "inputs": {
         "flake-parts": "flake-parts",
@@ -539,7 +555,8 @@
         "nvf": "nvf",
         "sops-nix": "sops-nix",
         "stylix": "stylix",
-        "walker": "walker"
+        "walker": "walker",
+        "zen-browser": "zen-browser"
       }
     },
     "rust-overlay": {
@@ -762,6 +779,24 @@
       "original": {
         "owner": "abenz1267",
         "repo": "walker",
+        "type": "github"
+      }
+    },
+    "zen-browser": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1743216975,
+        "narHash": "sha256-29xgm8F3DCcTNrQZ9V3Pwj6BkjalkKvGyjd+sF9/+3k=",
+        "owner": "0xc000022070",
+        "repo": "zen-browser-flake",
+        "rev": "165ee672e6b17a8bcc0a3fb51fab3f79715cc1f3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "0xc000022070",
+        "repo": "zen-browser-flake",
         "type": "github"
       }
     }

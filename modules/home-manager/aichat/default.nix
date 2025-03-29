@@ -17,7 +17,7 @@ in {
 
     sops.templates."aichat-config" = {
       content = ''
-        model: gemini:gemini-1.5-flash-latest
+        model: deepseek:deepseek-chat
 
         clients:
           - type: gemini
