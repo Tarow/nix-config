@@ -17,6 +17,17 @@ in {
         "${config.sops.templates."dockdns_config.yaml".path}:/app/config.yaml"
         "${config.tarow.podman.socketLocation}:/var/run/docker.sock:ro"
       ];
+
+      port = 8080;
+      traefik.name = name;
+      homepage = {
+        category = "Utilities";
+        name = "dockdns";
+        settings = {
+          description = "DNS Updater";
+          icon = "azure-dns";
+        };
+      };
     };
   };
 }

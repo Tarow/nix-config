@@ -6,7 +6,7 @@ in ''
   debounceTime: 10
   maxDebounceTime: 600
 
-  webUI: false
+  webUI: true
 
   log:
     level: info
