@@ -1,6 +1,7 @@
 {pkgs, lib, config, ...}:
 
-
+let globalConf = config;
+in
 {
     # Extend the podman options in order to custom build custom abstraction
   options.services.podman.containers = lib.mkOption {
@@ -21,6 +22,7 @@
 
       config = {
         autoUpdate = lib.mkIf (lib.hasSuffix ":latest" config.image) (lib.mkDefault "registry");
+        environment.TZ = lib.mkDefault globalConf.tarow.stacks.defaultTz;
 
         network = lib.optional (config.stack  != null) config.stack;
         # TODO: Can be removed with new Quadlet generator?
