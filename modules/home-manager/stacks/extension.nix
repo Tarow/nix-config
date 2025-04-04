@@ -1,6 +1,7 @@
 {pkgs, lib, config, ...}:
 
-let globalConf = config;
+let 
+  globalConf = config;
 in
 {
     # Extend the podman options in order to custom build custom abstraction
