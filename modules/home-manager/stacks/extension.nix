@@ -23,7 +23,7 @@ in
 
       config = {
         autoUpdate = lib.mkIf (lib.hasSuffix ":latest" config.image) (lib.mkDefault "registry");
-        environment.TZ = lib.mkDefault globalConf.tarow.stacks.defaultTz;
+        volumes  = ["/etc/localtime:/etc/localtime:ro"];
 
         network = lib.optional (config.stack  != null) config.stack;
         # TODO: Can be removed with new Quadlet generator?
