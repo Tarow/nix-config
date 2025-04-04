@@ -37,6 +37,7 @@ in {
       "editor.fontLigatures" = true;
 
       "update.mode" = "none";
+      # "workbench.sideBar.location" = "right";
     };
 
     programs.vscode.extensions = with pkgs.vscode-marketplace;
