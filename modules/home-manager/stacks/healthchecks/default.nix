@@ -24,6 +24,7 @@ in {
           REGISTRATION_OPEN = "False";
           INTEGRATIONS_ALLOW_PRIVATE_IPS = "True";
           APPRISE_ENABLED = "True";
+          DEBUG = "False";
         };
         environmentFile = [config.sops.secrets."healthchecks/env".path];
         port = 8000;
