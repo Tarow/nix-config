@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: {
   imports = [
@@ -32,7 +33,6 @@
   };
 
   time.timeZone = "Europe/Berlin";
-
   boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = lib.mkForce 0;
   networking.firewall.allowedUDPPorts = [53 80 443 51820];
   networking.firewall.allowedTCPPorts = [21 53 80 443 8888] ++ (lib.range 40000 40009);
@@ -45,6 +45,7 @@
   };
 
   services.borgbackup.jobs = let
+    ping = endpoint: "${lib.getExe pkgs.curl} --retry 3 --retry-max-time 30 https://healthchecks.ntasler.de/ping/uG6NthbpgAp0NQjlY5vzyg/${endpoint}";
     base = {
       paths = [
         "${config.tarow.facts.userhome}/stacks"
@@ -57,18 +58,27 @@
       compression = "auto,lzma";
       startAt = "daily";
       dateFormat = "+%Y-%m-%dT%H:%M:%S";
+      extraArgs = "--info";
       extraCreateArgs = "--stats --progress";
 
       prune.keep = {
         within = "1d"; # Keep all archives from the last day
-        daily = 7;
+        daily = 7; 
         weekly = 4;
         monthly = 3;
       };
     };
   in {
-    remote.repo = "ssh://u363719@u363719.your-storagebox.de:23/./backups/homeserver";
-    local.repo = "/mnt/hdd1/backups/homeserver";
+    remote = {
+      repo = "ssh://u363719@u363719.your-storagebox.de:23/./backups/homeserver";
+      preHook = ping "homeserver-remote/start?create=1";
+      postHook = ping "homeserver-remote/$exitStatus";
+    };
+    local = {
+      repo = "/mnt/hdd1/backups/homeserver";
+      preHook = ping "homeserver-local/start?create=1";
+      postHook = ping "homeserver-local/$exitStatus";
+    };
   } |> lib.mapAttrs (_: job: (base // job));
 
 
