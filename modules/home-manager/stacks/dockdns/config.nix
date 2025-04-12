@@ -9,7 +9,7 @@ in ''
   webUI: true
 
   log:
-    level: info
+    level: debug
 
   zones:
     - name: ${domain}

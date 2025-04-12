@@ -27,7 +27,7 @@
       enable = true;
       adguard.enable = true;
       audiobookshelf.enable = true;
-      calibre.enable = true;
+      #calibre.enable = true;
       changedetection.enable = true;
       dozzle.enable = true;
       dockdns.enable = true;
