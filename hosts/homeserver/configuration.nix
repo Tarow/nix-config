@@ -67,13 +67,13 @@
         weekly = 4;
         monthly = 3;
       };
-    };
+    }; 
   in {
     remote = {
       repo = "ssh://u363719@u363719.your-storagebox.de:23/./backups/homeserver";
       preHook = ping "homeserver-remote/start?create=1";
       postHook = ping "homeserver-remote/$exitStatus";
-    };
+    };  
     local = {
       repo = "/mnt/hdd1/backups/homeserver";
       preHook = ping "homeserver-local/start?create=1";
