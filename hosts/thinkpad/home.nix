@@ -10,18 +10,17 @@
 
   tarow = lib.mkMerge [
     (lib.tarow.enableModules [
-      "angular"
+      "aichat"
       "core"
       "git"
       "shells"
       "golang"
       "ghostty"
       "gnome"
-      "npm"
-      "react"
       "sshClient"
-      "java"
       "stylix"
+      # "sops"
+      "podman"
       "vscode"
     ])
     {
