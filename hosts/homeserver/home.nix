@@ -41,6 +41,7 @@
       paperless.enable = true;
       wg-easy.enable = true;
       uptime-kuma.enable = true;
+      skatcounter.enable = true;
       traefik = {
         enable = true;
         domain = "ntasler.de";
