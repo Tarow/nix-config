@@ -6,6 +6,8 @@
   name = "dockdns";
   cfg = config.tarow.stacks.${name};
 in {
+  imports = [./extension.nix];
+
   options.tarow.stacks.${name}.enable = lib.mkEnableOption name;
 
   config = lib.mkIf cfg.enable {

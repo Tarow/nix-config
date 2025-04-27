@@ -2,7 +2,7 @@
   buildGoModule,
   fetchFromGitHub,
 }:
-buildGoModule rec {
+buildGoModule {
   name = "dockdns";
 
   src = fetchFromGitHub {

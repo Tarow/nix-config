@@ -61,6 +61,10 @@ in {
               then "https://${d}"
               else "http://${ip4Address}:${getPort port 0}";
           };
+          middlewares = mkOption {
+            type = types.listOf (types.enum ["public" "private" "authelia"]);
+            default = ["private"];
+          };
         };
       };
 
@@ -69,13 +73,15 @@ in {
         hostPort = getPort port 0;
         containerPort = getPort port 1;
       in {
-        labels = lib.optionalAttrs enableTraefik {
-          "traefik.enable" = "true";
-          "traefik.http.routers.${name}.rule" = ''Host(\`${fullHost}\`)'';
-          "traefik.http.routers.${name}.entrypoints" = "websecure";
-          "traefik.http.routers.${name}.service" = name;
-          "traefik.http.services.${name}.loadbalancer.server.port" = containerPort;
-        };
+        labels =
+          lib.optionalAttrs enableTraefik {
+            "traefik.enable" = "true";
+            "traefik.http.routers.${name}.rule" = ''Host(\`${fullHost}\`)'';
+            "traefik.http.routers.${name}.entrypoints" = "websecure";
+            "traefik.http.routers.${name}.service" = name;
+            "traefik.http.services.${name}.loadbalancer.server.port" = containerPort;
+          }
+          // (import ./middlewares.nix name traefikCfg.middlewares);
         network = lib.optional enableTraefik stackCfg.network;
         ports = lib.optional (!enableTraefik && (port != null)) "${hostPort}:${containerPort}";
       };

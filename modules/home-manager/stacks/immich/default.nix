@@ -37,7 +37,10 @@ in {
         port = 2283;
 
         stack = name;
-        traefik.name = name;
+        traefik = {
+          name = name;
+          middlewares = ["public"];
+        };
         homepage = {
           category = "Media";
           name = "Immich";
@@ -50,7 +53,6 @@ in {
 
       ${redisName} = {
         image = "docker.io/redis:6.2";
-
         stack = name;
       };
 
