@@ -58,7 +58,7 @@
       compression = "auto,lzma";
       startAt = "daily";
       dateFormat = "+%Y-%m-%dT%H:%M:%S";
-      extraArgs = "--debug --show-rc";
+      extraArgs = "-v --debug --show-rc";
       extraCreateArgs = "--stats --progress";
 
       prune.keep = {
