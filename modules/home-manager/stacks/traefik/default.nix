@@ -45,9 +45,9 @@ in {
         "/run/user/1000/podman/podman.sock:/var/run/docker.sock:ro"
         "${pkgs.writeText "traefik.yml" (import ./config/traefik.nix {inherit (cfg) domain;})}:/etc/traefik/traefik.yml:ro"
         "${./config/dynamic.yml}:/dynamic/config.yml"
-        "${storage}/plugins:/plugins"
+        "${./config/IP2LOCATION-LITE-DB1.IPV6.BIN}:/plugins/geoblock/IP2LOCATION-LITE-DB1.IPV6.BIN"
       ];
-      labels = {
+      labels = lib.mkForce {
         "traefik.enable" = "true";
         "traefik.http.routers.api.entrypoints" = "websecure";
         "traefik.http.routers.api.rule" = ''Host(\`${name}.${cfg.domain}\`)'';
