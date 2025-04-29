@@ -35,9 +35,20 @@ in {
 
     services.podman.containers.${name} = {
       image = "traefik:v3";
+
+      socketActivation = [
+        {
+          port = 80;
+          fileDescriptorName = "web";
+        }
+        {
+          port = 443;
+          fileDescriptorName = "websecure";
+        }
+      ];
       ports = [
-        "443:443"
-        "80:80"
+        #"443:443"
+        #"80:80"
       ];
       environmentFile = [config.sops.secrets."traefik/env".path];
       volumes = [

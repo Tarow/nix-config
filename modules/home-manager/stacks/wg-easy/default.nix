@@ -15,6 +15,7 @@ in {
       volumes = [
         "${storage}/config:/etc/wireguard"
       ];
+
       ports = ["51820:51820/udp"];
       addCapabilities = ["NET_ADMIN" "NET_RAW" "SYS_MODULE"];
       extraPodmanArgs = [

@@ -22,7 +22,7 @@ http:
           - public-ratelimit
           - security-headers
           - geoblock
-          - crowdsec-bouncer
+          #- crowdsec-bouncer
           #- authelia
 
     private-chain:
@@ -45,7 +45,7 @@ http:
     public-ratelimit:
       rateLimit:
         average: 100
-        burst: 50
+        burst: 100
 
     authelia:
       forwardAuth:
