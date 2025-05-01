@@ -40,7 +40,7 @@
       stirling-pdf.enable = true;
       immich.enable = true;
       paperless.enable = true;
-      wg-easy.enable = true;
+      #wg-easy.enable = true;
       uptime-kuma.enable = true;
       skatcounter.enable = true;
       traefik = {
