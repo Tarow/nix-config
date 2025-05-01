@@ -22,6 +22,8 @@
       enable = true;
       extraSopsFiles = [../../secrets/homeserver/secrets.yaml];
     };
+
+    wg-server.enable = true;
   };
 
   services.openssh = {

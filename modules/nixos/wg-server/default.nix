@@ -22,35 +22,36 @@ in {
     };
     ip = mkOption {
       type = types.str;
-      default = "10.10.10.1/24";
+      default = "10.2.2.1/24";
+    };
+    privateKeyFile = mkOption {
+      type = types.str;
+      default = config.sops.secrets."wireguard/pk".path;
     };
   };
   config = lib.mkIf cfg.enable {
     networking.nat.enable = true;
     networking.nat.externalInterface = cfg.externalInterface;
-    networking.nat.internalInterfaces = cfg.internalInterface;
+    networking.nat.internalInterfaces = [cfg.internalInterface];
     networking.firewall = {
       allowedUDPPorts = [cfg.port];
     };
 
-    networking.wireguard.interfaces = {
-      wg0 = {
-        ips = [cfg.ip];
-        listenPort = cfg.port;
+    networking.wireguard.interfaces.${cfg.internalInterface} = {
+      ips = [cfg.ip];
+      listenPort = cfg.port;
 
-        postSetup = ''
-          ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s ${cfg.ip} -o ${cfg.externalInterface} -j MASQUERADE
-        '';
+      postSetup = ''
+        ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s ${cfg.ip} -o ${cfg.externalInterface} -j MASQUERADE
+      '';
 
-        postShutdown = ''
-          ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s ${cfg.ip} -o ${cfg.externalInterface} -j MASQUERADE
-        '';
+      postShutdown = ''
+        ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s ${cfg.ip} -o ${cfg.externalInterface} -j MASQUERADE
+      '';
 
-        privateKeyFile = config.sops.secrets."wireguard/pk".path;
+      privateKeyFile = cfg.privateKeyFile;
 
-        peers = [
-        ];
-      };
+      peers = lib.removeAttrs (import ./peers.nix config) ["homeserver"] |> lib.attrValues;
     };
   };
 }
