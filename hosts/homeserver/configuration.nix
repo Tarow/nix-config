@@ -61,6 +61,8 @@
       extraArgs = "-v --debug --show-rc";
       extraCreateArgs = "--stats --progress";
 
+      failOnWarnings = false;
+
       prune.keep = {
         within = "1d"; # Keep all archives from the last day
         daily = 7; 
