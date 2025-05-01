@@ -4,6 +4,7 @@
   ...
 }: {
   imports = [
+    #{tarow.stacks.enable = lib.mkForce false;}
     {
       tarow = lib.tarow.enableModules [
         "core"
