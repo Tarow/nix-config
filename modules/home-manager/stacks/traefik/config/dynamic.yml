@@ -22,8 +22,7 @@ http:
           - public-ratelimit
           - security-headers
           - geoblock
-          #- crowdsec-bouncer
-          #- authelia
+          - crowdsec
 
     private-chain:
       chain:
@@ -37,25 +36,10 @@ http:
           - "172.16.0.0/12"
           - "192.168.0.0/16"
 
-    crowdsec-bouncer:
-      forwardauth:
-        address: http://bouncer-traefik:8080/api/v1/forwardAuth
-        trustForwardHeader: true
-
     public-ratelimit:
       rateLimit:
         average: 100
         burst: 100
-
-    authelia:
-      forwardAuth:
-        address: http://authelia:9091/api/verify?rd=https%3A%2F%2Fauth.ntasler.de%2F
-        trustForwardHeader: true
-        authResponseHeaders:
-          - "Remote-User"
-          - "Remote-Groups"
-          - "Remote-Email"
-          - "Remote-Name"
 
     geoblock:
       plugin:
@@ -65,6 +49,32 @@ http:
           allowedCountries: ["DE"]
           allowPrivate: true
           disallowedStatusCode: 403
+
+    crowdsec:
+      plugin:
+        bouncer:
+          enabled: true
+          logLevel: INFO
+          updateIntervalSeconds: 60 # Only relevant in stream mode
+          updateMaxFailure: 0 # Only relevant in stream mode
+          defaultDecisionSeconds: 60 # Only relevant in live mode
+          httpTimeoutSeconds: 10
+          crowdsecMode: live
+          crowdsecAppsecEnabled: false
+          crowdsecAppsecHost: crowdsec:7422
+          crowdsecAppsecPath: "/"
+          crowdsecAppsecFailureBlock: true
+          crowdsecAppsecUnreachableBlock: true
+          crowdsecAppsecBodyLimit: 10485760
+          crowdsecLapiKey: {{ env "BOUNCER_KEY_TRAEFIK" }}
+          crowdsecLapiScheme: http
+          crowdsecLapiHost: crowdsec:8080
+          crowdsecLapiPath: "/"
+          clientTrustedIPs:
+            - "10.0.0.0/8"
+            - "172.16.0.0/12"
+            - "192.168.0.0/16"
+
 
     security-headers:
       headers:

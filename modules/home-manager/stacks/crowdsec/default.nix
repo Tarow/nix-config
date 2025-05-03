@@ -23,6 +23,8 @@ in {
         UID = config.tarow.stacks.defaultUid;
         GID = config.tarow.stacks.defaultGid;
       };
+      environmentFile = [config.sops.secrets."crowdsec/env".path];
+      network = lib.optional config.tarow.stacks.traefik.enable config.tarow.stacks.traefik.network;
 
       homepage = {
         category = "Network & Administration";
