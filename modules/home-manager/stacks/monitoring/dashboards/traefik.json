@@ -282,7 +282,7 @@
           "direction": "backward",
           "editorMode": "code",
           "expr": "sum by (DownstreamStatus) (count_over_time({container=\"traefik\"}|= \"RequestProtocol\" | json |  __error__=\"\" [$__interval]))",
-          "legendFormat": "HTTP Status: {{OriginStatus}}",
+          "legendFormat": "HTTP Status: {{DownstreamStatus}}",
           "queryType": "range",
           "refId": "A"
         }
@@ -439,8 +439,8 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": " sum by (OriginStatus,ServiceName) (count_over_time({container=\"traefik\"} |~ \"RequestProtocol\" | json | OriginStatus >= 400 |__error__=\"\"[$__interval]))",
-          "legendFormat": " {{ServiceName}} / {{OriginStatus}} ",
+          "expr": " sum by (DownstreamStatus,ServiceName) (count_over_time({container=\"traefik\"} |~ \"RequestProtocol\" | json | DownstreamStatus >= 400 |__error__=\"\"[$__interval]))",
+          "legendFormat": " {{ServiceName}} / {{DownstreamStatus}} ",
           "queryType": "range",
           "refId": "A"
         }
@@ -661,5 +661,5 @@
   "timezone": "",
   "title": "Traefik Access Log",
   "uid": "fJarCeaGk",
-  "version": 20
+  "version": 21
 }
