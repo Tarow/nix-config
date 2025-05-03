@@ -30,6 +30,7 @@
       audiobookshelf.enable = true;
       #calibre.enable = true;
       changedetection.enable = true;
+      crowdsec.enable = true;
       dozzle.enable = true;
       dockdns.enable = true;
       filebrowser.enable = true;
@@ -41,6 +42,7 @@
       immich.enable = true;
       paperless.enable = true;
       #wg-easy.enable = true;
+
       uptime-kuma.enable = true;
       skatcounter.enable = true;
       traefik = {
