@@ -27,9 +27,13 @@ in {
       type = lib.types.str;
       default = "${config.home.homeDirectory}/stacks";
     };
+    externalStorageBaseDir = lib.mkOption {
+      type = lib.types.str;
+      default = "/mnt/hdd1";
+    };
     mediaStorageBaseDir = lib.mkOption {
       type = lib.types.str;
-      default = "/mnt/hdd1/media";
+      default = "${cfg.externalStorageBaseDir}/media";
     };
   };
   config = lib.mkIf cfg.enable {
