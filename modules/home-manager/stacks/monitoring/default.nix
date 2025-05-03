@@ -51,7 +51,8 @@ in {
           "${storage}/grafana/data:/var/lib/grafana"
           "${grafanaDatasources}:/etc/grafana/provisioning/datasources/datasources.yaml"
           "${dashboardProvider}:/etc/grafana/provisioning/dashboards/provider.yml"
-        ] ++ (builtins.readDir ./dashboards |> builtins.attrNames |> map (file: "${./dashboards}/${file}:${dashboardPath}/${file}"));
+          "${./dashboards}:${dashboardPath}"
+        ];
 
         environment = {
           GF_AUTH_ANONYMOUS_ENABLED = "true";
