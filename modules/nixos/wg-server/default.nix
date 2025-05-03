@@ -2,6 +2,7 @@
   lib,
   pkgs,
   config,
+  options,
   ...
 }: let
   cfg = config.tarow.wg-server;
@@ -28,6 +29,9 @@ in {
       type = types.str;
       default = config.sops.secrets."wireguard/pk".path;
     };
+    peers =
+      (options.networking.wireguard.interfaces.type.getSubOptions []).peers
+      // {default = lib.removeAttrs (import ./peers.nix config) ["homeserver"] |> lib.attrValues;};
   };
   config = lib.mkIf cfg.enable {
     networking.nat.enable = true;
@@ -50,8 +54,7 @@ in {
       '';
 
       privateKeyFile = cfg.privateKeyFile;
-
-      peers = lib.removeAttrs (import ./peers.nix config) ["homeserver"] |> lib.attrValues;
+      inherit (cfg) peers;
     };
   };
 }
