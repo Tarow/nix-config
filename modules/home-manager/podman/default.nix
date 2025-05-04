@@ -82,5 +82,14 @@ in {
         registries = ["docker.io"]
       '';
     };
+
+    programs.fish.shellAbbrs = {
+      psh = {
+        expansion = "podman exec -it % /bin/sh";
+        setCursor = true;
+      };
+      pl = "podman logs";
+      plf = "podman logs -f";
+    };
   };
 }
