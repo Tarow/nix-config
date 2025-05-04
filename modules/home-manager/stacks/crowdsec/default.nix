@@ -1,15 +1,47 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   name = "crowdsec";
   storage = "${config.tarow.stacks.storageBaseDir}/${name}";
   cfg = config.tarow.stacks.${name};
+
+  timer = {
+    Timer = {
+      OnCalendar = "01:30";
+      Persistent = true;
+    };
+    Install = {
+      WantedBy = ["timers.target"];
+    };
+  };
+  job = {
+    Service = {
+      Type = "oneshot";
+      ExecStart = lib.getExe (pkgs.writeShellScriptBin "crowdsec-update"
+        ([
+          "hub update"
+          "hub upgrade"
+          "collections upgrade -a"
+          "parsers upgrade -a"
+          "scenarios upgrade -a"
+        ]
+        |> lib.concatMapStringsSep "\n" (c: "${lib.getExe pkgs.podman} exec ${name} cscli " + c))
+      );
+    };
+  };
 in {
   options.tarow.stacks.${name}.enable = lib.mkEnableOption name;
 
   config = lib.mkIf cfg.enable {
+    systemd.user = {
+      timers."crowdsec-upgrade" = timer;
+      services."crowdsec-upgrade" = job;
+    };
+
+
     services.podman.containers.${name} = {
       image = "docker.io/crowdsecurity/crowdsec:latest";
       volumes = [
