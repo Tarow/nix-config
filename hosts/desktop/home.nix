@@ -58,7 +58,7 @@
     discord
     obsidian
     telegram-desktop
-    teams-for-linux
+    unstable.teams-for-linux
     unstable.bitwarden-desktop
     jellyfin-media-player
     stremio
