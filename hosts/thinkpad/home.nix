@@ -38,7 +38,7 @@
     discord
     obsidian
     telegram-desktop
-    teams-for-linux
+    unstable.teams-for-linux
     stremio
   ];
 

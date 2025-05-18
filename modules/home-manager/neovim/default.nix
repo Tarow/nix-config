@@ -34,7 +34,6 @@ in {
         };
 
         languages = {
-          enableLSP = true;
           enableTreesitter = true;
         };
 
@@ -45,7 +44,10 @@ in {
 
         lineNumberMode = "number";
         preventJunkFiles = true;
-        useSystemClipboard = true;
+        clipboard = {
+          enable = true;
+          registers = "unnamedplus";
+        };
 
         binds = {
           whichKey.enable = true;
