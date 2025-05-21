@@ -12,7 +12,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [unstable.nodePackages."@angular/cli"];
-    programs.vscode = {
+    programs.vscode.profiles.default = {
       extensions = with pkgs.vscode-marketplace;
       with pkgs.vscode-marketplace-release; [
         angular.ng-template

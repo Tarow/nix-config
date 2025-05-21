@@ -14,12 +14,12 @@ in {
     programs.java.enable = true;
     programs.java.package = jdk;
 
-    programs.vscode.extensions = with pkgs.vscode-marketplace;
+    programs.vscode.profiles.default.extensions = with pkgs.vscode-marketplace;
     with pkgs.vscode-marketplace-release; [
       vscjava.vscode-java-pack
     ];
 
-    programs.vscode.userSettings = {
+    programs.vscode.profiles.default.userSettings = {
       "java.jdt.ls.java.home" = jdk.home;
       "java.import.gradle.java.home" = jdk.home;
       "[java]" = {

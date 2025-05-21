@@ -23,7 +23,7 @@ in {
       };
     };
 
-    programs.vscode.extensions = with pkgs.vscode-marketplace;
+    programs.vscode.profiles.default.extensions = with pkgs.vscode-marketplace;
     with pkgs.vscode-marketplace-release; [
       mkhl.direnv
     ];

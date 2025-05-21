@@ -11,7 +11,7 @@ in {
     enable = lib.options.mkEnableOption "Stylix";
   };
 
-  imports = [inputs.stylix.homeManagerModules.stylix];
+  imports = [inputs.stylix.homeModules.stylix];
 
   config = lib.mkIf cfg.enable {
     stylix = {
@@ -23,8 +23,7 @@ in {
       polarity = "dark";
       fonts = {
         monospace = {
-          #package = pkgs.nerd-fonts.jetbrains-mono;
-          package = pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];};
+          package = pkgs.nerd-fonts.jetbrains-mono;
           name = "JetBrainsMono Nerd Font Mono";
         };
         sansSerif = {

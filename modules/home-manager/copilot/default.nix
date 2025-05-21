@@ -10,15 +10,15 @@ in {
     enable = lib.options.mkEnableOption "copilot";
   };
   config = lib.mkIf cfg.enable {
-    programs.vscode.extensions = with pkgs.vscode-marketplace;
+    programs.vscode.profiles.default.extensions = with pkgs.vscode-marketplace;
     with pkgs.vscode-marketplace-release; [
       github.copilot
       github.copilot-chat
     ];
 
-    programs.vscode.userSettings = {
+    programs.vscode.profiles.default.userSettings = {
     };
-    programs.vscode.keybindings = [
+    programs.vscode.profiles.default.keybindings = [
       {
         key = "alt+right";
         command = "editor.action.inlineSuggest.commit";
