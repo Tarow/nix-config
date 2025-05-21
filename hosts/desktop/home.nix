@@ -12,6 +12,7 @@
         "core"
         "copilot"
         "direnv"
+        "firefox"
         "ghostty"
         "git"
         "gnome"
@@ -52,7 +53,6 @@
 
   home.stateVersion = "24.11";
 
-  programs.firefox.enable = true;
   home.packages = with pkgs; [
     bruno
     discord

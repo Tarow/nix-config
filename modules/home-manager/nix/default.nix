@@ -53,7 +53,7 @@ in {
   };
 
   home.packages = with pkgs; [unstable.nixd alejandra];
-  programs.vscode.userSettings = {
+  programs.vscode.profiles.default.userSettings = {
     "[nix]" = {
       "editor.defaultFormatter" = "jnoortheen.nix-ide";
     };

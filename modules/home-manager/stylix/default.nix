@@ -11,7 +11,7 @@ in {
     enable = lib.options.mkEnableOption "Stylix";
   };
 
-  imports = [inputs.stylix.homeManagerModules.stylix];
+  imports = [inputs.stylix.homeModules.stylix];
 
   config = lib.mkIf cfg.enable {
     stylix = {
