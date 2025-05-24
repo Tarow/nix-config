@@ -17,6 +17,7 @@ in {
     ];
 
     programs.vscode.profiles.default.userSettings = {
+      "github.copilot.nextEditSuggestions.enabled" = false;
     };
     programs.vscode.profiles.default.keybindings = [
       {
