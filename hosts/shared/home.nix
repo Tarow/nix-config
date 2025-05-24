@@ -1,5 +1,5 @@
 {pkgs, ...}: {
-  tarow.person = {
+  tarow.facts.person = {
     email = "niklastasler@gmail.com";
     name = "Niklas Tasler";
   };

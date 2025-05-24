@@ -27,5 +27,18 @@ in {
     ip4Address = mkOption {
       type = types.str;
     };
+
+    person = {
+      name = lib.options.mkOption {
+        type = lib.types.str;
+        example = ''Max Mustermann'';
+        description = "Full name which will be used for Git config etc";
+      };
+      email = lib.options.mkOption {
+        type = lib.types.str;
+        example = ''max.mustermann@vodafone.om'';
+        description = "E-mail address will be used for Git config etc";
+      };
+    };
   };
 }
