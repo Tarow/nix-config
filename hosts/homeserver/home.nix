@@ -13,6 +13,7 @@
         "sops"
         "stylix"
         "vscode"
+        "neovim"
       ];
     }
   ];
