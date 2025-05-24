@@ -24,6 +24,32 @@
     };
 
     wg-server.enable = true;
+    samba = {
+      enable = true;
+      extraSettings = {
+        "public" = {
+          "path" = "/mnt/hdd1/shares/public";
+          "browseable" = "yes";
+          "read only" = "no";
+          "guest ok" = "yes";
+          "create mask" = "0666";
+          "directory mask" = "0777";
+        };
+        "${config.tarow.facts.username}" = let
+          user = config.tarow.facts.username;
+        in {
+          "path" = "/mnt/hdd1/shares/${user}";
+          "browseable" = "yes";
+          "read only" = "no";
+          "guest ok" = "no";
+          "create mask" = "0644";
+          "directory mask" = "0755";
+          "force user" = user;
+          "force group" = user;
+          "valid users" = user;
+        };
+      };
+    };
   };
 
   services.openssh = {
@@ -41,9 +67,9 @@
   networking.hostName = "homeserver";
 
   services.prometheus.exporters.node = {
-      enable = true;
-      port = 9191;
-      enabledCollectors = [ "systemd" ];
+    enable = true;
+    port = 9191;
+    enabledCollectors = ["systemd"];
   };
 
   services.borgbackup.jobs = let
@@ -67,23 +93,23 @@
 
       prune.keep = {
         within = "1d"; # Keep all archives from the last day
-        daily = 7; 
+        daily = 7;
         weekly = 4;
         monthly = 3;
       };
-    }; 
-  in {
-    remote = {
-      repo = "ssh://u363719@u363719.your-storagebox.de:23/./backups/homeserver";
-      preHook = ping "homeserver-remote/start?create=1";
-      postHook = ping "homeserver-remote/$exitStatus";
-    };  
-    local = {
-      repo = "/mnt/hdd1/backups/homeserver";
-      preHook = ping "homeserver-local/start?create=1";
-      postHook = ping "homeserver-local/$exitStatus";
     };
-  } |> lib.mapAttrs (_: job: (base // job));
-
-
+  in
+    {
+      remote = {
+        repo = "ssh://u363719@u363719.your-storagebox.de:23/./backups/homeserver";
+        preHook = ping "homeserver-remote/start?create=1";
+        postHook = ping "homeserver-remote/$exitStatus";
+      };
+      local = {
+        repo = "/mnt/hdd1/backups/homeserver";
+        preHook = ping "homeserver-local/start?create=1";
+        postHook = ping "homeserver-local/$exitStatus";
+      };
+    }
+    |> lib.mapAttrs (_: job: (base // job));
 }
