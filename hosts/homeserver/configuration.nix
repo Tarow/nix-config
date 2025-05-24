@@ -74,11 +74,20 @@
 
   services.borgbackup.jobs = let
     ping = endpoint: "${lib.getExe pkgs.curl} --retry 3 --retry-max-time 30 https://healthchecks.ntasler.de/ping/uG6NthbpgAp0NQjlY5vzyg/${endpoint}";
+
+    # Backup private samba shares.
+    sambaPaths =
+      (builtins.removeAttrs config.services.samba.settings ["global"])
+      |> lib.filterAttrs (_: value: value."guest ok" != "yes")
+      |> lib.mapAttrsToList (name: value: value.path);
+
     base = {
-      paths = [
-        "${config.tarow.facts.userhome}/stacks"
-        "/mnt/hdd1/media/pictures/immich"
-      ];
+      paths =
+        [
+          "${config.tarow.facts.userhome}/stacks"
+          "/mnt/hdd1/media/pictures/immich"
+        ]
+        ++ sambaPaths;
       encryption = {
         mode = "repokey-blake2";
         passCommand = "cat ${config.sops.secrets."borg/passphrase".path}";
