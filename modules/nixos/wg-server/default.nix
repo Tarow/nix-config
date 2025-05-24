@@ -32,6 +32,10 @@ in {
     peers =
       (options.networking.wireguard.interfaces.type.getSubOptions []).peers
       // {default = lib.removeAttrs (import ./peers.nix config) ["homeserver"] |> lib.attrValues;};
+    endpoint = mkOption {
+      type = types.str;
+      default = (import ./peers.nix config).homeserver.endpoint;
+    };
   };
   config = lib.mkIf cfg.enable {
     networking.nat.enable = true;
@@ -56,5 +60,14 @@ in {
       privateKeyFile = cfg.privateKeyFile;
       inherit (cfg) peers;
     };
+
+    environment.systemPackages = [
+      (pkgs.callPackage
+        ./genClientConfig.nix
+        {
+          serverPubKey = (import ./peers.nix config).homeserver.publicKey;
+          serverEndpoint = "${cfg.endpoint}:${toString cfg.port}";
+        })
+    ];
   };
 }
