@@ -39,6 +39,7 @@ in {
             "source.organizeImports" = "always";
           };
           "editor.suggest.snippetsPreventQuickSuggestions" = false;
+          "editor.defaultFormatter" = "golang.go";
         };
         "gopls" = {
           "ui.completion.usePlaceholders" = true;

@@ -14,6 +14,7 @@
         "stylix"
         "vscode"
         "neovim"
+        "golang"
       ];
     }
   ];
@@ -50,6 +51,15 @@
         enable = true;
         domain = "ntasler.de";
       };
+    };
+  };
+
+  services.podman.containers.whoami = {
+    image = "docker.io/ealen/echo-server:latest";
+    network = ["traefik-proxy"];
+    extraConfig."X-Sablier" = {
+      "Enable" = true;
+      "Group" = "test";
     };
   };
 

@@ -40,7 +40,7 @@ in
         autoUpdate = lib.mkIf (lib.hasSuffix ":latest" config.image) (lib.mkDefault "registry");
         volumes  = ["/etc/localtime:/etc/localtime:ro"];
 
-        network = lib.optional (config.stack  != null) config.stack;
+        network = lib.mkIf (config.stack != null) [config.stack];
         # TODO: Can be removed with new Quadlet generator?
         # https://github.com/containers/podman/issues/24637
         dependsOn = ["user-wait-network-online"] ++ (map (sa: "${name}-${toString sa.port}.socket") config.socketActivation);
