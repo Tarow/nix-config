@@ -15,7 +15,33 @@ tls:
         - CurveP384
 
 http:
+  services:
+    whoami:
+      loadBalancer:
+        servers:
+          - url: "http://whoami:80"
+
+  routers:
+    whoami:
+      rule: Host(`whoami.ntasler.de`)
+      entryPoints:
+        - "websecure"
+      middlewares:
+        - my-sablier@file
+      service: "whoami"
   middlewares:
+    my-sablier:
+      plugin:
+        sablier:
+          group: test
+          dynamic:
+            displayName: My Title
+            refreshFrequency: 1s
+            showDetails: "true"
+            theme: hacker-terminal
+          sablierUrl: http://host.containers.internal:10000
+          sessionDuration: 1m
+
     public-chain:
       chain:
         middlewares:
@@ -66,7 +92,7 @@ http:
           crowdsecAppsecFailureBlock: true
           crowdsecAppsecUnreachableBlock: true
           crowdsecAppsecBodyLimit: 10485760
-          crowdsecLapiKey: {{ env "BOUNCER_KEY_TRAEFIK" }}
+          crowdsecLapiKey: '{{ env "BOUNCER_KEY_TRAEFIK" }}'
           crowdsecLapiScheme: http
           crowdsecLapiHost: crowdsec:8080
           crowdsecLapiPath: "/"
@@ -74,7 +100,6 @@ http:
             - "10.0.0.0/8"
             - "172.16.0.0/12"
             - "192.168.0.0/16"
-
 
     security-headers:
       headers:

@@ -51,6 +51,9 @@
       bouncer:
         moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
         version: v1.4.2
+      sablier:
+        moduleName: "github.com/sablierapp/sablier"
+        version: "v1.8.5"
 
   accessLog:
     format: json

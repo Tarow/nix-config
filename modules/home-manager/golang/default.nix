@@ -24,7 +24,7 @@ in {
       gnumake
     ];
 
-    programs.vscode = {
+    programs.vscode.profiles.default = {
       extensions = with pkgs.vscode-marketplace;
       with pkgs.vscode-marketplace-release; [
         golang.go
