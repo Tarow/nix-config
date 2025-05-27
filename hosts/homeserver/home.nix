@@ -29,6 +29,7 @@
     stacks = {
       enable = true;
       adguard.enable = true;
+      aiostreams.enable = true;
       audiobookshelf.enable = true;
       #calibre.enable = true;
       changedetection.enable = true;
