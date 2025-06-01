@@ -5,6 +5,12 @@
   ...
 }: let
   globalConf = config;
+  mkSocketName = {
+    name,
+    port,
+    prefix ? "podman-",
+    suffix ? ".socket",
+  }: "${prefix}${name}-${toString port |> lib.replaceStrings ["." ":"] ["_" "-"]}${suffix}";
 in {
   # Extend the podman options in order to custom build custom abstraction
   options.services.podman.containers = lib.mkOption {
@@ -28,7 +34,7 @@ in {
           type = types.listOf (types.submodule {
             options = {
               port = mkOption {
-                type = types.port;
+                type = types.oneOf [types.str types.port];
               };
               fileDescriptorName = mkOption {
                 type = types.nullOr types.str;
@@ -51,7 +57,13 @@ in {
         volumes = ["/etc/localtime:/etc/localtime:ro"];
 
         network = lib.mkIf (config.stack != null) [config.stack];
-        dependsOn = map (sa: "${name}-${toString sa.port}.socket") config.socketActivation;
+        dependsOn = map (sa:
+          mkSocketName {
+            inherit name;
+            port = sa.port;
+            prefix = "";
+          })
+        config.socketActivation;
         extraConfig = {
           # Theres some issues with healthchecks transient systemd service not being created. Disable for now
           # https://github.com/containers/podman/issues/25034#issuecomment-2600582885
@@ -97,9 +109,13 @@ in {
       containers = lib.filterAttrs (n: v: v.socketActivation != []) config.services.podman.containers;
       mkSockets = name: container:
         map (sa:
-          lib.nameValuePair "podman-${name}-${toString sa.port}" {
-            Socket.ListenStream = "0.0.0.0:${toString sa.port}";
-            Socket.ListenDatagram = "0.0.0.0:${toString sa.port}";
+          lib.nameValuePair (mkSocketName {
+            inherit name;
+            port = sa.port;
+            suffix = "";
+          }) {
+            Socket.ListenStream = "${toString sa.port}";
+            Socket.ListenDatagram = "${toString sa.port}";
             Socket.Service = "podman-${name}.service";
             Socket.FileDescriptorName = lib.mkIf (sa.fileDescriptorName != null) sa.fileDescriptorName;
             Install.WantedBy = ["sockets.target"];
