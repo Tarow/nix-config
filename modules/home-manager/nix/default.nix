@@ -34,7 +34,7 @@ in {
   # Automatically start and drop systemd services as needed
   systemd.user.startServices = "sd-switch";
 
-  # Disable nixpkgs overlays, if home-manager is running as submodule with useGlobalPkgs=true
+  # Don't configure nixpkgs, if Home-Manager is running as submodule with useGlobalPkgs=true
   nixpkgs = lib.mkIf (isStandalone || !osConfig.home-manager.useGlobalPkgs) {
     # You can add overlays here
     overlays = [
