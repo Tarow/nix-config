@@ -7,6 +7,7 @@
     #{tarow.stacks.enable = lib.mkForce false;}
     {
       tarow = lib.tarow.enableModules [
+        "aichat"
         "core"
         "git"
         "shells"

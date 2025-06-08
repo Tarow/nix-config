@@ -20,6 +20,8 @@
     DB_DATABASE_NAME = "immich";
     REDIS_HOSTNAME = redisName;
     NODE_ENV = "production";
+    UPLOAD_LOCATION = "/usr/src/app/upload";
+    IMMICH_CONFIG_FILE = "/usr/src/app/config/config.json";
   };
 in {
   options.tarow.stacks.${name}.enable = lib.mkEnableOption name;
@@ -28,10 +30,14 @@ in {
     services.podman.containers = {
       ${name} = {
         image = "ghcr.io/immich-app/immich-server:release";
-        volumes = ["${mediaStorage}/pictures/immich:/usr/src/app/upload"];
+        volumes = [
+          "${./config.json}:${env.IMMICH_CONFIG_FILE}"
+          "${mediaStorage}/pictures/immich:${env.UPLOAD_LOCATION}"
+        ];
 
         environment = env;
         environmentFile = [config.sops.secrets."immich/env".path];
+        devices = ["/dev/dri:/dev/dri"];
 
         dependsOn = [redisName dbName];
         port = 2283;
