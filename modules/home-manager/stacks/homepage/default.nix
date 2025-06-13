@@ -9,22 +9,25 @@
   cfg = config.tarow.stacks.${name};
   yaml = pkgs.formats.yaml {};
 
-  toOrderedList = attrs:
-    builtins.map (
-      groupName: {
-        "${groupName}" = builtins.map (
-          serviceName: {"${serviceName}" = attrs.${groupName}.${serviceName};}
-        ) (builtins.attrNames attrs.${groupName});
-      }
-    ) (builtins.sort (
+  sortByRank = attrs:
+    builtins.sort (
       a: b: let
         orderA = attrs.${a}.order or 999;
         orderB = attrs.${b}.order or 999;
       in
         if orderA == orderB
-        then a < b
+        then (lib.strings.toLower a) < (lib.strings.toLower b)
         else orderA < orderB
-    ) (builtins.attrNames attrs));
+    ) (builtins.attrNames attrs);
+
+  toOrderedList = attrs:
+    builtins.map (
+      groupName: {
+        "${groupName}" = builtins.map (
+          serviceName: {"${serviceName}" = attrs.${groupName}.${serviceName};}
+        ) (sortByRank attrs.${groupName});
+      }
+    ) (sortByRank attrs);
 in {
   imports = [./extension.nix];
 
