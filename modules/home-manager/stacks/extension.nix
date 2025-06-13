@@ -53,7 +53,7 @@ in {
       };
 
       config = {
-        autoUpdate = lib.mkIf (lib.hasSuffix ":latest" config.image) (lib.mkDefault "registry");
+        autoUpdate = lib.mkDefault "registry";
         volumes = ["/etc/localtime:/etc/localtime:ro"];
 
         network = lib.mkIf (config.stack != null) [config.stack];

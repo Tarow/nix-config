@@ -43,10 +43,7 @@ in {
         port = 2283;
 
         stack = name;
-        traefik = {
-          name = name;
-          middlewares = ["public"];
-        };
+        traefik.name = name;
         homepage = {
           category = "Media";
           name = "Immich";
