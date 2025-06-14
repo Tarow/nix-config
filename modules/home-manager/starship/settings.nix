@@ -1,11 +1,11 @@
 lib: {
   format = lib.concatStrings [
-    "$battery"
     "$directory"
     "$git_branch"
     "$git_state"
     "$git_status"
     "$fill"
+    "$nix_shell"
     "$kubernetes"
     "$aws"
     "$cmd_duration"
@@ -25,16 +25,16 @@ lib: {
 
   git_branch = {
     style = "fg:green";
-    symbol = " ";
-    format = ''[\(on\)](white) [$symbol$branch]($style)'';
+    symbol = "[|](white)  ";
+    format = ''[$symbol$branch]($style) '';
   };
 
   git_state = {
-    format = ''\([$state($progress_current/$progress_total)]($style)\)'';
+    format = ''\([$state($progress_current/$progress_total)]($style)\) '';
   };
 
   git_status = {
-    format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)]($style) ($ahead_behind$stashed)]($style)";
+    format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)]($style)($ahead_behind$stashed)]($style) ";
     conflicted = "";
     untracked = "";
     modified = "";
@@ -47,6 +47,12 @@ lib: {
   cmd_duration = {
     format = "[$duration]($style) ";
     style = "base04";
+  };
+
+  nix_shell = {
+    format = ''[$symbol$state( \($name\))]($style) '';
+    symbol = " ";
+    heuristic = true;
   };
 
   fill = {
