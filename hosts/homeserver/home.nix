@@ -35,6 +35,7 @@
       #calibre.enable = true;
       changedetection.enable = true;
       crowdsec.enable = true;
+
       dozzle.enable = true;
       dockdns.enable = true;
       filebrowser.enable = true;
