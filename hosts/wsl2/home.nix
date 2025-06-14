@@ -31,6 +31,7 @@
         "npm"
         "react"
         "shells"
+        "starship"
         "stylix"
         "vscode"
       ])

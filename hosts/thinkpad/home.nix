@@ -18,6 +18,7 @@
       "ghostty"
       "gnome"
       "sshClient"
+      "starship"
       "stylix"
       # "sops"
       "podman"

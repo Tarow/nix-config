@@ -157,7 +157,7 @@ in {
         user = config.tarow.stacks.defaultUid;
         volumes = [
           "${storage}/prometheus/data:/prometheus"
-          "${yaml.generate "prometheus_config.yml" (import ./prometheus_config.nix)}:${configDst}"
+          "${cfg.prometheus.config}:${configDst}"
         ];
 
         port = cfg.prometheus.port;
