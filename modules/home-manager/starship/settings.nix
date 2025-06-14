@@ -23,8 +23,18 @@ lib: {
     vimcmd_symbol = "[❮](green)";
   };
 
+  git_branch = {
+    style = "fg:green";
+    symbol = " ";
+    format = ''[\(on\)](white) [$symbol$branch]($style)'';
+  };
+
+  git_state = {
+    format = ''\([$state($progress_current/$progress_total)]($style)\)'';
+  };
+
   git_status = {
-    format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style)";
+    format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)]($style) ($ahead_behind$stashed)]($style)";
     conflicted = "";
     untracked = "";
     modified = "";
@@ -32,16 +42,6 @@ lib: {
     renamed = "";
     deleted = "";
     stashed = "≡";
-  };
-
-  git_state = {
-    format = ''\\([ $state($progress_current/$progress_total)]($style)\\) '';
-  };
-
-  git_branch = {
-    style = "fg:green";
-    symbol = " ";
-    format = "[on](white) [$symbol$branch ]($style)";
   };
 
   cmd_duration = {
