@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   name = "immich";
@@ -23,15 +24,24 @@
     UPLOAD_LOCATION = "/usr/src/app/upload";
     IMMICH_CONFIG_FILE = "/usr/src/app/config/config.json";
   };
+
+  json = pkgs.formats.json {};
 in {
-  options.tarow.stacks.${name}.enable = lib.mkEnableOption name;
+  options.tarow.stacks.${name} = {
+    enable = lib.mkEnableOption name;
+    settings = lib.mkOption {
+      type = json.type;
+      default = import ./config.nix;
+      apply = json.generate "config.json";
+    };
+  };
 
   config = lib.mkIf cfg.enable {
     services.podman.containers = {
       ${name} = {
         image = "ghcr.io/immich-app/immich-server:release";
         volumes = [
-          "${./config.json}:${env.IMMICH_CONFIG_FILE}"
+          "${cfg.settings}:${env.IMMICH_CONFIG_FILE}"
           "${mediaStorage}/pictures/immich:${env.UPLOAD_LOCATION}"
         ];
 

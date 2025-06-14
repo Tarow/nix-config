@@ -36,23 +36,31 @@ in {
     bookmarks = lib.mkOption {
       inherit (yaml) type;
       default = [];
+      apply = yaml.generate "bookmarks.yaml";
     };
     services = lib.mkOption {
       type = lib.types.attrsOf (lib.types.attrsOf lib.types.anything);
-      apply = toOrderedList;
+      apply = services: toOrderedList services |> yaml.generate "services.yaml";
       default = {};
     };
     widgets = lib.mkOption {
       inherit (yaml) type;
       default = [];
+      apply = yaml.generate "widgets.yaml";
     };
     docker = lib.mkOption {
       inherit (yaml) type;
       default = {};
+      apply = yaml.generate "docker.yaml";
     };
     settings = lib.mkOption {
       inherit (yaml) type;
       default = {};
+      apply = yaml.generate "settings.yaml";
+    };
+    background = lib.mkOption {
+      type = lib.types.nullOr lib.types.oneOf [lib.types.str lib.types.path];
+      default = null;
     };
   };
 
@@ -61,13 +69,14 @@ in {
       image = "ghcr.io/gethomepage/homepage:latest";
       volumes = [
         "${mediaStorage}:/mnt/hdd1:ro"
-        "${yaml.generate "docker.yaml" cfg.docker}:/app/config/docker.yaml"
-        "${yaml.generate "services.yaml" cfg.services}:/app/config/services.yaml"
-        "${yaml.generate "settings.yaml" cfg.settings}:/app/config/settings.yaml"
-        "${yaml.generate "widgets.yaml" cfg.widgets}:/app/config/widgets.yaml"
-        "${yaml.generate "bookmarks.yaml" cfg.bookmarks}:/app/config/bookmarks.yaml"
+        "${cfg.docker}:/app/config/docker.yaml"
+        "${cfg.services}:/app/config/services.yaml"
+        "${cfg.settings}:/app/config/settings.yaml"
+        "${cfg.widgets}:/app/config/widgets.yaml"
+        "${cfg.bookmarks}:/app/config/bookmarks.yaml"
         "${config.tarow.podman.socketLocation}:/var/run/docker.sock:ro"
       ];
+
       environment = {
         PUID = config.tarow.stacks.defaultUid;
         PGID = config.tarow.stacks.defaultGid;
@@ -83,7 +92,6 @@ in {
 
     tarow.stacks.${name} = {
       docker.local.socket = "/var/run/docker.sock";
-
       settings.statusStyle = "dot";
 
       widgets = [
