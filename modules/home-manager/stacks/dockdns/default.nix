@@ -11,7 +11,7 @@ in {
   options.tarow.stacks.${name}.enable = lib.mkEnableOption name;
 
   config = lib.mkIf cfg.enable {
-    sops.templates."dockdns_config.yaml".content = import ./config.nix config;
+    sops.templates."dockdns_config.yaml".content = builtins.toJSON (import ./config.nix config);
 
     services.podman.containers.${name} = {
       image = "ghcr.io/tarow/dockdns:latest";
@@ -24,7 +24,7 @@ in {
       traefik.name = name;
       homepage = {
         category = "Utilities";
-        name = "dockdns";
+        name = "DockDNS";
         settings = {
           description = "DNS Updater";
           icon = "azure-dns";

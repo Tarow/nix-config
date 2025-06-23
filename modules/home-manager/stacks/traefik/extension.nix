@@ -82,7 +82,7 @@ in {
             "traefik.http.services.${name}.loadbalancer.server.port" = containerPort;
           }
           // (import ./middlewares.nix name traefikCfg.middlewares);
-        network = lib.optional enableTraefik stackCfg.network;
+        network = lib.mkIf enableTraefik [stackCfg.network];
         ports = lib.optional (!enableTraefik && (port != null)) "${hostPort}:${containerPort}";
       };
     }));

@@ -24,6 +24,7 @@
         "react"
         "walker"
         "shells"
+        "starship"
         "sshClient"
         "sops"
         "stacks"

@@ -12,7 +12,7 @@ in {
   config = lib.mkIf cfg.enable {
     services.podman.containers = {
       ${name} = {
-        image = "ghcr.io/mealie-recipes/mealie:v2.7.0";
+        image = "ghcr.io/mealie-recipes/mealie:latest";
         volumes = ["${storage}/data:/app/data/"];
         environment = {
           ALLOW_SIGNUP = false;

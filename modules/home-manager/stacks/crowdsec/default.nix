@@ -8,6 +8,8 @@
   storage = "${config.tarow.stacks.storageBaseDir}/${name}";
   cfg = config.tarow.stacks.${name};
 
+  yaml = pkgs.formats.yaml {};
+
   timer = {
     Timer = {
       OnCalendar = "01:30";
@@ -20,20 +22,29 @@
   job = {
     Service = {
       Type = "oneshot";
-      ExecStart = lib.getExe (pkgs.writeShellScriptBin "crowdsec-update"
+      ExecStart = lib.getExe (
+        pkgs.writeShellScriptBin "crowdsec-update"
         ([
-          "hub update"
-          "hub upgrade"
-          "collections upgrade -a"
-          "parsers upgrade -a"
-          "scenarios upgrade -a"
-        ]
-        |> lib.concatMapStringsSep "\n" (c: "${lib.getExe pkgs.podman} exec ${name} cscli " + c))
+            "hub update"
+            "hub upgrade"
+            "collections upgrade -a"
+            "parsers upgrade -a"
+            "scenarios upgrade -a"
+          ]
+          |> lib.concatMapStringsSep "\n" (c: "${lib.getExe pkgs.podman} exec ${name} cscli " + c))
       );
     };
   };
 in {
-  options.tarow.stacks.${name}.enable = lib.mkEnableOption name;
+  options.tarow.stacks.${name} = {
+    enable = lib.mkEnableOption name;
+    acquisSettings = lib.mkOption {
+      type = yaml.type;
+      default = import ./acquis.nix;
+      description = "Acquisitions settings for Crowdsec.";
+      apply = yaml.generate "acquis.yaml";
+    };
+  };
 
   config = lib.mkIf cfg.enable {
     systemd.user = {
@@ -41,13 +52,12 @@ in {
       services."crowdsec-upgrade" = job;
     };
 
-
     services.podman.containers.${name} = {
       image = "docker.io/crowdsecurity/crowdsec:latest";
       volumes = [
         "${storage}/db:/var/lib/crowdsec/data"
         "${storage}/config:/etc/crowdsec"
-        "${./acquis.yaml}:/etc/crowdsec/acquis.yaml"
+        "${cfg.acquisSettings}:/etc/crowdsec/acquis.yaml"
         "${config.tarow.podman.socketLocation}:/var/run/docker.sock:ro"
       ];
       environment = {

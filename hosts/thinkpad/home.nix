@@ -18,10 +18,12 @@
       "ghostty"
       "gnome"
       "sshClient"
+      "starship"
       "stylix"
       # "sops"
       "podman"
       "vscode"
+      "firefox"
     ])
     {
       core.configLocation = "~/nix-config#thinkpad";
@@ -32,7 +34,6 @@
     }
   ];
 
-  programs.firefox.enable = true;
   home.packages = with pkgs; [
     bruno
     discord

@@ -6,52 +6,85 @@
 }: let
   stackName = "monitoring";
   cfg = config.tarow.stacks.${stackName};
+  storage = "${config.tarow.stacks.storageBaseDir}/${stackName}";
+
+  yaml = pkgs.formats.yaml {};
 
   grafanaName = "grafana";
   lokiName = "loki";
   prometheusName = "prometheus";
   alloyName = "alloy";
-  storage = "${config.tarow.stacks.storageBaseDir}/${stackName}";
 
-  lokiPort = 3100;
-  lokiUrl = "http://${lokiName}:${toString lokiPort}";
+  dashboardPath = "/var/lib/grafana/dashboards";
 
-  prometheusPort = 9090;
-  prometheusUrl = "http://${prometheusName}:${toString prometheusPort}";
-
-  lokiConfig = pkgs.writeText "config-local.yaml" (import ./loki_local_config.nix lokiPort);
-  alloyConfig = pkgs.writeText "config.alloy" (import ./alloy_config.nix lokiUrl);
+  lokiUrl = "http://${lokiName}:${toString cfg.loki.port}";
+  prometheusUrl = "http://${prometheusName}:${toString cfg.prometheus.port}";
 in {
   imports = [./extension.nix];
 
-  options.tarow.stacks.${stackName}.enable = lib.mkEnableOption stackName;
+  options.tarow.stacks.${stackName} = {
+    enable = lib.mkEnableOption stackName;
+    grafana = {
+      dashboardProvider = lib.mkOption {
+        type = yaml.type;
+        default = import ./dashboard_provider.nix dashboardPath;
+        apply = yaml.generate "dashboard_provider.yml";
+      };
+      dashboards = lib.mkOption {
+        type = lib.types.path;
+        default = ./dashboards;
+      };
+      datasources = lib.mkOption {
+        type = yaml.type;
+        default = import ./grafana_datasources.nix lokiUrl prometheusUrl;
+        apply = yaml.generate "grafana_datasources.yml";
+      };
+    };
+    loki = {
+      port = lib.mkOption {
+        type = lib.types.port;
+        default = 3100;
+      };
+      config = lib.mkOption {
+        type = yaml.type;
+        default = import ./loki_local_config.nix cfg.loki.port;
+        apply = yaml.generate "loki_config.yaml";
+      };
+    };
+    alloy = {
+      port = lib.mkOption {
+        type = lib.types.port;
+        default = 12345;
+      };
+      config = lib.mkOption {
+        type = lib.types.lines;
+        default = import ./alloy_config.nix lokiUrl;
+        apply = pkgs.writeText "config.alloy";
+      };
+    };
+    prometheus = {
+      port = lib.mkOption {
+        type = lib.types.port;
+        default = 9090;
+      };
+      config = lib.mkOption {
+        type = yaml.type;
+        default = import ./prometheus_config.nix;
+        apply = yaml.generate "prometheus_config.yml";
+      };
+    };
+  };
 
   config = lib.mkIf cfg.enable {
     services.podman.containers = {
-      ${grafanaName} = let
-        grafanaDatasources = pkgs.writeText "datasources.yaml" (import ./grafana_datasources.nix lokiUrl prometheusUrl);
-        dashboardPath = "/var/lib/grafana/dashboards";
-        dashboardProvider = pkgs.writeText "provider.yml" ''
-          apiVersion: 1
-          providers:
-            - name: "Dashboard provider"
-              orgId: 1
-              type: file
-              disableDeletion: false
-              updateIntervalSeconds: 10
-              allowUiUpdates: false
-              options:
-                path: ${dashboardPath}
-                foldersFromFilesStructure: true
-        '';
-      in {
+      ${grafanaName} = {
         image = "docker.io/grafana/grafana:latest";
         user = config.tarow.stacks.defaultUid;
         volumes = [
           "${storage}/grafana/data:/var/lib/grafana"
-          "${grafanaDatasources}:/etc/grafana/provisioning/datasources/datasources.yaml"
-          "${dashboardProvider}:/etc/grafana/provisioning/dashboards/provider.yml"
-          "${./dashboards}:${dashboardPath}"
+          "${cfg.grafana.datasources}:/etc/grafana/provisioning/datasources/datasources.yaml"
+          "${cfg.grafana.dashboardProvider}:/etc/grafana/provisioning/dashboards/provider.yml"
+          "${cfg.grafana.dashboards}:${dashboardPath}"
         ];
 
         environment = {
@@ -79,7 +112,7 @@ in {
         user = config.tarow.stacks.defaultUid;
         volumes = [
           "${storage}/loki/data:/loki"
-          "${lokiConfig}:/etc/loki/local-config.yaml"
+          "${cfg.loki.config}:/etc/loki/local-config.yaml"
         ];
 
         stack = stackName;
@@ -94,18 +127,17 @@ in {
       };
 
       ${alloyName} = let
-        port = 12345;
         configDst = "/etc/alloy/config.alloy";
       in {
         image = "docker.io/grafana/alloy:latest";
         volumes = [
-          "${alloyConfig}:${configDst}"
+          "${cfg.alloy.config}:${configDst}"
           "${config.tarow.podman.socketLocation}:/var/run/docker.sock:ro"
         ];
-        exec = "run --server.http.listen-addr=0.0.0.0:${toString port} --storage.path=/var/lib/alloy/data ${configDst}";
+        exec = "run --server.http.listen-addr=0.0.0.0:${toString cfg.alloy.port} --storage.path=/var/lib/alloy/data ${configDst}";
 
         stack = stackName;
-        inherit port;
+        inherit (cfg.alloy) port;
         traefik.name = alloyName;
         homepage = {
           category = "Monitoring";
@@ -125,10 +157,10 @@ in {
         user = config.tarow.stacks.defaultUid;
         volumes = [
           "${storage}/prometheus/data:/prometheus"
-          "${./prometheus_config.yml}:${configDst}"
+          "${cfg.prometheus.config}:${configDst}"
         ];
 
-        port = prometheusPort;
+        port = cfg.prometheus.port;
         stack = stackName;
         traefik.name = "prometheus";
         homepage = {

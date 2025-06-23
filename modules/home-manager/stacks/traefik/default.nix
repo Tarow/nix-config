@@ -7,6 +7,8 @@
   name = "traefik";
   cfg = config.tarow.stacks.${name};
 
+  yaml = pkgs.formats.yaml {};
+
   storage = "${config.tarow.stacks.storageBaseDir}/${name}";
 in {
   imports = [
@@ -21,8 +23,18 @@ in {
     };
     network = lib.options.mkOption {
       type = lib.types.str;
-      description = "Network for the Traefik docker provider";
+      description = "Network name of the Traefik docker provider";
       default = "traefik-proxy";
+    };
+    staticConfig = lib.options.mkOption {
+      type = yaml.type;
+      default = import ./config/traefik.nix cfg.domain cfg.network;
+      apply = yaml.generate "traefik.yml";
+    };
+    dynamicConfig = lib.options.mkOption {
+      type = yaml.type;
+      default = import ./config/dynamic.nix;
+      apply = yaml.generate "dynamic.yml";
     };
   };
 
@@ -34,7 +46,7 @@ in {
     };
 
     services.podman.containers.${name} = {
-      image = "traefik:v3";
+      image = "docker.io/traefik:v3";
 
       socketActivation = [
         {
@@ -54,8 +66,8 @@ in {
       volumes = [
         "${storage}/letsencrypt:/letsencrypt"
         "${config.tarow.podman.socketLocation}:/var/run/docker.sock:ro"
-        "${pkgs.writeText "traefik.yml" (import ./config/traefik.nix {inherit (cfg) domain;})}:/etc/traefik/traefik.yml:ro"
-        "${./config/dynamic.yml}:/dynamic/config.yml"
+        "${cfg.staticConfig}:/etc/traefik/traefik.yml:ro"
+        "${cfg.dynamicConfig}:/dynamic/config.yml"
         "${./config/IP2LOCATION-LITE-DB1.IPV6.BIN}:/plugins/geoblock/IP2LOCATION-LITE-DB1.IPV6.BIN"
       ];
       labels = lib.mkForce {

@@ -1,8 +1,11 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
+  yaml = pkgs.formats.yaml {};
+
   homepageContainers = builtins.filter (c: c.homepage.settings != {}) (builtins.attrValues config.services.podman.containers);
 
   mergedServices =
@@ -42,7 +45,7 @@ in {
           default = null;
         };
         settings = options.mkOption {
-          type = types.attrsOf types.anything;
+          type = types.attrsOf yaml.type;
           default = {};
           apply = settings:
             if settings == {}

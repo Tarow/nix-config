@@ -10,7 +10,9 @@ in {
     enable = mkEnableOption "Podman";
     package = mkOption {
       type = types.package;
-      default = pkgs.podman;
+      default = pkgs.podman.override {
+        extraPackages = [pkgs.nftables];
+      };
     };
     enableSocket = lib.mkOption {
       type = lib.types.bool;
@@ -28,7 +30,10 @@ in {
       package = cfg.package;
 
       settings = {
-        containers.network.dns_bind_port = 1153;
+        containers.network = {
+          dns_bind_port = 1153;
+          firewall_driver = "nftables";
+        };
         policy = {
           default = [{type = "insecureAcceptAnything";}];
           transports = {

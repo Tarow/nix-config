@@ -16,7 +16,7 @@
       "stylix"
       "wsl"
     ])
-    {core.configLocation = "~/projects/nix-config#wsl2";}
+    {core.configLocation = "~/nix-config#wsl2";}
   ];
 
   environment.systemPackages = [pkgs.wget];

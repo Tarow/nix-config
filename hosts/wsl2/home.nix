@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 } @ args: {
   config = {
@@ -12,6 +13,8 @@
     programs.home-manager.enable = true;
 
     news.display = "silent";
+
+    home.packages = [pkgs.vlc];
 
     home.sessionVariables = {
       EDITOR = "nvim";
@@ -28,6 +31,7 @@
         "npm"
         "react"
         "shells"
+        "starship"
         "stylix"
         "vscode"
       ])

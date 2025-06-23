@@ -54,7 +54,6 @@ in {
 
       ${brokerName} = {
         image = "docker.io/redis:6.0";
-
         stack = name;
       };
 
@@ -83,7 +82,7 @@ in {
           then "/${user}"
           else "home/${user}";
       in {
-        image = "garethflowers/ftp-server";
+        image = "docker.io/garethflowers/ftp-server";
         volumes = [
           "${storage}/consume:${home}"
         ];

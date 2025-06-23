@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   name = "immich";
@@ -20,27 +21,39 @@
     DB_DATABASE_NAME = "immich";
     REDIS_HOSTNAME = redisName;
     NODE_ENV = "production";
+    UPLOAD_LOCATION = "/usr/src/app/upload";
+    IMMICH_CONFIG_FILE = "/usr/src/app/config/config.json";
   };
+
+  json = pkgs.formats.json {};
 in {
-  options.tarow.stacks.${name}.enable = lib.mkEnableOption name;
+  options.tarow.stacks.${name} = {
+    enable = lib.mkEnableOption name;
+    settings = lib.mkOption {
+      type = json.type;
+      default = import ./config.nix;
+      apply = json.generate "config.json";
+    };
+  };
 
   config = lib.mkIf cfg.enable {
     services.podman.containers = {
       ${name} = {
         image = "ghcr.io/immich-app/immich-server:release";
-        volumes = ["${mediaStorage}/pictures/immich:/usr/src/app/upload"];
+        volumes = [
+          "${cfg.settings}:${env.IMMICH_CONFIG_FILE}"
+          "${mediaStorage}/pictures/immich:${env.UPLOAD_LOCATION}"
+        ];
 
         environment = env;
         environmentFile = [config.sops.secrets."immich/env".path];
+        devices = ["/dev/dri:/dev/dri"];
 
         dependsOn = [redisName dbName];
         port = 2283;
 
         stack = name;
-        traefik = {
-          name = name;
-          middlewares = ["public"];
-        };
+        traefik.name = name;
         homepage = {
           category = "Media";
           name = "Immich";
