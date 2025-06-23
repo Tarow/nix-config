@@ -15,6 +15,7 @@
         "firefox"
         "ghostty"
         "git"
+        "golang"
         "gnome"
         "java"
         "mpv"

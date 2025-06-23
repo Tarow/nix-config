@@ -24,7 +24,7 @@ in {
       gnumake
     ];
 
-    programs.vscode = {
+    programs.vscode.profiles.default = {
       extensions = with pkgs.vscode-marketplace;
       with pkgs.vscode-marketplace-release; [
         golang.go
@@ -39,6 +39,7 @@ in {
             "source.organizeImports" = "always";
           };
           "editor.suggest.snippetsPreventQuickSuggestions" = false;
+          "editor.defaultFormatter" = "golang.go";
         };
         "gopls" = {
           "ui.completion.usePlaceholders" = true;
