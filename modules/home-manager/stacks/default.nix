@@ -1,1 +1,1 @@
-{inputs, ...}: {imports = [inputs.nix-podman-stacks.hmModules.all];}
+{inputs, ...}: {imports = [inputs.nix-podman-stacks.homeModules.all];}

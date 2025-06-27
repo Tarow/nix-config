@@ -417,11 +417,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1751054032,
-        "narHash": "sha256-sGSlyIQZedpFFSworJNzmQ+0DTe3qlDH9QeqofMQvN0=",
+        "lastModified": 1751055061,
+        "narHash": "sha256-zihqqOTW7Rh9bWfkY3Y/e9q/MQw8TcOg+PIxaxGfwM4=",
         "owner": "Tarow",
         "repo": "nix-podman-stacks",
-        "rev": "6a5bfdcbec6765c0f1e38cd95131d5fa6005708f",
+        "rev": "8f7713eaad842623ac35fd1f4174bbdd6c6def97",
         "type": "github"
       },
       "original": {
