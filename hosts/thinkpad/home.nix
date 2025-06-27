@@ -21,7 +21,6 @@
       "starship"
       "stylix"
       # "sops"
-      "podman"
       "vscode"
       "firefox"
     ])

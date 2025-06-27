@@ -27,7 +27,6 @@
         "starship"
         "sshClient"
         "sops"
-        "stacks"
         "stylix"
         "vscode"
         "zen-browser"
