@@ -55,6 +55,11 @@
       url = "github:abenz1267/walker";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nix-podman-stacks = {
+      url = "github:Tarow/nix-podman-stacks";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = {
     self,

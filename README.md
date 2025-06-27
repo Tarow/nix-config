@@ -12,6 +12,7 @@ My personal [NixOS](https://nixos.org/) and [Home Manager](https://github.com/ni
 - [Home Manager](https://github.com/nix-community/home-manager) - Home Configuration
 - [sops-nix](https://github.com/Mic92/sops-nix) - Secret Management
 - [stylix](https://github.com/danth/stylix) - Color Schemes
+- [nix-podman-stacks](https://github.com/Tarow/nix-podman-stacks) - Preconfigured Podman Stacks
 
 ## Bootstrap
 
