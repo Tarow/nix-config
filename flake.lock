@@ -314,6 +314,28 @@
     "home-manager_2": {
       "inputs": {
         "nixpkgs": [
+          "nix-podman-stacks",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1750792728,
+        "narHash": "sha256-Lh3dopA8DdY+ZoaAJPrtkZOZaFEJGSYjOdAYYgOPgE4=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "366f00797b1efb70f2882d3da485e3c10fd3d557",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "ref": "release-25.05",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "home-manager_3": {
+      "inputs": {
+        "nixpkgs": [
           "stylix",
           "nixpkgs"
         ]
@@ -333,7 +355,7 @@
         "type": "github"
       }
     },
-    "home-manager_3": {
+    "home-manager_4": {
       "inputs": {
         "nixpkgs": [
           "zen-browser",
@@ -412,16 +434,18 @@
     },
     "nix-podman-stacks": {
       "inputs": {
+        "home-manager": "home-manager_2",
         "nixpkgs": [
           "nixpkgs"
-        ]
+        ],
+        "sops-nix": "sops-nix"
       },
       "locked": {
-        "lastModified": 1751055061,
-        "narHash": "sha256-zihqqOTW7Rh9bWfkY3Y/e9q/MQw8TcOg+PIxaxGfwM4=",
+        "lastModified": 1751056850,
+        "narHash": "sha256-pdrTDsDWM+RJHKfEkCw8urOtBy7C7THMaUA1HWaSc2s=",
         "owner": "Tarow",
         "repo": "nix-podman-stacks",
-        "rev": "8f7713eaad842623ac35fd1f4174bbdd6c6def97",
+        "rev": "7abea4e4c017d04385c8d148d552ebe2008de589",
         "type": "github"
       },
       "original": {
@@ -615,13 +639,34 @@
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nvf": "nvf",
-        "sops-nix": "sops-nix",
+        "sops-nix": "sops-nix_2",
         "stylix": "stylix",
         "walker": "walker",
         "zen-browser": "zen-browser"
       }
     },
     "sops-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nix-podman-stacks",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1750119275,
+        "narHash": "sha256-Rr7Pooz9zQbhdVxux16h7URa6mA80Pb/G07T4lHvh0M=",
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "rev": "77c423a03b9b2b79709ea2cb63336312e78b72e2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "type": "github"
+      }
+    },
+    "sops-nix_2": {
       "inputs": {
         "nixpkgs": [
           "nixpkgs"
@@ -652,7 +697,7 @@
         "flake-parts": "flake-parts_2",
         "git-hooks": "git-hooks",
         "gnome-shell": "gnome-shell",
-        "home-manager": "home-manager_2",
+        "home-manager": "home-manager_3",
         "nixpkgs": [
           "nixpkgs"
         ],
@@ -880,7 +925,7 @@
     },
     "zen-browser": {
       "inputs": {
-        "home-manager": "home-manager_3",
+        "home-manager": "home-manager_4",
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
