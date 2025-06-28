@@ -5,7 +5,6 @@
   ...
 }: {
   imports = [
-    #{tarow.stacks.enable = lib.mkForce false;}
     {
       tarow = lib.tarow.enableModules [
         "aichat"
@@ -43,11 +42,11 @@
           envFile = config.sops.secrets."aiostreams/env".path;
         };
         audiobookshelf.enable = true;
-        calibre.enable = true;
+        calibre.enable = false;
         changedetection.enable = true;
         crowdsec = {
           enable = true;
-          containers.crowdsec.environmentFile = [config.sops.secrets."crowdsec/env".path];
+          envFile = config.sops.secrets."crowdsec/env".path;
         };
         dozzle.enable = true;
         dockdns = {
@@ -93,8 +92,8 @@
         };
         immich = {
           enable = true;
-          immichEnvFile = config.sops.secrets."immich/env".path;
-          dbEnvFile = config.sops.secrets."immich/db_env".path;
+          envFile = config.sops.secrets."immich/env".path;
+          db.envFile = config.sops.secrets."immich/db_env".path;
         };
         monitoring = {
           enable = true;
@@ -135,8 +134,7 @@
         };
 
         wg-easy = {
-          enable = true;
-          containers.wg-easy.ports = lib.mkForce [];
+          enable = false;
           envFile = config.sops.secrets."wg-easy/env".path;
         };
 
