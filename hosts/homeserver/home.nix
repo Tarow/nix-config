@@ -5,8 +5,12 @@
   ...
 }: {
   imports = [
-    ./karakeep.nix
-    {tarow.podman.stacks.karakeep.enable = true;}
+    {
+      tarow.podman.stacks.karakeep = {
+        enable = true;
+        envFile = config.sops.secrets."karakeep/env".path;
+      };
+    }
     {
       #services.podman.containers = lib.mkForce {};
       #services.podman.networks = lib.mkForce {};
