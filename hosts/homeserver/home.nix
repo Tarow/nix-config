@@ -5,6 +5,12 @@
   ...
 }: {
   imports = [
+    ./karakeep.nix
+    {tarow.podman.stacks.karakeep.enable = true;}
+    {
+      #services.podman.containers = lib.mkForce {};
+      #services.podman.networks = lib.mkForce {};
+    }
     {
       tarow = lib.tarow.enableModules [
         "aichat"
@@ -22,6 +28,8 @@
     }
   ];
 
+  #home.file."test.txt".text = "hello world";
+
   home.stateVersion = "24.11";
   sops.secrets."ssh_authorized_keys".path = "${config.home.homeDirectory}/.ssh/authorized_keys";
   tarow = {
@@ -29,6 +37,7 @@
     core.configLocation = "~/nix-config#homeserver";
 
     podman = rec {
+      #package = pkgs.unstable.podman;
       hostIP4Address = config.tarow.facts.ip4Address;
       hostUid = config.tarow.facts.uid;
       defaultTz = "Europe/Berlin";
@@ -36,7 +45,11 @@
       externalStorageBaseDir = "/mnt/hdd1";
 
       stacks = {
-        adguard.enable = true;
+        adguard.enable = false;
+        blocky.enable = true;
+        blocky.enableGrafanaDashboard = true;
+        blocky.enablePrometheusExport = true;
+
         aiostreams = {
           enable = true;
           envFile = config.sops.secrets."aiostreams/env".path;
@@ -143,6 +156,7 @@
           enable = true;
           domain = "ntasler.de";
           envFile = config.sops.secrets."traefik/env".path;
+          geoblock.allowedCountries = ["DE"];
         };
       };
     };
