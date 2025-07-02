@@ -6,9 +6,10 @@
 }: {
   imports = [
     {
-      tarow.podman.stacks.karakeep = {
+      tarow.podman.stacks.beszel = {
         enable = true;
-        envFile = config.sops.secrets."karakeep/env".path;
+        ed25519PrivateKeyFile = config.sops.secrets."beszel/ssh_key".path;
+        ed25519PublicKeyFile = config.sops.secrets."beszel/ssh_pub_key".path;
       };
     }
     {
@@ -32,8 +33,6 @@
     }
   ];
 
-  #home.file."test.txt".text = "hello world";
-
   home.stateVersion = "24.11";
   sops.secrets."ssh_authorized_keys".path = "${config.home.homeDirectory}/.ssh/authorized_keys";
   tarow = {
@@ -50,9 +49,13 @@
 
       stacks = {
         adguard.enable = false;
-        blocky.enable = true;
-        blocky.enableGrafanaDashboard = true;
-        blocky.enablePrometheusExport = true;
+        blocky = {
+          enable = true;
+          enableGrafanaDashboard = true;
+          enablePrometheusExport = true;
+          # containers.blocky.homepage.settings.widget.enable = true;
+          containers.blocky.homepage.settings.href = "${config.tarow.podman.stacks.monitoring.containers.grafana.traefik.serviceDomain}/d/blocky";
+        };
 
         aiostreams = {
           enable = true;
