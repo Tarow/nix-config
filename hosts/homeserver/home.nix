@@ -6,13 +6,6 @@
 }: {
   imports = [
     {
-      tarow.podman.stacks.beszel = {
-        enable = true;
-        ed25519PrivateKeyFile = config.sops.secrets."beszel/ssh_key".path;
-        ed25519PublicKeyFile = config.sops.secrets."beszel/ssh_pub_key".path;
-      };
-    }
-    {
       #services.podman.containers = lib.mkForce {};
       #services.podman.networks = lib.mkForce {};
     }
@@ -40,7 +33,6 @@
     core.configLocation = "~/nix-config#homeserver";
 
     podman = rec {
-      #package = pkgs.unstable.podman;
       hostIP4Address = config.tarow.facts.ip4Address;
       hostUid = config.tarow.facts.uid;
       defaultTz = "Europe/Berlin";
@@ -49,26 +41,28 @@
 
       stacks = {
         adguard.enable = false;
-        blocky = {
-          enable = true;
-          enableGrafanaDashboard = true;
-          enablePrometheusExport = true;
-          # containers.blocky.homepage.settings.widget.enable = true;
-          containers.blocky.homepage.settings.href = "${config.tarow.podman.stacks.monitoring.containers.grafana.traefik.serviceDomain}/d/blocky";
-        };
-
         aiostreams = {
           enable = true;
           envFile = config.sops.secrets."aiostreams/env".path;
         };
         audiobookshelf.enable = true;
+        beszel = {
+          enable = false;
+          ed25519PrivateKeyFile = config.sops.secrets."beszel/ssh_key".path;
+          ed25519PublicKeyFile = config.sops.secrets."beszel/ssh_pub_key".path;
+        };
+        blocky = {
+          enable = true;
+          enableGrafanaDashboard = true;
+          enablePrometheusExport = true;
+          containers.blocky.homepage.settings.href = "${config.tarow.podman.stacks.monitoring.containers.grafana.traefik.serviceDomain}/d/blocky";
+        };
         calibre.enable = false;
         changedetection.enable = true;
         crowdsec = {
           enable = true;
           envFile = config.sops.secrets."crowdsec/env".path;
         };
-        dozzle.enable = true;
         dockdns = {
           enable = true;
           envFile = config.sops.secrets."dockdns/env".path;
@@ -88,11 +82,14 @@
             }
           ];
         };
+        dozzle.enable = true;
         filebrowser.enable = true;
+        forgejo.enable = false;
         healthchecks = {
           enable = true;
           envFile = config.sops.secrets."healthchecks/env".path;
         };
+        homeassistant.enable = false;
         homepage = {
           enable = true;
           containers.homepage.volumes = ["${./background.jpg}:/app/public/images/background.jpg"];
@@ -115,6 +112,12 @@
           envFile = config.sops.secrets."immich/env".path;
           db.envFile = config.sops.secrets."immich/db_env".path;
         };
+        ittools.enable = false;
+        karakeep = {
+          enable = false;
+          envFile = config.sops.secrets."karakeep/env".path;
+        };
+        mealie.enable = false;
         monitoring = {
           enable = true;
           grafana.dashboards = [./node-exporter-dashboard.json];
@@ -131,7 +134,18 @@
             }
           ];
         };
+        paperless = {
+          enable = true;
+          envFile = config.sops.secrets."paperless/env".path;
+          db.envFile = config.sops.secrets."paperless/db_env".path;
+          ftp.envFile = config.sops.secrets."paperless/ftp_env".path;
+        };
+        pocketid = {
+          enable = true;
+          traefik.envFile = config.sops.secrets."pocketId/traefikEnv".path;
+        };
         skatcounter.enable = true;
+        stirling-pdf.enable = true;
         streaming =
           {
             enable = true;
@@ -144,26 +158,16 @@
           // lib.genAttrs ["sonarr" "radarr" "bazarr" "prowlarr"] (name: {
             envFile = config.sops.secrets."servarr/${name}_env".path;
           });
-        stirling-pdf.enable = true;
-
-        paperless = {
-          enable = true;
-          envFile = config.sops.secrets."paperless/env".path;
-          db.envFile = config.sops.secrets."paperless/db_env".path;
-          ftp.envFile = config.sops.secrets."paperless/ftp_env".path;
-        };
-
-        wg-easy = {
-          enable = false;
-          envFile = config.sops.secrets."wg-easy/env".path;
-        };
-
-        uptime-kuma.enable = true;
         traefik = {
           enable = true;
           domain = "ntasler.de";
           envFile = config.sops.secrets."traefik/env".path;
           geoblock.allowedCountries = ["DE"];
+        };
+        uptime-kuma.enable = true;
+        wg-easy = {
+          enable = false;
+          envFile = config.sops.secrets."wg-easy/env".path;
         };
       };
     };
