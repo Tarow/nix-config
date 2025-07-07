@@ -83,6 +83,7 @@
           ];
         };
         dozzle.enable = true;
+        dozzle.containers.dozzle.traefik.middlewares = ["pocketid"];
         filebrowser.enable = true;
         forgejo.enable = false;
         healthchecks = {
@@ -169,6 +170,7 @@
           enable = false;
           envFile = config.sops.secrets."wg-easy/env".path;
         };
+        vaultwarden.enable = true;
       };
     };
   };
