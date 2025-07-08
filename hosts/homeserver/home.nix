@@ -26,6 +26,8 @@
     }
   ];
 
+  home.packages = with pkgs; [isd];
+
   home.stateVersion = "24.11";
   sops.secrets."ssh_authorized_keys".path = "${config.home.homeDirectory}/.ssh/authorized_keys";
   tarow = {
@@ -127,13 +129,17 @@
             {
               job_name = "node";
               honor_timestamps = true;
-              scrape_interval = "15s";
-              scrape_timeout = "10s";
               metrics_path = "/metrics";
               scheme = "http";
               static_configs = [{targets = ["host.containers.internal:9191"];}];
             }
           ];
+        };
+        ntfy = {
+          enable = true;
+          envFile = config.sops.secrets."ntfy/env".path;
+          enableGrafanaDashboard = true;
+          enablePrometheusExport = true;
         };
         paperless = {
           enable = true;
