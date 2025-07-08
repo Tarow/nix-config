@@ -170,6 +170,9 @@
           domain = "ntasler.de";
           envFile = config.sops.secrets."traefik/env".path;
           geoblock.allowedCountries = ["DE"];
+          enablePrometheusExport = true;
+          enableGrafanaMetricsDashboard = true;
+          enableGrafanaAccessLogDashboard = true;
         };
         uptime-kuma.enable = true;
         wg-easy = {
