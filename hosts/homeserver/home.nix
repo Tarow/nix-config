@@ -34,97 +34,33 @@
     facts.ip4Address = "10.1.1.99";
     core.configLocation = "~/nix-config#homeserver";
 
-    podman = rec {
-      hostIP4Address = config.tarow.facts.ip4Address;
-      hostUid = config.tarow.facts.uid;
-      defaultTz = "Europe/Berlin";
+    podman = {
       storageBaseDir = "${config.home.homeDirectory}/stacks";
       externalStorageBaseDir = "/mnt/hdd1";
 
       stacks = {
+        # General onfiguration for stacks provided in modules/home-manager/stacks/default.nix if necessary
+        # Just enable them here or provide host-specific settings
         adguard.enable = false;
-        aiostreams = {
-          enable = true;
-          envFile = config.sops.secrets."aiostreams/env".path;
-        };
+        aiostreams.enable = true;
         audiobookshelf.enable = true;
-        beszel = {
-          enable = false;
-          ed25519PrivateKeyFile = config.sops.secrets."beszel/ssh_key".path;
-          ed25519PublicKeyFile = config.sops.secrets."beszel/ssh_pub_key".path;
-        };
-        blocky = {
-          enable = true;
-          enableGrafanaDashboard = true;
-          enablePrometheusExport = true;
-          containers.blocky.homepage.settings.href = "${config.tarow.podman.stacks.monitoring.containers.grafana.traefik.serviceDomain}/d/blocky";
-        };
+        beszel.enable = true;
+        blocky.enable = true;
         calibre.enable = false;
         changedetection.enable = true;
-        crowdsec = {
-          enable = true;
-          envFile = config.sops.secrets."crowdsec/env".path;
-        };
-        dockdns = {
-          enable = true;
-          envFile = config.sops.secrets."dockdns/env".path;
-          settings.domains = let
-            domain = stacks.traefik.domain;
-          in [
-            {
-              name = domain;
-              a = hostIP4Address;
-            }
-            {
-              name = "*.${domain}";
-              a = hostIP4Address;
-            }
-            {
-              name = "vpn.${domain}";
-            }
-          ];
-        };
+        crowdsec.enable = true;
+        dockdns.enable = true;
         dozzle.enable = true;
-        dozzle.containers.dozzle.traefik.middlewares = ["pocketid"];
         filebrowser.enable = true;
         forgejo.enable = false;
-        healthchecks = {
-          enable = true;
-          envFile = config.sops.secrets."healthchecks/env".path;
-        };
+        healthchecks.enable = true;
         homeassistant.enable = false;
-        homepage = {
-          enable = true;
-          containers.homepage.volumes = ["${./background.jpg}:/app/public/images/background.jpg"];
-          settings.background = {
-            image = "/images/background.jpg";
-            opacity = 50;
-          };
-          widgets = [
-            {
-              openweathermap = {
-                units = "metric";
-                cache = 5;
-                apiKey.path = config.sops.secrets."OPENWEATHERMAP_API_KEY".path;
-              };
-            }
-          ];
-        };
-        immich = {
-          enable = true;
-          envFile = config.sops.secrets."immich/env".path;
-          db.envFile = config.sops.secrets."immich/db_env".path;
-        };
+        homepage.enable = true;
+        immich.enable = true;
         ittools.enable = false;
-        karakeep = {
-          enable = false;
-          envFile = config.sops.secrets."karakeep/env".path;
-        };
+        karakeep.enable = true;
         mealie.enable = false;
-        microbin = {
-          enable = false;
-          envFile = config.sops.secrets."microbin/env".path;
-        };
+        microbin.enable = true;
         monitoring = {
           enable = true;
           grafana.dashboards = [./node-exporter-dashboard.json];
@@ -139,50 +75,18 @@
             }
           ];
         };
-        ntfy = {
-          enable = false;
-          envFile = config.sops.secrets."ntfy/env".path;
-          enableGrafanaDashboard = true;
-          enablePrometheusExport = true;
-        };
-        paperless = {
-          enable = true;
-          envFile = config.sops.secrets."paperless/env".path;
-          db.envFile = config.sops.secrets."paperless/db_env".path;
-          ftp.envFile = config.sops.secrets."paperless/ftp_env".path;
-        };
-        pocketid = {
-          enable = true;
-          traefik.envFile = config.sops.secrets."pocketId/traefikEnv".path;
-        };
+        ntfy.enable = true;
+        paperless.enable = true;
+        pocketid.enable = true;
         skatcounter.enable = true;
         stirling-pdf.enable = true;
-        streaming =
-          {
-            enable = true;
-            gluetun = {
-              vpnProvider = "airvpn";
-              envFile = config.sops.secrets."gluetun/env".path;
-            };
-            qbittorrent.envFile = config.sops.secrets."qbittorrent/env".path;
-          }
-          // lib.genAttrs ["sonarr" "radarr" "bazarr" "prowlarr"] (name: {
-            envFile = config.sops.secrets."servarr/${name}_env".path;
-          });
+        streaming.enable = true;
         traefik = {
           enable = true;
           domain = "ntasler.de";
-          envFile = config.sops.secrets."traefik/env".path;
-          geoblock.allowedCountries = ["DE"];
-          enablePrometheusExport = true;
-          enableGrafanaMetricsDashboard = true;
-          enableGrafanaAccessLogDashboard = true;
         };
         uptime-kuma.enable = true;
-        wg-easy = {
-          enable = false;
-          envFile = config.sops.secrets."wg-easy/env".path;
-        };
+        wg-easy.enable = true;
         vaultwarden.enable = true;
       };
     };
