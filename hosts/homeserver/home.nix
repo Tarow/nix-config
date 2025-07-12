@@ -121,6 +121,10 @@
           envFile = config.sops.secrets."karakeep/env".path;
         };
         mealie.enable = false;
+        microbin = {
+          enable = false;
+          envFile = config.sops.secrets."microbin/env".path;
+        };
         monitoring = {
           enable = true;
           grafana.dashboards = [./node-exporter-dashboard.json];
@@ -136,7 +140,7 @@
           ];
         };
         ntfy = {
-          enable = true;
+          enable = false;
           envFile = config.sops.secrets."ntfy/env".path;
           enableGrafanaDashboard = true;
           enablePrometheusExport = true;

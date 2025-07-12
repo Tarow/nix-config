@@ -441,14 +441,17 @@
         "sops-nix": "sops-nix"
       },
       "locked": {
-        "lastModified": 1751735822,
-        "narHash": "sha256-bBy8ql0j9yWjBD6N4n/VeOu5iUZSaswRCNmM5mhvw30=",
-        "path": "/home/niklas/projects/nix-stacks",
-        "type": "path"
+        "lastModified": 1751994965,
+        "narHash": "sha256-vavP7oTYQlkUyXtakshc2qcUurToZp1P3Cv50J5rxy8=",
+        "owner": "Tarow",
+        "repo": "nix-podman-stacks",
+        "rev": "204625462e759d9663e588bfeacc3fd93559810b",
+        "type": "github"
       },
       "original": {
-        "path": "/home/niklas/projects/nix-stacks",
-        "type": "path"
+        "owner": "Tarow",
+        "repo": "nix-podman-stacks",
+        "type": "github"
       }
     },
     "nix-vscode-extensions": {
