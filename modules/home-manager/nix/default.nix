@@ -11,7 +11,7 @@
   isStandalone = !config.submoduleSupport.enable;
 in {
   imports = [
-    inputs.nix-index-database.hmModules.nix-index
+    inputs.nix-index-database.homeModules.nix-index
     {
       programs.nix-index-database.comma.enable = true;
       programs.nix-index.enable = true;
