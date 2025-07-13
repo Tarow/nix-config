@@ -32,7 +32,7 @@
             settings = {
               url = "host.containers.internal";
               dns = {
-                query-name = "${config.tarow.podman.stacks.traefik.domain}";
+                query-name = config.tarow.podman.stacks.traefik.domain;
                 query-type = "A";
               };
               conditions = [
