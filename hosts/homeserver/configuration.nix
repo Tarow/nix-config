@@ -12,6 +12,7 @@
   system.stateVersion = "24.11";
 
   tarow = {
+    facts.ip4Address = "10.1.1.99";
     core = {
       enable = true;
       configLocation = "~/nix-config#homeserver";
@@ -69,11 +70,13 @@
     };
     hostName = "homeserver";
     defaultGateway = "10.1.1.1";
-    nameservers = [defaultGateway];
+    nameservers = [defaultGateway "1.1.1.1" "9.9.9.9"];
+    resolvconf.extraOptions = ["timeout:2"];
+
     interfaces.enp1s0 = {
       ipv4.addresses = [
         {
-          address = "10.1.1.99";
+          address = config.tarow.facts.ip4Address;
           prefixLength = 24;
         }
       ];

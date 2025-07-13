@@ -25,7 +25,22 @@
       blocky = {
         enableGrafanaDashboard = true;
         enablePrometheusExport = true;
-        containers.blocky.homepage.settings.href = "${config.tarow.podman.stacks.monitoring.containers.grafana.traefik.serviceDomain}/d/blocky";
+        containers.blocky = {
+          homepage.settings.href = "${config.tarow.podman.stacks.monitoring.containers.grafana.traefik.serviceDomain}/d/blocky";
+          gatus = {
+            enable = true;
+            settings = {
+              url = "host.containers.internal";
+              dns = {
+                query-name = "${config.tarow.podman.stacks.traefik.domain}";
+                query-type = "A";
+              };
+              conditions = [
+                "[DNS_RCODE] == NOERROR"
+              ];
+            };
+          };
+        };
       };
 
       crowdsec = {
@@ -50,11 +65,13 @@
             }
           ];
       };
-
+      gatus = {
+        db.type = "postgres";
+        db.envFile = config.sops.secrets."gatus/dbEnv".path;
+      };
       healthchecks = {
         envFile = config.sops.secrets."healthchecks/env".path;
       };
-
       homepage = {
         bookmarks = import ./homepage-bookmarks.nix;
         containers.homepage.volumes = ["${./homepage-background.jpg}:/app/public/images/background.jpg"];

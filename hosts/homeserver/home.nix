@@ -44,23 +44,24 @@
         adguard.enable = false;
         aiostreams.enable = true;
         audiobookshelf.enable = true;
-        beszel.enable = true;
+        beszel.enable = false;
         blocky.enable = true;
         calibre.enable = false;
-        changedetection.enable = true;
+        changedetection.enable = false;
         crowdsec.enable = true;
         dockdns.enable = true;
         dozzle.enable = true;
         filebrowser.enable = true;
         forgejo.enable = false;
+        gatus.enable = true;
         healthchecks.enable = true;
         homeassistant.enable = false;
         homepage.enable = true;
         immich.enable = true;
         ittools.enable = false;
-        karakeep.enable = true;
+        karakeep.enable = false;
         mealie.enable = false;
-        microbin.enable = true;
+        microbin.enable = false;
         monitoring = {
           enable = true;
           grafana.dashboards = [./node-exporter-dashboard.json];
@@ -75,19 +76,19 @@
             }
           ];
         };
-        ntfy.enable = true;
+        ntfy.enable = false;
         paperless.enable = true;
         pocketid.enable = true;
         skatcounter.enable = true;
         stirling-pdf.enable = true;
-        streaming.enable = true;
+        streaming.enable = false;
         traefik = {
           enable = true;
           domain = "ntasler.de";
         };
-        uptime-kuma.enable = true;
-        wg-easy.enable = true;
-        vaultwarden.enable = true;
+        uptime-kuma.enable = false;
+        wg-easy.enable = false;
+        vaultwarden.enable = false;
       };
     };
   };

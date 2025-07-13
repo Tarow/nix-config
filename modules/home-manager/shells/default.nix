@@ -14,7 +14,8 @@ in {
     programs.zsh.enable = true;
 
     programs.fish.shellInit = ''
-      set fish_greeting "🐟🐟🐟"
+      set fish_greeting "🐟"
+      set sponge_delay 5
       bind \cR _fzf_search_history
       fzf_configure_bindings --directory=è --history=\cR --processes=ô --variables=ë --git_status=ß --git_log=ø;
     '';
