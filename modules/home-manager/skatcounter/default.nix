@@ -18,6 +18,7 @@ in {
 
       port = 8080;
       traefik.name = "skat";
+      traefik.middlewares = ["private"];
     };
   };
 }

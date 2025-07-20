@@ -79,7 +79,9 @@
         ntfy.enable = false;
         paperless.enable = true;
         pocketid.enable = true;
-        skatcounter.enable = true;
+        skatcounter = {
+          enable = true;
+        };
         stirling-pdf.enable = true;
         streaming.enable = false;
         traefik = {
@@ -87,7 +89,7 @@
           domain = "ntasler.de";
         };
         uptime-kuma.enable = false;
-        wg-easy.enable = false;
+        wg-easy.enable = true;
         vaultwarden.enable = false;
       };
     };
