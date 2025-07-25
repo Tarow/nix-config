@@ -130,6 +130,7 @@
           envFile = config.sops.secrets."servarr/${name}_env".path;
         });
       traefik = {
+        domain = "ntasler.de";
         envFile = config.sops.secrets."traefik/env".path;
         geoblock.allowedCountries = ["DE"];
         enablePrometheusExport = true;
@@ -140,6 +141,14 @@
       wg-easy = {
         envFile = config.sops.secrets."wg-easy/env".path;
         containers.wg-easy.environment.DISABLE_IPV6 = true;
+      };
+      wg-portal = {
+        settings.core = {
+          admin_user = "$ADMIN_USER";
+          admin_password = "$ADMIN_PASSWORD";
+        };
+        settings.advanved.use_ip_v6 = false;
+        envFile = config.sops.secrets."wg-portal/env".path;
       };
     };
   };

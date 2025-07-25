@@ -50,6 +50,7 @@
         changedetection.enable = false;
         crowdsec.enable = true;
         dockdns.enable = true;
+        docker-socket-proxy.enable = true;
         dozzle.enable = true;
         filebrowser.enable = true;
         forgejo.enable = false;
@@ -84,12 +85,10 @@
         };
         stirling-pdf.enable = true;
         streaming.enable = false;
-        traefik = {
-          enable = true;
-          domain = "ntasler.de";
-        };
+        traefik.enable = true;
         uptime-kuma.enable = false;
-        wg-easy.enable = true;
+        wg-easy.enable = false;
+        wg-portal.enable = false;
         vaultwarden.enable = false;
       };
     };
