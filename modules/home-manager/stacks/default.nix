@@ -48,6 +48,7 @@
       };
       dockdns = {
         envFile = config.sops.secrets."dockdns/env".path;
+        settings.dns.purgeUnknown = true;
         settings.domains = let
           domain = config.tarow.podman.stacks.traefik.domain or "";
         in

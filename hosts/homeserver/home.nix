@@ -44,7 +44,7 @@
         adguard.enable = false;
         aiostreams.enable = true;
         audiobookshelf.enable = true;
-        beszel.enable = false;
+        beszel.enable = true;
         blocky.enable = true;
         calibre.enable = false;
         changedetection.enable = false;
