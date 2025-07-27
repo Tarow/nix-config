@@ -45,6 +45,9 @@
 
       crowdsec = {
         envFile = config.sops.secrets."crowdsec/env".path;
+        traefikIntegration = {
+          bouncerEnvFile = config.sops.secrets."crowdsec/traefikEnv".path;
+        };
       };
       dockdns = {
         envFile = config.sops.secrets."dockdns/env".path;
@@ -117,7 +120,7 @@
         ftp.envFile = config.sops.secrets."paperless/ftp_env".path;
       };
       pocketid = {
-        traefik.envFile = config.sops.secrets."pocketId/traefikEnv".path;
+        traefikIntegration.envFile = config.sops.secrets."pocketId/traefikEnv".path;
       };
       streaming =
         {

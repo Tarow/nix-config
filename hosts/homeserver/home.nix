@@ -15,6 +15,7 @@
         "core"
         "fastfetch"
         "git"
+        "housekeeping"
         "shells"
         "sops"
         "starship"
