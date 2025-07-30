@@ -47,6 +47,7 @@
         audiobookshelf.enable = true;
         beszel.enable = true;
         blocky.enable = true;
+        bytestash.enable = false;
         calibre.enable = false;
         changedetection.enable = false;
         crowdsec.enable = true;
@@ -81,6 +82,7 @@
         ntfy.enable = false;
         paperless.enable = true;
         pocketid.enable = true;
+        romm.enable = true;
         skatcounter = {
           enable = true;
         };

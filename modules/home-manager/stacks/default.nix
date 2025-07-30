@@ -42,7 +42,9 @@
           };
         };
       };
-
+      bytestash = {
+        envFile = config.sops.secrets."bytestash/env".path;
+      };
       crowdsec = {
         envFile = config.sops.secrets."crowdsec/env".path;
         traefikIntegration = {
@@ -121,6 +123,12 @@
       };
       pocketid = {
         traefikIntegration.envFile = config.sops.secrets."pocketId/traefikEnv".path;
+      };
+      romm = {
+        setupAdminUser = true;
+        romLibraryPath = "${config.tarow.podman.externalStorageBaseDir}/romm/library";
+        envFile = config.sops.secrets."romm/env".path;
+        db.envFile = config.sops.secrets."romm/dbEnv".path;
       };
       streaming =
         {
