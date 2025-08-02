@@ -104,6 +104,11 @@
         envFile = config.sops.secrets."karakeep/env".path;
       };
 
+      kimai = {
+        envFile = config.sops.secrets."kimai/env".path;
+        db.envFile = config.sops.secrets."kimai/db_env".path;
+      };
+
       microbin = {
         envFile = config.sops.secrets."microbin/env".path;
       };

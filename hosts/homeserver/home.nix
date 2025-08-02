@@ -55,14 +55,15 @@
         docker-socket-proxy.enable = true;
         dozzle.enable = true;
         filebrowser.enable = true;
-        forgejo.enable = false;
+        #forgejo.enable = true;
         gatus.enable = true;
         healthchecks.enable = true;
         homeassistant.enable = false;
         homepage.enable = true;
         immich.enable = true;
         ittools.enable = false;
-        karakeep.enable = false;
+        karakeep.enable = true;
+        kimai.enable = true;
         mealie.enable = false;
         microbin.enable = false;
         monitoring = {
