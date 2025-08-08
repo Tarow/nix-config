@@ -17,6 +17,20 @@
       aiostreams = {
         envFile = config.sops.secrets."aiostreams/env".path;
       };
+      authelia = {
+        jwtSecretFile = config.sops.secrets."authelia/jwt_secret".path;
+        sessionSecretFile = config.sops.secrets."authelia/session_secret".path;
+        storageEncryptionKeyFile = config.sops.secrets."authelia/encryption_key".path;
+        authenticationBackend = {
+          type = "ldap";
+          ldapPasswordFile = config.sops.secrets."authelia/ldap_password".path;
+        };
+        oidc = {
+          enable = true;
+          hmacSecretFile = config.sops.secrets."authelia/oidc_hmac_secret".path;
+          jwksRsaKeyFile = config.sops.secrets."authelia/oidc_rsa_pk".path;
+        };
+      };
 
       beszel = {
         ed25519PrivateKeyFile = config.sops.secrets."beszel/ssh_key".path;
@@ -109,6 +123,11 @@
         db.envFile = config.sops.secrets."kimai/db_env".path;
       };
 
+      lldap = {
+        baseDn = "DC=ntasler,DC=de";
+        envFile = config.sops.secrets."lldap/env".path;
+      };
+
       microbin = {
         envFile = config.sops.secrets."microbin/env".path;
       };
@@ -118,6 +137,10 @@
         enablePrometheusExport = true;
       };
       paperless = {
+        authelia = {
+          registerClient = true;
+          clientSecret = "$pbkdf2-sha512$310000$0IgF7vx.fWICGnbGGMQosw$v73kGV4a5sBX2Zc39aS.vLj..IepDX02NK.xsAYpUaAvXdIr65BYU6TnAmPiusjyaa.sCiF6vrmoEgWyWpr/SQ";
+        };
         env = {
           PAPERLESS_OCR_LANGUAGES = "eng deu";
           PAPERLESS_OCR_LANGUAGE = "eng+deu";
@@ -128,6 +151,7 @@
       };
       pocketid = {
         traefikIntegration.envFile = config.sops.secrets."pocketId/traefikEnv".path;
+        envFile = config.sops.secrets."pocketId/env".path;
       };
       romm = {
         setupAdminUser = true;

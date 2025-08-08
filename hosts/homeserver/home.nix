@@ -45,6 +45,7 @@
         adguard.enable = false;
         aiostreams.enable = true;
         audiobookshelf.enable = true;
+        authelia.enable = true;
         beszel.enable = true;
         blocky.enable = true;
         bytestash.enable = false;
@@ -62,8 +63,9 @@
         homepage.enable = true;
         immich.enable = true;
         ittools.enable = false;
-        karakeep.enable = true;
+        karakeep.enable = false;
         kimai.enable = true;
+        lldap.enable = true;
         mealie.enable = false;
         microbin.enable = false;
         monitoring = {
