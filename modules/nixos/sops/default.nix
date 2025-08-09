@@ -7,36 +7,46 @@
 }: let
   cfg = config.tarow.sops;
 
-
   # Read encrypted secrets from secret file (without sops config key)
   readSecrets = file: lib.removeAttrs (lib.tarow.readYAML file) ["sops"];
 
-  /* Flatten and extract all nested keys, e.g
-    a:
-      b:
-        c: 1
-    d: 2
-    => ["a/b/c", "d"]
+  /*
+   Flatten and extract all nested keys, e.g
+  a:
+    b:
+      c: 1
+  d: 2
+  => ["a/b/c", "d"]
   */
-  getSecretKeys = secrets:  lib.tarow.flattenAttrs "" "/" secrets;
-  
-  /* Map all keys to a default secret config. E.g.
-    ["a/b/c", "d"] => { "a/b/c" = {owner = ...; group = ...;}; "d" = {owner = ...; group = ...;}; }
-  */
-  mapSecrets = secretKeys: secretKeys |> map (k: { name = k; value = let owner = config.users.users.niklas; in {
-    owner = owner.name;
-    group = owner.group;
-  }; }) |> builtins.listToAttrs;
+  getSecretKeys = secrets: lib.tarow.flattenAttrs "" "/" secrets;
 
-  getSecretCfg = sopsFile: readSecrets sopsFile
+  /*
+   Map all keys to a default secret config. E.g.
+  ["a/b/c", "d"] => { "a/b/c" = {owner = ...; group = ...;}; "d" = {owner = ...; group = ...;}; }
+  */
+  mapSecrets = secretKeys:
+    secretKeys
+    |> map (k: {
+      name = k;
+      value = let
+        owner = config.users.users.niklas;
+      in {
+        owner = owner.name;
+        group = owner.group;
+      };
+    })
+    |> builtins.listToAttrs;
+
+  getSecretCfg = sopsFile:
+    readSecrets sopsFile
     |> getSecretKeys
     |> mapSecrets
     |> lib.mapAttrs (_: v: v // {inherit sopsFile;});
 
-  fullCfg = ([config.sops.defaultSopsFile]++cfg.extraSopsFiles) 
-    |> map getSecretCfg 
+  fullCfg =
+    ([config.sops.defaultSopsFile] ++ cfg.extraSopsFiles)
+    |> map getSecretCfg
     |> lib.mergeAttrsList;
-
 in {
   options.tarow.sops = {
     enable = lib.options.mkEnableOption "sops-nix";

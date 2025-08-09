@@ -13,9 +13,9 @@ in {
 
   config = lib.mkIf cfg.enable {
     services.xserver = {
-#      enable = true;
+      #      enable = true;
       displayManager.gdm.enable = true;
-   #   displayManager.gdm.wayland = false;
+      #   displayManager.gdm.wayland = false;
       desktopManager.gnome.enable = true;
     };
   };

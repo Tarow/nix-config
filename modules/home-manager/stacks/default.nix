@@ -125,7 +125,21 @@
 
       lldap = {
         baseDn = "DC=ntasler,DC=de";
-        envFile = config.sops.secrets."lldap/env".path;
+        jwtSecretFile = config.sops.secrets."lldap/jwtSecret".path;
+        keySeedFile = config.sops.secrets."lldap/keySeed".path;
+        adminPasswordFile = config.sops.secrets."lldap/adminPassword".path;
+        bootstrap = {
+          cleanUp = true;
+          users = [
+            {
+              id = "test";
+              email = "test@example.com";
+              password_file = config.sops.secrets."lldap/testUserPassword".path;
+              groups = ["testgroup"];
+            }
+          ];
+          groups = ["testgroup"];
+        };
       };
 
       microbin = {

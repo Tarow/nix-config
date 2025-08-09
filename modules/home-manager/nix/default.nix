@@ -49,17 +49,22 @@ in {
     };
   };
 
-  home.packages = with pkgs; [unstable.nixd alejandra];
+  home.packages = with pkgs; [unstable.nixd unstable.nil alejandra];
   programs.vscode.profiles.default.userSettings = {
     "[nix]" = {
       "editor.defaultFormatter" = "jnoortheen.nix-ide";
     };
-    "nix.serverPath" = "nixd";
+    "nix.serverPath" = "nil";
     "nix.enableLanguageServer" = true;
     "nix.hiddenLanguageServerErrors" = [
       "textDocument/formatting"
       "textDocument/definition"
     ];
+    "nil" = {
+      "formatting" = {
+        "command" = ["nixfmt"];
+      };
+    };
     "nix.serverSettings" = {
       "nixd" = {
         "nixpkgs" = {

@@ -28,41 +28,43 @@ lib: pkgs: {
       f [] attrList;
 
     enableModules = moduleNames:
-          moduleNames 
-          |> (builtins.map (m: {
-              name = m;
-              value = {enable = true;};
-            }))
-          |> (builtins.listToAttrs);
+      moduleNames
+      |> (builtins.map (m: {
+        name = m;
+        value = {enable = true;};
+      }))
+      |> (builtins.listToAttrs);
 
     flattenAttrs = prefix: delim: attrs:
       attrs
-      |> builtins.mapAttrs (key: value:
-        let
-          newPrefix = if prefix == "" then key else "${prefix}${delim}${key}";
+      |> builtins.mapAttrs (
+        key: value: let
+          newPrefix =
+            if prefix == ""
+            then key
+            else "${prefix}${delim}${key}";
         in
-          if builtins.isAttrs value then
-            flattenAttrs newPrefix delim value
-          else
-            [ newPrefix ]
+          if builtins.isAttrs value
+          then flattenAttrs newPrefix delim value
+          else [newPrefix]
       )
       |> builtins.attrValues
       |> builtins.concatLists;
 
     fromYAML = yaml:
       pkgs.runCommand "from-yaml"
-        {
-          inherit yaml;
-          allowSubstitutes = false;
-          preferLocalBuild = true;
-        }
-        ''
-          ${pkgs.remarshal}/bin/remarshal \
-            -if yaml \
-            -i <(echo "$yaml") \
-            -of json \
-            -o $out
-        ''
+      {
+        inherit yaml;
+        allowSubstitutes = false;
+        preferLocalBuild = true;
+      }
+      ''
+        ${pkgs.remarshal}/bin/remarshal \
+          -if yaml \
+          -i <(echo "$yaml") \
+          -of json \
+          -o $out
+      ''
       |> builtins.readFile
       |> builtins.fromJSON;
 
