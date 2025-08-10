@@ -5,8 +5,9 @@
   config,
   lib,
   ...
-}: {
-  imports = [inputs.nix-podman-stacks.homeModules.all];
+}:
+{
+  imports = [ inputs.nix-podman-stacks.homeModules.all ];
 
   config.tarow.podman = rec {
     hostIP4Address = config.tarow.facts.ip4Address;
@@ -21,10 +22,7 @@
         jwtSecretFile = config.sops.secrets."authelia/jwt_secret".path;
         sessionSecretFile = config.sops.secrets."authelia/session_secret".path;
         storageEncryptionKeyFile = config.sops.secrets."authelia/encryption_key".path;
-        authenticationBackend = {
-          type = "ldap";
-          ldapPasswordFile = config.sops.secrets."authelia/ldap_password".path;
-        };
+        authenticationBackend.type = "ldap";
         oidc = {
           enable = true;
           hmacSecretFile = config.sops.secrets."authelia/oidc_hmac_secret".path;
@@ -68,9 +66,10 @@
       dockdns = {
         envFile = config.sops.secrets."dockdns/env".path;
         settings.dns.purgeUnknown = true;
-        settings.domains = let
-          domain = config.tarow.podman.stacks.traefik.domain or "";
-        in
+        settings.domains =
+          let
+            domain = config.tarow.podman.stacks.traefik.domain or "";
+          in
           lib.optionals (domain != "") [
             {
               name = domain;
@@ -94,7 +93,7 @@
       };
       homepage = {
         bookmarks = import ./homepage-bookmarks.nix;
-        containers.homepage.volumes = ["${./homepage-background.jpg}:/app/public/images/background.jpg"];
+        containers.homepage.volumes = [ "${./homepage-background.jpg}:/app/public/images/background.jpg" ];
         settings.background = {
           image = "/images/background.jpg";
           opacity = 50;
@@ -130,15 +129,15 @@
         adminPasswordFile = config.sops.secrets."lldap/adminPassword".path;
         bootstrap = {
           cleanUp = true;
-          users = [
-            {
-              id = "test";
+          users = {
+            test = {
               email = "test@example.com";
               password_file = config.sops.secrets."lldap/testUserPassword".path;
-              groups = ["testgroup"];
-            }
-          ];
-          groups = ["testgroup"];
+              groups = [ "testgroup" ];
+            };
+          };
+
+          groups = [ "testgroup" ];
         };
       };
 
@@ -165,7 +164,6 @@
       };
       pocketid = {
         traefikIntegration.envFile = config.sops.secrets."pocketId/traefikEnv".path;
-        envFile = config.sops.secrets."pocketId/env".path;
       };
       romm = {
         setupAdminUser = true;
@@ -173,21 +171,20 @@
         envFile = config.sops.secrets."romm/env".path;
         db.envFile = config.sops.secrets."romm/dbEnv".path;
       };
-      streaming =
-        {
-          gluetun = {
-            vpnProvider = "airvpn";
-            envFile = config.sops.secrets."gluetun/env".path;
-          };
-          qbittorrent.envFile = config.sops.secrets."qbittorrent/env".path;
-        }
-        // lib.genAttrs ["sonarr" "radarr" "bazarr" "prowlarr"] (name: {
-          envFile = config.sops.secrets."servarr/${name}_env".path;
-        });
+      streaming = {
+        gluetun = {
+          vpnProvider = "airvpn";
+          envFile = config.sops.secrets."gluetun/env".path;
+        };
+        qbittorrent.envFile = config.sops.secrets."qbittorrent/env".path;
+      }
+      // lib.genAttrs [ "sonarr" "radarr" "bazarr" "prowlarr" ] (name: {
+        envFile = config.sops.secrets."servarr/${name}_env".path;
+      });
       traefik = {
         domain = "ntasler.de";
         envFile = config.sops.secrets."traefik/env".path;
-        geoblock.allowedCountries = ["DE"];
+        geoblock.allowedCountries = [ "DE" ];
         enablePrometheusExport = true;
         enableGrafanaMetricsDashboard = true;
         enableGrafanaAccessLogDashboard = true;
