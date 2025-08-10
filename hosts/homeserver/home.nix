@@ -48,7 +48,7 @@
         audiobookshelf.enable = true;
         audiobookshelf.authelia = {
           registerClient = true;
-          clientSecret = "$argon2id$v=19$m=65536,t=3,p=4$eQPq1BZ1dIwgcm9yQgZmzw$fFc2DespGcKHevu7DanGp4Q2+r6R7lw3wwp5n18EgbE";
+          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$eQPq1BZ1dIwgcm9yQgZmzw$fFc2DespGcKHevu7DanGp4Q2+r6R7lw3wwp5n18EgbE";
         };
         authelia.enable = true;
         beszel.enable = true;

@@ -33,6 +33,10 @@
       beszel = {
         ed25519PrivateKeyFile = config.sops.secrets."beszel/ssh_key".path;
         ed25519PublicKeyFile = config.sops.secrets."beszel/ssh_pub_key".path;
+        authelia = {
+          registerClient = true;
+          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$iTcxhF8YJvibvv9jyHKPsg$+srgYmZS5vXMyLmkyGZbaP2yC3ILohBXmJ1wXtAMOl0";
+        };
       };
       blocky = {
         enableGrafanaDashboard = true;
@@ -85,8 +89,15 @@
           ];
       };
       gatus = {
+        envFile = config.sops.secrets."gatus/env".path;
         db.type = "postgres";
         db.envFile = config.sops.secrets."gatus/dbEnv".path;
+        authelia = {
+          allowedSubjects = [ ];
+          enable = true;
+          clientSecretEnvName = "AUTHELIA_CLIENT_SECRET";
+          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$4wovJBwfMgWMqeV9S4HZyg$HcnArT/vCP2e4N6tgNYWXwYj73cointfSM4ITOXKmzQ";
+        };
       };
       healthchecks = {
         envFile = config.sops.secrets."healthchecks/env".path;
@@ -152,7 +163,7 @@
       paperless = {
         authelia = {
           registerClient = true;
-          clientSecret = "$pbkdf2-sha512$310000$0IgF7vx.fWICGnbGGMQosw$v73kGV4a5sBX2Zc39aS.vLj..IepDX02NK.xsAYpUaAvXdIr65BYU6TnAmPiusjyaa.sCiF6vrmoEgWyWpr/SQ";
+          clientSecretHash = "$pbkdf2-sha512$310000$0IgF7vx.fWICGnbGGMQosw$v73kGV4a5sBX2Zc39aS.vLj..IepDX02NK.xsAYpUaAvXdIr65BYU6TnAmPiusjyaa.sCiF6vrmoEgWyWpr/SQ";
         };
         env = {
           PAPERLESS_OCR_LANGUAGES = "eng deu";
@@ -169,6 +180,11 @@
         setupAdminUser = true;
         romLibraryPath = "${config.tarow.podman.externalStorageBaseDir}/romm/library";
         envFile = config.sops.secrets."romm/env".path;
+        authelia = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."romm/authelia/client_secret".path;
+          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$pki2TtHTQZnqLA+j+yPuzg$7KOitH9Co3DLmb4bVNoepg2PHARG2VNCAywieLwt9SE";
+        };
         db.envFile = config.sops.secrets."romm/dbEnv".path;
       };
       streaming = {
