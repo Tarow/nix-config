@@ -24,6 +24,7 @@
         "vscode"
         "neovim"
         "golang"
+        "podman"
       ];
     }
   ];
@@ -36,72 +37,72 @@
     facts.ip4Address = "10.1.1.99";
     core.configLocation = "~/nix-config#homeserver";
 
-    podman = {
-      storageBaseDir = "${config.home.homeDirectory}/stacks";
-      externalStorageBaseDir = "/mnt/hdd1";
+  };
+  nps = {
+    storageBaseDir = "${config.home.homeDirectory}/stacks";
+    externalStorageBaseDir = "/mnt/hdd1";
 
-      stacks = {
-        # General onfiguration for stacks provided in modules/home-manager/stacks/default.nix if necessary
-        # Just enable them here or provide host-specific settings
-        adguard.enable = false;
-        aiostreams.enable = true;
-        audiobookshelf.enable = true;
-        audiobookshelf.authelia = {
-          registerClient = true;
-          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$eQPq1BZ1dIwgcm9yQgZmzw$fFc2DespGcKHevu7DanGp4Q2+r6R7lw3wwp5n18EgbE";
-        };
-        authelia.enable = true;
-        beszel.enable = true;
-        blocky.enable = true;
-        bytestash.enable = false;
-        calibre.enable = false;
-        changedetection.enable = false;
-        crowdsec.enable = true;
-        dockdns.enable = true;
-        docker-socket-proxy.enable = true;
-        dozzle.enable = true;
-        filebrowser.enable = true;
-        #forgejo.enable = true;
-        gatus.enable = true;
-        healthchecks.enable = true;
-        homeassistant.enable = false;
-        homepage.enable = true;
-        immich.enable = true;
-        ittools.enable = false;
-        karakeep.enable = false;
-        kimai.enable = true;
-        lldap.enable = true;
-        mealie.enable = false;
-        microbin.enable = false;
-        monitoring = {
-          enable = true;
-          grafana.dashboards = [ ./node-exporter-dashboard.json ];
-          prometheus.config.scrape_configs = [
-            # Scrape configs from Node-Exporter (setup on system level)
-            {
-              job_name = "node";
-              honor_timestamps = true;
-              metrics_path = "/metrics";
-              scheme = "http";
-              static_configs = [ { targets = [ "host.containers.internal:9191" ]; } ];
-            }
-          ];
-        };
-        ntfy.enable = false;
-        paperless.enable = true;
-        #pocketid.enable = true;
-        romm.enable = true;
-        skatcounter = {
-          enable = true;
-        };
-        stirling-pdf.enable = true;
-        streaming.enable = false;
-        traefik.enable = true;
-        uptime-kuma.enable = false;
-        wg-easy.enable = false;
-        wg-portal.enable = false;
-        vaultwarden.enable = false;
+    stacks = {
+      # General onfiguration for stacks provided in modules/home-manager/stacks/default.nix if necessary
+      # Just enable them here or provide host-specific settings
+      adguard.enable = false;
+      aiostreams.enable = true;
+      audiobookshelf.enable = true;
+      audiobookshelf.authelia = {
+        registerClient = true;
+        clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$eQPq1BZ1dIwgcm9yQgZmzw$fFc2DespGcKHevu7DanGp4Q2+r6R7lw3wwp5n18EgbE";
       };
+      authelia.enable = true;
+      beszel.enable = true;
+      blocky.enable = true;
+      bytestash.enable = false;
+      calibre.enable = false;
+      changedetection.enable = false;
+      crowdsec.enable = true;
+      dockdns.enable = true;
+      docker-socket-proxy.enable = true;
+      dozzle.enable = true;
+      filebrowser.enable = true;
+      #forgejo.enable = true;
+      gatus.enable = true;
+      healthchecks.enable = true;
+      homeassistant.enable = false;
+      homepage.enable = true;
+      immich.enable = true;
+      ittools.enable = false;
+      karakeep.enable = false;
+      kimai.enable = true;
+      lldap.enable = true;
+      mealie.enable = false;
+      microbin.enable = false;
+      monitoring = {
+        enable = true;
+        grafana.dashboards = [ ./node-exporter-dashboard.json ];
+        prometheus.config.scrape_configs = [
+          # Scrape configs from Node-Exporter (setup on system level)
+          {
+            job_name = "node";
+            honor_timestamps = true;
+            metrics_path = "/metrics";
+            scheme = "http";
+            static_configs = [ { targets = [ "host.containers.internal:9191" ]; } ];
+          }
+        ];
+      };
+      ntfy.enable = false;
+      paperless.enable = true;
+      #pocketid.enable = true;
+      romm.enable = true;
+      skatcounter = {
+        enable = true;
+      };
+      stirling-pdf.enable = true;
+      streaming.enable = false;
+      traefik.enable = true;
+      uptime-kuma.enable = false;
+      wg-easy.enable = false;
+      wg-portal.enable = false;
+      vaultwarden.enable = false;
     };
   };
 

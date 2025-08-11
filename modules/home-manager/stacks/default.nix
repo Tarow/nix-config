@@ -9,7 +9,7 @@
 {
   imports = [ inputs.nix-podman-stacks.homeModules.all ];
 
-  config.tarow.podman = rec {
+  config.nps = rec {
     hostIP4Address = config.tarow.facts.ip4Address;
     hostUid = config.tarow.facts.uid;
     defaultTz = "Europe/Berlin";
@@ -42,13 +42,13 @@
         enableGrafanaDashboard = true;
         enablePrometheusExport = true;
         containers.blocky = {
-          homepage.settings.href = "${config.tarow.podman.stacks.monitoring.containers.grafana.traefik.serviceDomain}/d/blocky";
+          homepage.settings.href = "${config.nps.stacks.monitoring.containers.grafana.traefik.serviceDomain}/d/blocky";
           gatus = {
             enable = true;
             settings = {
               url = "host.containers.internal";
               dns = {
-                query-name = config.tarow.podman.stacks.traefik.domain;
+                query-name = config.nps.stacks.traefik.domain;
                 query-type = "A";
               };
               conditions = [
@@ -72,7 +72,7 @@
         settings.dns.purgeUnknown = true;
         settings.domains =
           let
-            domain = config.tarow.podman.stacks.traefik.domain or "";
+            domain = config.nps.stacks.traefik.domain or "";
           in
           lib.optionals (domain != "") [
             {
@@ -120,6 +120,11 @@
         ];
       };
       immich = {
+        authelia = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."immich/authelia/client_secret".path;
+          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$18FxDTnTEcrx4PFl8fHjhQ$Iv09KL9IJAMfHWIhPDr1f3kVf/D/BUyoPPQTEhGBPNM";
+        };
         envFile = config.sops.secrets."immich/env".path;
         db.envFile = config.sops.secrets."immich/db_env".path;
       };
@@ -178,7 +183,7 @@
       };
       romm = {
         setupAdminUser = true;
-        romLibraryPath = "${config.tarow.podman.externalStorageBaseDir}/romm/library";
+        romLibraryPath = "${config.nps.externalStorageBaseDir}/romm/library";
         envFile = config.sops.secrets."romm/env".path;
         authelia = {
           enable = true;

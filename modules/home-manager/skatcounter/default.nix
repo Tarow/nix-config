@@ -2,12 +2,14 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   name = "skatcounter";
-  cfg = config.tarow.podman.stacks.${name};
-  storage = "${config.tarow.podman.storageBaseDir}/${name}";
-in {
-  options.tarow.podman.stacks.${name}.enable = lib.mkEnableOption name;
+  cfg = config.nps.stacks.${name};
+  storage = "${config.nps.storageBaseDir}/${name}";
+in
+{
+  options.nps.stacks.${name}.enable = lib.mkEnableOption name;
 
   config = lib.mkIf cfg.enable {
     services.podman.containers.${name} = {
@@ -18,7 +20,7 @@ in {
 
       port = 8080;
       traefik.name = "skat";
-      traefik.middlewares = ["public"];
+      traefik.middlewares = [ "public" ];
     };
   };
 }
