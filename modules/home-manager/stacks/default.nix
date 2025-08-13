@@ -27,6 +27,14 @@
           enable = true;
           hmacSecretFile = config.sops.secrets."authelia/oidc_hmac_secret".path;
           jwksRsaKeyFile = config.sops.secrets."authelia/oidc_rsa_pk".path;
+
+          # Define a dummy client with two_factor to enable the related settings
+          #
+          clients.dummy = {
+            public = true;
+            authorization_policy = "two_factor";
+            redirect_uris = [ ];
+          };
         };
       };
 
