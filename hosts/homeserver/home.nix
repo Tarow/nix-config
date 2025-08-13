@@ -91,7 +91,7 @@
       };
       ntfy.enable = false;
       paperless.enable = true;
-      #pocketid.enable = true;
+      # pocketid.enable = true;
       romm.enable = true;
       skatcounter = {
         enable = true;

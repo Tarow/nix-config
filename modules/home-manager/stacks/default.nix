@@ -178,7 +178,12 @@
         ftp.envFile = config.sops.secrets."paperless/ftp_env".path;
       };
       pocketid = {
-        traefikIntegration.envFile = config.sops.secrets."pocketId/traefikEnv".path;
+        traefikIntegration = {
+          enable = true;
+          clientId = "8c55dd45-1c75-4e01-bdd1-300af3eadcc7";
+          clientSecretFile = config.sops.secrets."pocketid/traefik/clientSecret".path;
+          encryptionSecretFile = config.sops.secrets."pocketid/traefik/middlewareSecret".path;
+        };
       };
       romm = {
         setupAdminUser = true;
