@@ -3,9 +3,11 @@
   pkgs,
   config,
   ...
-}: let
+}:
+let
   cfg = config.tarow.vscode;
-in {
+in
+{
   options.tarow.vscode = {
     enable = lib.options.mkEnableOption "VSCode";
   };
@@ -35,16 +37,19 @@ in {
         };
         "editor.linkedEditing" = true;
         "editor.fontLigatures" = true;
+        "editor.fontSize" = lib.mkForce 14;
 
         "update.mode" = "none";
         # "workbench.sideBar.location" = "right";
       };
 
-      extensions = with pkgs.vscode-marketplace;
-      with pkgs.vscode-marketplace-release; [
-        jnoortheen.nix-ide
-        esbenp.prettier-vscode
-      ];
+      extensions =
+        with pkgs.vscode-marketplace;
+        with pkgs.vscode-marketplace-release;
+        [
+          jnoortheen.nix-ide
+          esbenp.prettier-vscode
+        ];
 
       keybindings = [
         {

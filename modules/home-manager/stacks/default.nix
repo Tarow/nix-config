@@ -149,11 +149,10 @@
             test = {
               email = "test@example.com";
               password_file = config.sops.secrets."lldap/testUserPassword".path;
-              groups = [ "testgroup" ];
+
             };
           };
 
-          groups = [ "testgroup" ];
         };
       };
 
