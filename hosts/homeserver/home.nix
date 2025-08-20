@@ -63,6 +63,7 @@
       docker-socket-proxy.enable = true;
       dozzle.enable = true;
       filebrowser.enable = true;
+      #freshrss.enable = true;
       #forgejo.enable = true;
       gatus.enable = true;
       healthchecks.enable = true;
@@ -70,11 +71,11 @@
       homepage.enable = true;
       immich.enable = true;
       ittools.enable = false;
-      karakeep.enable = false;
+      #karakeep.enable = true;
       kimai.enable = true;
       lldap.enable = true;
       mealie.enable = false;
-      microbin.enable = false;
+      #microbin.enable = true;
       monitoring = {
         enable = true;
         grafana.dashboards = [ ./node-exporter-dashboard.json ];
@@ -89,20 +90,20 @@
           }
         ];
       };
-      ntfy.enable = false;
+      ntfy.enable = true;
       paperless.enable = true;
-      # pocketid.enable = true;
+      #pocketid.enable = true;
       romm.enable = true;
       skatcounter = {
         enable = true;
       };
       stirling-pdf.enable = true;
-      streaming.enable = false;
+      streaming.enable = true;
       traefik.enable = true;
-      uptime-kuma.enable = false;
-      wg-easy.enable = false;
-      wg-portal.enable = false;
-      vaultwarden.enable = false;
+      #uptime-kuma.enable = true;
+      #wg-easy.enable = true;
+      # wg-portal.enable = true;
+      #vaultwarden.enable = true;
     };
   };
 

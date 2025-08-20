@@ -7,7 +7,7 @@
   ...
 }:
 {
-  imports = [ inputs.nix-podman-stacks.homeModules.all ];
+  imports = [ inputs.nix-podman-stacks.homeModules.nps ];
 
   config.nps = rec {
     hostIP4Address = config.tarow.facts.ip4Address;
@@ -16,7 +16,11 @@
 
     stacks = {
       aiostreams = {
-        envFile = config.sops.secrets."aiostreams/env".path;
+        extraEnv = {
+          SECRET_KEY.fromFile = config.sops.secrets."aiostreams/secret_key".path;
+          TMDB_ACCESS_TOKEN.fromFile = config.sops.secrets."aiostreams/tmdb_access_token".path;
+          DEFAULT_REALDEBRID_API_KEY.fromFile = config.sops.secrets."aiostreams/rd_api_key".path;
+        };
       };
       authelia = {
         jwtSecretFile = config.sops.secrets."authelia/jwt_secret".path;
@@ -50,7 +54,7 @@
         enableGrafanaDashboard = true;
         enablePrometheusExport = true;
         containers.blocky = {
-          homepage.settings.href = "${config.nps.stacks.monitoring.containers.grafana.traefik.serviceDomain}/d/blocky";
+          homepage.settings.href = "${config.nps.containers.grafana.traefik.serviceDomain}/d/blocky";
           gatus = {
             enable = true;
             settings = {
@@ -67,16 +71,19 @@
         };
       };
       bytestash = {
-        envFile = config.sops.secrets."bytestash/env".path;
+        extraEnv.JWT_SECRET.fromFile = config.sops.secrets."bytestash/jwt_secret".path;
       };
       crowdsec = {
-        envFile = config.sops.secrets."crowdsec/env".path;
+        extraEnv = {
+          ENROLL_INSTANCE_NAME = "homeserver";
+          ENROLL_KEY.fromFile = config.sops.secrets."crowdsec/enroll_key".path;
+        };
         traefikIntegration = {
-          bouncerEnvFile = config.sops.secrets."crowdsec/traefikEnv".path;
+          bouncerKeyFile = config.sops.secrets."crowdsec/traefik_bouncer_key".path;
         };
       };
       dockdns = {
-        envFile = config.sops.secrets."dockdns/env".path;
+        extraEnv.NTASLER_DE_API_TOKEN.fromFile = config.sops.secrets."dockdns/cf_api_token".path;
         settings.dns.purgeUnknown = true;
         settings.domains =
           let
@@ -96,19 +103,33 @@
             }
           ];
       };
+      freshrss = {
+        adminProvisioning = {
+          enable = true;
+          username = "admin";
+          adminEmail = "admin@example.com";
+          adminPasswordFile = config.sops.secrets."freshrss/admin_password".path;
+          adminApiPasswordFile = config.sops.secrets."freshrss/admin_api_password".path;
+        };
+      };
       gatus = {
-        envFile = config.sops.secrets."gatus/env".path;
-        db.type = "postgres";
-        db.envFile = config.sops.secrets."gatus/dbEnv".path;
+        db = {
+          type = "postgres";
+          postgresPasswordFile = config.sops.secrets."gatus/postgresPassword".path;
+        };
+
         authelia = {
           allowedSubjects = [ ];
           enable = true;
-          clientSecretEnvName = "AUTHELIA_CLIENT_SECRET";
+          clientSecretFile = config.sops.secrets."gatus/authelia_client_secret".path;
           clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$4wovJBwfMgWMqeV9S4HZyg$HcnArT/vCP2e4N6tgNYWXwYj73cointfSM4ITOXKmzQ";
         };
       };
       healthchecks = {
-        envFile = config.sops.secrets."healthchecks/env".path;
+        secretKeyFile = config.sops.secrets."healthchecks/secret_key".path;
+        superUserEmail = "admin@ntasler.de";
+        superUserPasswordFile = config.sops.secrets."healthchecks/superuser_password".path;
+
       };
       homepage = {
         bookmarks = import ./homepage-bookmarks.nix;
@@ -133,17 +154,23 @@
           clientSecretFile = config.sops.secrets."immich/authelia/client_secret".path;
           clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$18FxDTnTEcrx4PFl8fHjhQ$Iv09KL9IJAMfHWIhPDr1f3kVf/D/BUyoPPQTEhGBPNM";
         };
-        envFile = config.sops.secrets."immich/env".path;
-        db.envFile = config.sops.secrets."immich/db_env".path;
+        dbPasswordFile = config.sops.secrets."immich/db_password".path;
       };
 
       karakeep = {
-        envFile = config.sops.secrets."karakeep/env".path;
+        nextauthSecretFile = config.sops.secrets."karakeep/nextauth_secret".path;
+        meiliMasterKeyFile = config.sops.secrets."karakeep/meili_master_key".path;
       };
 
       kimai = {
-        envFile = config.sops.secrets."kimai/env".path;
-        db.envFile = config.sops.secrets."kimai/db_env".path;
+        adminEmail = "admin@admin.com";
+        adminPasswordFile = config.sops.secrets."kimai/admin_password".path;
+        db = {
+          databaseName = "kimai";
+          username = "kimai";
+          userPasswordFile = config.sops.secrets."kimai/db_user_password".path;
+          rootPasswordFile = config.sops.secrets."kimai/db_root_password".path;
+        };
       };
 
       lldap = {
@@ -165,25 +192,40 @@
       };
 
       microbin = {
-        envFile = config.sops.secrets."microbin/env".path;
+        extraEnv = {
+          MICROBIN_ADMIN_USERNAME = "admin";
+          MICROBIN_ADMIN_PASSWORD.fromFile = config.sops.secrets."microbin/admin_password".path;
+          MICROBIN_UPLOADER_PASSWORD.fromFile = config.sops.secrets."microbin/uploader_password".path;
+        };
       };
       ntfy = {
-        envFile = config.sops.secrets."ntfy/env".path;
+        extraEnv = {
+          NTFY_WEB_PUSH_EMAIL_ADDRESS = "admin@ntasler.de";
+          NTFY_WEB_PUSH_PUBLIC_KEY.fromFile = config.sops.secrets."ntfy/web_push_public_key".path;
+          NTFY_WEB_PUSH_PRIVATE_KEY.fromFile = config.sops.secrets."ntfy/web_push_private_key".path;
+        };
         enableGrafanaDashboard = true;
         enablePrometheusExport = true;
       };
       paperless = {
         authelia = {
-          registerClient = true;
+          enable = true;
+          clientSecretFile = config.sops.secrets."paperless/authelia_client_secret".path;
           clientSecretHash = "$pbkdf2-sha512$310000$0IgF7vx.fWICGnbGGMQosw$v73kGV4a5sBX2Zc39aS.vLj..IepDX02NK.xsAYpUaAvXdIr65BYU6TnAmPiusjyaa.sCiF6vrmoEgWyWpr/SQ";
         };
-        env = {
+        secretKeyFile = config.sops.secrets."paperless/secret_key".path;
+        extraEnv = {
           PAPERLESS_OCR_LANGUAGES = "eng deu";
           PAPERLESS_OCR_LANGUAGE = "eng+deu";
         };
-        envFile = config.sops.secrets."paperless/env".path;
-        db.envFile = config.sops.secrets."paperless/db_env".path;
-        ftp.envFile = config.sops.secrets."paperless/ftp_env".path;
+        db = {
+          username = "paperless";
+          passwordFile = config.sops.secrets."paperless/db_password".path;
+        };
+        ftp = {
+          enable = true;
+          passwordFile = config.sops.secrets."paperless/ftp_password".path;
+        };
       };
       pocketid = {
         traefikIntegration = {
@@ -194,29 +236,54 @@
         };
       };
       romm = {
-        setupAdminUser = true;
+        adminProvisioning = {
+          enable = true;
+          username = "admin";
+          passwordFile = config.sops.secrets."romm/admin_password".path;
+          email = "admin@example.com";
+        };
+
+        authSecretKeyFile = config.sops.secrets."romm/auth_secret_key".path;
         romLibraryPath = "${config.nps.externalStorageBaseDir}/romm/library";
-        envFile = config.sops.secrets."romm/env".path;
+        extraEnv = {
+          IGDB_CLIENT_ID.fromFile = config.sops.secrets."romm/igdb_client_id".path;
+          IGDB_CLIENT_SECRET.fromFile = config.sops.secrets."romm/igdb_client_secret".path;
+        };
+
         authelia = {
           enable = true;
           clientSecretFile = config.sops.secrets."romm/authelia/client_secret".path;
           clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$pki2TtHTQZnqLA+j+yPuzg$7KOitH9Co3DLmb4bVNoepg2PHARG2VNCAywieLwt9SE";
         };
-        db.envFile = config.sops.secrets."romm/dbEnv".path;
+
+        db = {
+          userPasswordFile = config.sops.secrets."romm/db/user_password".path;
+          rootPasswordFile = config.sops.secrets."romm/db/root_password".path;
+        };
       };
       streaming = {
         gluetun = {
           vpnProvider = "airvpn";
-          envFile = config.sops.secrets."gluetun/env".path;
+          wireguardPrivateKeyFile = config.sops.secrets."gluetun/wg_pk".path;
+          wireguardPresharedKeyFile = config.sops.secrets."gluetun/wg_psk".path;
+          wireguardAddressesFile = config.sops.secrets."gluetun/wg_address".path;
+
+          extraEnv = {
+            FIREWALL_VPN_INPUT_PORTS.fromFile = config.sops.secrets."qbittorrent/torrenting_port".path;
+            SERVER_NAMES.fromFile = config.sops.secrets."gluetun/server_names".path;
+            HTTP_CONTROL_SERVER_LOG = "off";
+          };
         };
-        qbittorrent.envFile = config.sops.secrets."qbittorrent/env".path;
+        qbittorrent.extraEnv = {
+          TORRENTING_PORT.fromFile = config.sops.secrets."qbittorrent/torrenting_port".path;
+        };
       }
       // lib.genAttrs [ "sonarr" "radarr" "bazarr" "prowlarr" ] (name: {
-        envFile = config.sops.secrets."servarr/${name}_env".path;
+        extraEnv."${lib.toUpper name}__AUTH__APIKEY".fromFile = config.sops.secrets."servarr/api_key".path;
       });
       traefik = {
         domain = "ntasler.de";
-        envFile = config.sops.secrets."traefik/env".path;
+        extraEnv.CF_DNS_API_TOKEN.fromFile = config.sops.secrets."traefik/cf_api_token".path;
         geoblock.allowedCountries = [ "DE" ];
         enablePrometheusExport = true;
         enableGrafanaMetricsDashboard = true;
@@ -224,16 +291,20 @@
       };
 
       wg-easy = {
-        envFile = config.sops.secrets."wg-easy/env".path;
-        containers.wg-easy.environment.DISABLE_IPV6 = true;
+        extraEnv = {
+          INIT_PASSWORD.fromFile = config.sops.secrets."wg-easy/init_password".path;
+          DISABLE_IPV6 = true;
+        };
       };
       wg-portal = {
+        port = 51825;
         settings.core = {
-          admin_user = "$ADMIN_USER";
-          admin_password = "$ADMIN_PASSWORD";
+          admin_user = "admin";
+          admin_password = "\${ADMIN_PASSWORD}";
         };
+        extraEnv.ADMIN_PASSWORD.fromFile = config.sops.secrets."wg-portal/admin_password".path;
         settings.advanved.use_ip_v6 = false;
-        envFile = config.sops.secrets."wg-portal/env".path;
+
       };
     };
   };

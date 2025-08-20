@@ -3,9 +3,11 @@
   pkgs,
   config,
   ...
-}: let
+}:
+let
   cfg = config.tarow.shells;
-in {
+in
+{
   options.tarow.shells.enable = lib.mkEnableOption "Shell Support";
 
   config = lib.mkIf cfg.enable {
@@ -16,6 +18,7 @@ in {
     programs.fish.shellInit = ''
       set fish_greeting "🐟"
       set sponge_delay 5
+      set sponge_purge_only_on_exit true
       bind \cR _fzf_search_history
       fzf_configure_bindings --directory=è --history=\cR --processes=ô --variables=ë --git_status=ß --git_log=ø;
     '';
@@ -39,7 +42,19 @@ in {
     ];
 
     # Dependencies for Abbreviations and plugins
-    home.packages = with pkgs; [xclip less gnugrep] ++ [bat eza fd fzf];
+    home.packages =
+      with pkgs;
+      [
+        xclip
+        less
+        gnugrep
+      ]
+      ++ [
+        bat
+        eza
+        fd
+        fzf
+      ];
 
     programs.fish.shellAbbrs = rec {
       C = {
