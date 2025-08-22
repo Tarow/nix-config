@@ -15,7 +15,10 @@
   options.services.podman.containers = lib.mkOption {
     type = lib.types.attrsOf (
       lib.types.submodule {
-        dependsOn = [ "sops-nix.service" ];
+        extraConfig.Unit = {
+          Wants = [ "sops-nix.service" ];
+          After = [ "sops-nix.service" ];
+        };
       }
     );
   };
@@ -315,6 +318,13 @@
         };
         qbittorrent.extraEnv = {
           TORRENTING_PORT.fromFile = config.sops.secrets."qbittorrent/torrenting_port".path;
+        };
+        jellyfin = {
+          authelia = {
+            enable = true;
+            clientSecretFile = config.sops.secrets."jellyfin/authelia/client_secret".path;
+            clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$bvFrDVncsSd6rRIsqwXTRA$epymT2YwTSB5PDByAp7mXGdrQ/N+aEEMOzXaWvQ5xUM";
+          };
         };
       }
       // lib.genAttrs [ "sonarr" "radarr" "bazarr" "prowlarr" ] (name: {
