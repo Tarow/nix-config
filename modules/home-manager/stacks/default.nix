@@ -6,8 +6,19 @@
   lib,
   ...
 }:
+
 {
+
   imports = [ inputs.nix-podman-stacks.homeModules.nps ];
+
+  # Add default config to every container
+  options.services.podman.containers = lib.mkOption {
+    type = lib.types.attrsOf (
+      lib.types.submodule {
+        dependsOn = [ "sops-nix.service" ];
+      }
+    );
+  };
 
   config.nps = rec {
     hostIP4Address = config.tarow.facts.ip4Address;
@@ -40,6 +51,7 @@
             redirect_uris = [ ];
           };
         };
+
       };
 
       beszel = {
@@ -158,6 +170,11 @@
       };
 
       karakeep = {
+        authelia = {
+          enable = true;
+          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$j1iaujV4SedP9TISGPon4w$EY+mQ3fH8C74+PrGw3TrGQRvKzCCjthYV43Hqrs31tk";
+          clientSecretFile = config.sops.secrets."karakeep/authelia/client_secret".path;
+        };
         nextauthSecretFile = config.sops.secrets."karakeep/nextauth_secret".path;
         meiliMasterKeyFile = config.sops.secrets."karakeep/meili_master_key".path;
       };
@@ -191,6 +208,14 @@
         };
       };
 
+      mealie = {
+        authelia = {
+          enable = true;
+          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$i7b124sTgqymSkCBnsZ0Qw$tDCVnQC1Kn191ygs2Rao7pCne3RNDnEYf7c1d11uBx0";
+          clientSecretFile = config.sops.secrets."mealie/authelia/client_secret".path;
+        };
+      };
+
       microbin = {
         extraEnv = {
           MICROBIN_ADMIN_USERNAME = "admin";
@@ -198,6 +223,15 @@
           MICROBIN_UPLOADER_PASSWORD.fromFile = config.sops.secrets."microbin/uploader_password".path;
         };
       };
+
+      monitoring.grafana = {
+        authelia = {
+          enable = true;
+          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$7/u7j+Jk0uexxJ4CaylQWw$t2EQJPYklJFqr6+MqJg7uCgmZaYaH+KgEtOpEGdQta8";
+          clientSecretFile = config.sops.secrets."grafana/authelia/client_secret".path;
+        };
+      };
+
       ntfy = {
         extraEnv = {
           NTFY_WEB_PUSH_EMAIL_ADDRESS = "admin@ntasler.de";
@@ -208,6 +242,11 @@
         enablePrometheusExport = true;
       };
       paperless = {
+        adminProvisioning = {
+          username = "admin";
+          passwordFile = config.sops.secrets."paperless/admin_password".path;
+          email = "admin@example.com";
+        };
         authelia = {
           enable = true;
           clientSecretFile = config.sops.secrets."paperless/authelia_client_secret".path;
@@ -304,7 +343,11 @@
         };
         extraEnv.ADMIN_PASSWORD.fromFile = config.sops.secrets."wg-portal/admin_password".path;
         settings.advanved.use_ip_v6 = false;
-
+        authelia = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."wg-portal/authelia/client_secret".path;
+          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$OMvEmtEjIUjfRqW2FkZiQg$GAKvd0HJ8f8AE3F6LpBptew/PFcEchXfERhhf73IgnI";
+        };
       };
     };
   };

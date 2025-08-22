@@ -6,7 +6,9 @@
 }:
 {
   imports = [
+
     {
+
       #services.podman.containers = lib.mkForce {};
       #services.podman.networks = lib.mkForce {};
     }
@@ -36,12 +38,29 @@
   tarow = {
     facts.ip4Address = "10.1.1.99";
     core.configLocation = "~/nix-config#homeserver";
-
   };
   nps = {
     storageBaseDir = "${config.home.homeDirectory}/stacks";
     externalStorageBaseDir = "/mnt/hdd1";
 
+    containers.dozzle = {
+      extraEnv = {
+
+        var1 = "abc";
+        var2.fromTemplate = "this contains var1: \${var1} and a quote\"";
+        var3.fromTemplate = "this contains var1 too= \${var1}";
+
+      };
+      templateMount = [
+        {
+          templatePath = "${pkgs.writeText "test-template" ''
+            echo ''${var1}
+            echo ''${var2}
+          ''}";
+          destPath = "/run/secrets/template1";
+        }
+      ];
+    };
     stacks = {
       # General onfiguration for stacks provided in modules/home-manager/stacks/default.nix if necessary
       # Just enable them here or provide host-specific settings
@@ -71,10 +90,10 @@
       homepage.enable = true;
       immich.enable = true;
       ittools.enable = false;
-      #karakeep.enable = true;
+      karakeep.enable = true;
       kimai.enable = true;
       lldap.enable = true;
-      mealie.enable = false;
+      mealie.enable = true;
       #microbin.enable = true;
       monitoring = {
         enable = true;
@@ -102,7 +121,7 @@
       traefik.enable = true;
       #uptime-kuma.enable = true;
       #wg-easy.enable = true;
-      # wg-portal.enable = true;
+      wg-portal.enable = true;
       #vaultwarden.enable = true;
     };
   };

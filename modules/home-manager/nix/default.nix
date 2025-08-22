@@ -4,12 +4,14 @@
   outputs,
   lib,
   config,
-  osConfig ? {},
+  osConfig ? { },
   pkgs,
   ...
-}: let
+}:
+let
   isStandalone = !config.submoduleSupport.enable;
-in {
+in
+{
   imports = [
     inputs.nix-index-database.homeModules.nix-index
     {
@@ -22,12 +24,13 @@ in {
     package = lib.mkIf isStandalone pkgs.nix;
     gc.automatic = true;
     # Run garbage collection every day at 12:30
-    gc.frequency =
-      if pkgs.stdenv.isLinux
-      then "12:30"
-      else "daily";
+    gc.frequency = if pkgs.stdenv.isLinux then "12:30" else "daily";
     settings = {
-      extra-experimental-features = ["nix-command" "flakes" "pipe-operators"];
+      extra-experimental-features = [
+        "nix-command"
+        "flakes"
+        "pipe-operators"
+      ];
       warn-dirty = false;
     };
   };
@@ -49,7 +52,11 @@ in {
     };
   };
 
-  home.packages = with pkgs; [unstable.nixd unstable.nil alejandra];
+  home.packages = with pkgs; [
+    unstable.nixd
+    unstable.nil
+    alejandra
+  ];
   programs.vscode.profiles.default.userSettings = {
     "[nix]" = {
       "editor.defaultFormatter" = "jnoortheen.nix-ide";
@@ -62,7 +69,7 @@ in {
     ];
     "nil" = {
       "formatting" = {
-        "command" = ["nixfmt"];
+        "command" = [ "alejandra" ];
       };
     };
     "nix.serverSettings" = {
@@ -71,7 +78,7 @@ in {
           "expr" = "import <nixpkgs>{}";
         };
         "formatting" = {
-          "command" = ["alejandra"];
+          "command" = [ "alejandra" ];
         };
       };
     };
