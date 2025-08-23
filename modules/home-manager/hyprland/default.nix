@@ -3,9 +3,11 @@
   config,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.tarow.hyprland;
-in {
+in
+{
   options.tarow.hyprland = {
     enable = lib.options.mkEnableOption "Hyprland";
   };
@@ -14,7 +16,7 @@ in {
     # Hyprlock/hyperidle currently setup through NixOS Module
     programs.hyprlock.enable = false;
     services.hypridle.enable = false;
-    home.packages = with pkgs; [walker];
+
     wayland.windowManager.hyprland = {
       enable = true;
       # https://wiki.hyprland.org/Useful-Utilities/Systemd-start/#uwsm
@@ -24,7 +26,7 @@ in {
         "$mod" = "SUPER";
         "$terminal" = "ghostty";
 
-        exec-once = [];
+        exec-once = [ ];
 
         bind = [
           # General

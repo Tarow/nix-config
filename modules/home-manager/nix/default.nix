@@ -63,6 +63,7 @@ in
     };
     "nix.serverPath" = "nil";
     "nix.enableLanguageServer" = true;
+    "nix.formatterPath" = "alejandra";
     "nix.hiddenLanguageServerErrors" = [
       "textDocument/formatting"
       "textDocument/definition"
