@@ -5,19 +5,16 @@
   config,
   lib,
   ...
-}:
-
-{
-
-  imports = [ inputs.nix-podman-stacks.homeModules.nps ];
+}: {
+  imports = [inputs.nix-podman-stacks.homeModules.nps];
 
   # Add default config to every container
   options.services.podman.containers = lib.mkOption {
     type = lib.types.attrsOf (
       lib.types.submodule {
         extraConfig.Unit = {
-          Wants = [ "sops-nix.service" ];
-          After = [ "sops-nix.service" ];
+          Wants = ["sops-nix.service"];
+          After = ["sops-nix.service"];
         };
       }
     );
@@ -51,10 +48,9 @@
           clients.dummy = {
             public = true;
             authorization_policy = "two_factor";
-            redirect_uris = [ ];
+            redirect_uris = [];
           };
         };
-
       };
 
       beszel = {
@@ -100,10 +96,9 @@
       dockdns = {
         extraEnv.NTASLER_DE_API_TOKEN.fromFile = config.sops.secrets."dockdns/cf_api_token".path;
         settings.dns.purgeUnknown = true;
-        settings.domains =
-          let
-            domain = config.nps.stacks.traefik.domain or "";
-          in
+        settings.domains = let
+          domain = config.nps.stacks.traefik.domain or "";
+        in
           lib.optionals (domain != "") [
             {
               name = domain;
@@ -134,7 +129,7 @@
         };
 
         authelia = {
-          allowedSubjects = [ ];
+          allowedSubjects = [];
           enable = true;
           clientSecretFile = config.sops.secrets."gatus/authelia_client_secret".path;
           clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$4wovJBwfMgWMqeV9S4HZyg$HcnArT/vCP2e4N6tgNYWXwYj73cointfSM4ITOXKmzQ";
@@ -144,11 +139,10 @@
         secretKeyFile = config.sops.secrets."healthchecks/secret_key".path;
         superUserEmail = "admin@ntasler.de";
         superUserPasswordFile = config.sops.secrets."healthchecks/superuser_password".path;
-
       };
       homepage = {
         bookmarks = import ./homepage-bookmarks.nix;
-        containers.homepage.volumes = [ "${./homepage-background.jpg}:/app/public/images/background.jpg" ];
+        containers.homepage.volumes = ["${./homepage-background.jpg}:/app/public/images/background.jpg"];
         settings.background = {
           image = "/images/background.jpg";
           opacity = 50;
@@ -204,10 +198,8 @@
             test = {
               email = "test@example.com";
               password_file = config.sops.secrets."lldap/testUserPassword".path;
-
             };
           };
-
         };
       };
 
@@ -303,37 +295,38 @@
           rootPasswordFile = config.sops.secrets."romm/db/root_password".path;
         };
       };
-      streaming = {
-        gluetun = {
-          vpnProvider = "airvpn";
-          wireguardPrivateKeyFile = config.sops.secrets."gluetun/wg_pk".path;
-          wireguardPresharedKeyFile = config.sops.secrets."gluetun/wg_psk".path;
-          wireguardAddressesFile = config.sops.secrets."gluetun/wg_address".path;
+      streaming =
+        {
+          gluetun = {
+            vpnProvider = "airvpn";
+            wireguardPrivateKeyFile = config.sops.secrets."gluetun/wg_pk".path;
+            wireguardPresharedKeyFile = config.sops.secrets."gluetun/wg_psk".path;
+            wireguardAddressesFile = config.sops.secrets."gluetun/wg_address".path;
 
-          extraEnv = {
-            FIREWALL_VPN_INPUT_PORTS.fromFile = config.sops.secrets."qbittorrent/torrenting_port".path;
-            SERVER_NAMES.fromFile = config.sops.secrets."gluetun/server_names".path;
-            HTTP_CONTROL_SERVER_LOG = "off";
+            extraEnv = {
+              FIREWALL_VPN_INPUT_PORTS.fromFile = config.sops.secrets."qbittorrent/torrenting_port".path;
+              SERVER_NAMES.fromFile = config.sops.secrets."gluetun/server_names".path;
+              HTTP_CONTROL_SERVER_LOG = "off";
+            };
           };
-        };
-        qbittorrent.extraEnv = {
-          TORRENTING_PORT.fromFile = config.sops.secrets."qbittorrent/torrenting_port".path;
-        };
-        jellyfin = {
-          authelia = {
-            enable = true;
-            clientSecretFile = config.sops.secrets."jellyfin/authelia/client_secret".path;
-            clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$bvFrDVncsSd6rRIsqwXTRA$epymT2YwTSB5PDByAp7mXGdrQ/N+aEEMOzXaWvQ5xUM";
+          qbittorrent.extraEnv = {
+            TORRENTING_PORT.fromFile = config.sops.secrets."qbittorrent/torrenting_port".path;
           };
-        };
-      }
-      // lib.genAttrs [ "sonarr" "radarr" "bazarr" "prowlarr" ] (name: {
-        extraEnv."${lib.toUpper name}__AUTH__APIKEY".fromFile = config.sops.secrets."servarr/api_key".path;
-      });
+          jellyfin = {
+            authelia = {
+              enable = true;
+              clientSecretFile = config.sops.secrets."jellyfin/authelia/client_secret".path;
+              clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$bvFrDVncsSd6rRIsqwXTRA$epymT2YwTSB5PDByAp7mXGdrQ/N+aEEMOzXaWvQ5xUM";
+            };
+          };
+        }
+        // lib.genAttrs ["sonarr" "radarr" "bazarr" "prowlarr"] (name: {
+          extraEnv."${lib.toUpper name}__AUTH__APIKEY".fromFile = config.sops.secrets."servarr/api_key".path;
+        });
       traefik = {
         domain = "ntasler.de";
         extraEnv.CF_DNS_API_TOKEN.fromFile = config.sops.secrets."traefik/cf_api_token".path;
-        geoblock.allowedCountries = [ "DE" ];
+        geoblock.allowedCountries = ["DE"];
         enablePrometheusExport = true;
         enableGrafanaMetricsDashboard = true;
         enableGrafanaAccessLogDashboard = true;

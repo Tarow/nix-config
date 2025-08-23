@@ -3,12 +3,9 @@
   config,
   pkgs,
   ...
-}:
-{
+}: {
   imports = [
-
     {
-
       #services.podman.containers = lib.mkForce {};
       #services.podman.networks = lib.mkForce {};
     }
@@ -31,7 +28,7 @@
     }
   ];
 
-  home.packages = with pkgs; [ isd ];
+  home.packages = with pkgs; [isd];
 
   home.stateVersion = "24.11";
   sops.secrets."ssh_authorized_keys".path = "${config.home.homeDirectory}/.ssh/authorized_keys";
@@ -45,11 +42,9 @@
 
     containers.dozzle = {
       extraEnv = {
-
         var1 = "abc";
         var2.fromTemplate = "this contains var1: \${var1} and a quote\"";
         var3.fromTemplate = "this contains var1 too= \${var1}";
-
       };
       templateMount = [
         {
@@ -97,7 +92,7 @@
       #microbin.enable = true;
       monitoring = {
         enable = true;
-        grafana.dashboards = [ ./node-exporter-dashboard.json ];
+        grafana.dashboards = [./node-exporter-dashboard.json];
         prometheus.config.scrape_configs = [
           # Scrape configs from Node-Exporter (setup on system level)
           {
@@ -105,7 +100,7 @@
             honor_timestamps = true;
             metrics_path = "/metrics";
             scheme = "http";
-            static_configs = [ { targets = [ "host.containers.internal:9191" ]; } ];
+            static_configs = [{targets = ["host.containers.internal:9191"];}];
           }
         ];
       };

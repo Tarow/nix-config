@@ -2,11 +2,9 @@
   lib,
   config,
   ...
-}:
-let
+}: let
   cfg = config.tarow.podman;
-in
-{
+in {
   options.tarow.podman.enable = lib.options.mkEnableOption "Podman";
 
   config = lib.mkIf cfg.enable {
@@ -24,6 +22,5 @@ in
         setCursor = true;
       };
     };
-
   };
 }

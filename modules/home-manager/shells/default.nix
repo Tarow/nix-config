@@ -3,11 +3,9 @@
   pkgs,
   config,
   ...
-}:
-let
+}: let
   cfg = config.tarow.shells;
-in
-{
+in {
   options.tarow.shells.enable = lib.mkEnableOption "Shell Support";
 
   config = lib.mkIf cfg.enable {
@@ -42,8 +40,7 @@ in
     ];
 
     # Dependencies for Abbreviations and plugins
-    home.packages =
-      with pkgs;
+    home.packages = with pkgs;
       [
         xclip
         less

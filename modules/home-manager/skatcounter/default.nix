@@ -2,13 +2,11 @@
   config,
   lib,
   ...
-}:
-let
+}: let
   name = "skatcounter";
   cfg = config.nps.stacks.${name};
   storage = "${config.nps.storageBaseDir}/${name}";
-in
-{
+in {
   options.nps.stacks.${name}.enable = lib.mkEnableOption name;
 
   config = lib.mkIf cfg.enable {
@@ -20,7 +18,7 @@ in
 
       port = 8080;
       traefik.name = "skat";
-      traefik.middlewares = [ "public" ];
+      traefik.middlewares = ["public"];
     };
   };
 }

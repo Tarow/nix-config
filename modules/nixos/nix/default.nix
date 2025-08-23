@@ -5,8 +5,7 @@
   inputs,
   outputs,
   ...
-}:
-{
+}: {
   nix = {
     settings = {
       extra-experimental-features = [

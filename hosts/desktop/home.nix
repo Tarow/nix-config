@@ -3,8 +3,7 @@
   lib,
   pkgs,
   ...
-}:
-{
+}: {
   imports = [
     {
       tarow = lib.tarow.enableModules [
@@ -49,7 +48,7 @@
     };
     monitors.configuration = ./monitors.xml;
 
-    sops.extraSopsFiles = [ ../../secrets/desktop/secrets.yaml ];
+    sops.extraSopsFiles = [../../secrets/desktop/secrets.yaml];
   };
 
   home.stateVersion = "24.11";

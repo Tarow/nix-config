@@ -3,11 +3,9 @@
   config,
   pkgs,
   ...
-}:
-let
+}: let
   cfg = config.tarow.hyprland;
-in
-{
+in {
   options.tarow.hyprland = {
     enable = lib.options.mkEnableOption "Hyprland";
   };
@@ -26,7 +24,7 @@ in
         "$mod" = "SUPER";
         "$terminal" = "ghostty";
 
-        exec-once = [ ];
+        exec-once = [];
 
         bind = [
           # General
