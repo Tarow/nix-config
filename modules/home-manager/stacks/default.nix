@@ -56,7 +56,7 @@
       beszel = {
         ed25519PrivateKeyFile = config.sops.secrets."beszel/ssh_key".path;
         ed25519PublicKeyFile = config.sops.secrets."beszel/ssh_pub_key".path;
-        authelia = {
+        oidc = {
           registerClient = true;
           clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$iTcxhF8YJvibvv9jyHKPsg$+srgYmZS5vXMyLmkyGZbaP2yC3ILohBXmJ1wXtAMOl0";
         };
@@ -128,7 +128,7 @@
           postgresPasswordFile = config.sops.secrets."gatus/postgresPassword".path;
         };
 
-        authelia = {
+        oidc = {
           allowedSubjects = [];
           enable = true;
           clientSecretFile = config.sops.secrets."gatus/authelia_client_secret".path;
@@ -158,7 +158,7 @@
         ];
       };
       immich = {
-        authelia = {
+        oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."immich/authelia/client_secret".path;
           clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$18FxDTnTEcrx4PFl8fHjhQ$Iv09KL9IJAMfHWIhPDr1f3kVf/D/BUyoPPQTEhGBPNM";
@@ -167,7 +167,7 @@
       };
 
       karakeep = {
-        authelia = {
+        oidc = {
           enable = true;
           clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$j1iaujV4SedP9TISGPon4w$EY+mQ3fH8C74+PrGw3TrGQRvKzCCjthYV43Hqrs31tk";
           clientSecretFile = config.sops.secrets."karakeep/authelia/client_secret".path;
@@ -204,7 +204,7 @@
       };
 
       mealie = {
-        authelia = {
+        oidc = {
           enable = true;
           clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$i7b124sTgqymSkCBnsZ0Qw$tDCVnQC1Kn191ygs2Rao7pCne3RNDnEYf7c1d11uBx0";
           clientSecretFile = config.sops.secrets."mealie/authelia/client_secret".path;
@@ -220,7 +220,7 @@
       };
 
       monitoring.grafana = {
-        authelia = {
+        oidc = {
           enable = true;
           clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$7/u7j+Jk0uexxJ4CaylQWw$t2EQJPYklJFqr6+MqJg7uCgmZaYaH+KgEtOpEGdQta8";
           clientSecretFile = config.sops.secrets."grafana/authelia/client_secret".path;
@@ -242,7 +242,7 @@
           passwordFile = config.sops.secrets."paperless/admin_password".path;
           email = "admin@example.com";
         };
-        authelia = {
+        oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."paperless/authelia_client_secret".path;
           clientSecretHash = "$pbkdf2-sha512$310000$0IgF7vx.fWICGnbGGMQosw$v73kGV4a5sBX2Zc39aS.vLj..IepDX02NK.xsAYpUaAvXdIr65BYU6TnAmPiusjyaa.sCiF6vrmoEgWyWpr/SQ";
@@ -284,7 +284,7 @@
           IGDB_CLIENT_SECRET.fromFile = config.sops.secrets."romm/igdb_client_secret".path;
         };
 
-        authelia = {
+        oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."romm/authelia/client_secret".path;
           clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$pki2TtHTQZnqLA+j+yPuzg$7KOitH9Co3DLmb4bVNoepg2PHARG2VNCAywieLwt9SE";
@@ -313,7 +313,7 @@
             TORRENTING_PORT.fromFile = config.sops.secrets."qbittorrent/torrenting_port".path;
           };
           jellyfin = {
-            authelia = {
+            oidc = {
               enable = true;
               clientSecretFile = config.sops.secrets."jellyfin/authelia/client_secret".path;
               clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$bvFrDVncsSd6rRIsqwXTRA$epymT2YwTSB5PDByAp7mXGdrQ/N+aEEMOzXaWvQ5xUM";
@@ -346,7 +346,7 @@
         };
         extraEnv.ADMIN_PASSWORD.fromFile = config.sops.secrets."wg-portal/admin_password".path;
         settings.advanved.use_ip_v6 = false;
-        authelia = {
+        oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."wg-portal/authelia/client_secret".path;
           clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$OMvEmtEjIUjfRqW2FkZiQg$GAKvd0HJ8f8AE3F6LpBptew/PFcEchXfERhhf73IgnI";
