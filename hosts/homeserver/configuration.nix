@@ -90,7 +90,7 @@
   };
 
   services.borgbackup.jobs = let
-    ping = endpoint: "${lib.getExe pkgs.curl} --retry 3 --retry-max-time 30 https://healthchecks.ntasler.de/ping/uG6NthbpgAp0NQjlY5vzyg/${endpoint}";
+    ping = endpoint: "${lib.getExe pkgs.curl} --retry 3 --retry-max-time 30 https://healthchecks.ntasler.de/ping/JOqUfNcwwLmCwSsaGVCY1A/${endpoint}";
 
     # Backup private samba shares.
     sambaPaths =

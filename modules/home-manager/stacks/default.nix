@@ -65,7 +65,7 @@
         enableGrafanaDashboard = true;
         enablePrometheusExport = true;
         containers.blocky = {
-          homepage.settings.href = "${config.nps.containers.grafana.traefik.serviceDomain}/d/blocky";
+          homepage.settings.href = "${config.nps.containers.grafana.traefik.serviceUrl}/d/blocky";
           gatus = {
             enable = true;
             settings = {
@@ -117,9 +117,9 @@
         adminProvisioning = {
           enable = true;
           username = "admin";
-          adminEmail = "admin@example.com";
-          adminPasswordFile = config.sops.secrets."freshrss/admin_password".path;
-          adminApiPasswordFile = config.sops.secrets."freshrss/admin_api_password".path;
+          email = "admin@example.com";
+          passwordFile = config.sops.secrets."freshrss/admin_password".path;
+          apiPasswordFile = config.sops.secrets."freshrss/admin_api_password".path;
         };
       };
       gatus = {
@@ -137,8 +137,22 @@
       };
       healthchecks = {
         secretKeyFile = config.sops.secrets."healthchecks/secret_key".path;
-        superUserEmail = "admin@ntasler.de";
+        superUserEmail = stacks.lldap.bootstrap.users.niklas.email;
         superUserPasswordFile = config.sops.secrets."healthchecks/superuser_password".path;
+        containers.healthchecks = {
+          forwardAuth = {
+            enable = true;
+            rules = [
+              {
+                resources = ["^/ping/.*$"];
+                policy = "bypass";
+              }
+            ];
+          };
+          extraEnv = {
+            REMOTE_USER_HEADER = "HTTP_REMOTE_EMAIL";
+          };
+        };
       };
       homepage = {
         bookmarks = import ./homepage-bookmarks.nix;
@@ -195,9 +209,27 @@
         bootstrap = {
           cleanUp = true;
           users = {
-            test = {
-              email = "test@example.com";
-              password_file = config.sops.secrets."lldap/testUserPassword".path;
+            niklas = {
+              email = "niklas@${stacks.traefik.domain}";
+              password_file = config.sops.secrets."lldap/niklas_password".path;
+              displayName = "Niklas";
+              groups = [
+                "grafana_admin"
+                "immich_admin"
+                "jellyfin_admin"
+                "lldap_admin"
+                "mealie_admin"
+                "wg_portal_admin"
+              ];
+            };
+            selma = {
+              email = "selma@${stacks.traefik.domain}";
+              password_file = config.sops.secrets."lldap/selma_password".path;
+              displayName = "Selma";
+              groups = [
+                "jellyfin_user"
+                "mealie_user"
+              ];
             };
           };
         };

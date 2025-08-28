@@ -36,26 +36,17 @@
     facts.ip4Address = "10.1.1.99";
     core.configLocation = "~/nix-config#homeserver";
   };
+
+  services.podman.containers.echo = {
+    image = "docker.io/ealen/echo-server";
+    traefik.name = "echo";
+    port = 80;
+    forwardAuth.enable = true;
+  };
   nps = {
     storageBaseDir = "${config.home.homeDirectory}/stacks";
     externalStorageBaseDir = "/mnt/hdd1";
 
-    containers.dozzle = {
-      extraEnv = {
-        var1 = "abc";
-        var2.fromTemplate = "this contains var1: \${var1} and a quote\"";
-        var3.fromTemplate = "this contains var1 too= \${var1}";
-      };
-      templateMount = [
-        {
-          templatePath = "${pkgs.writeText "test-template" ''
-            echo ''${var1}
-            echo ''${var2}
-          ''}";
-          destPath = "/run/secrets/template1";
-        }
-      ];
-    };
     stacks = {
       # General onfiguration for stacks provided in modules/home-manager/stacks/default.nix if necessary
       # Just enable them here or provide host-specific settings
@@ -77,6 +68,7 @@
       #forgejo.enable = true;
       gatus.enable = true;
       healthchecks.enable = true;
+
       homeassistant.enable = false;
       homepage.enable = true;
       immich.enable = true;
@@ -100,6 +92,7 @@
           }
         ];
       };
+      #n8n.enable = true;
       ntfy.enable = true;
       paperless.enable = true;
       #pocketid.enable = true;
