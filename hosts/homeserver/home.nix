@@ -63,7 +63,8 @@
       dockdns.enable = true;
       docker-socket-proxy.enable = true;
       dozzle.enable = true;
-      filebrowser.enable = true;
+      #filebrowser.enable = true;
+      filebrowser-quantum.enable = true;
       #freshrss.enable = true;
       #forgejo.enable = true;
       gatus.enable = true;

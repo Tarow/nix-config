@@ -113,6 +113,24 @@
             }
           ];
       };
+      filebrowser-quantum = {
+        mounts = {
+          ${config.home.homeDirectory} = {
+            path = config.home.homeDirectory;
+            name = config.home.username;
+          };
+          ${config.nps.externalStorageBaseDir} = {
+            path = "/hdd";
+            name = "hdd";
+          };
+        };
+        oidc = {
+          enable = true;
+          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$SKzEY6iUGM8T5jpdjBt/qg$Eipoepsk2j0Dxp/DDdoj/ZcmRbkf3FLnjgr4oP2xZ2s";
+          clientSecretFile = config.sops.secrets."filebrowser-quantum/authelia/client_secret".path;
+        };
+        settings.auth.methods.password.enabled = false;
+      };
       freshrss = {
         adminProvisioning = {
           enable = true;
@@ -220,7 +238,13 @@
                 "lldap_admin"
                 "mealie_admin"
                 "wg_portal_admin"
+                "filebrowser_quantum_admin"
               ];
+            };
+            test = {
+              email = "test@${stacks.traefik.domain}";
+              password_file = config.sops.secrets."lldap/niklas_password".path;
+              displayName = "Testuser";
             };
             selma = {
               email = "selma@${stacks.traefik.domain}";
