@@ -50,18 +50,20 @@
     stacks = {
       # General onfiguration for stacks provided in modules/home-manager/stacks/default.nix if necessary
       # Just enable them here or provide host-specific settings
-      adguard.enable = false;
+
+      #dguard.enable = true;
       aiostreams.enable = true;
       audiobookshelf.enable = true;
       authelia.enable = true;
-      beszel.enable = true;
+      #beszel.enable = true;
       blocky.enable = true;
-      bytestash.enable = false;
-      calibre.enable = false;
-      changedetection.enable = false;
+      #bytestash.enable = true;
+      #calibre.enable = true;
+      #changedetection.enable = true;
       crowdsec.enable = true;
       dockdns.enable = true;
       docker-socket-proxy.enable = true;
+      #donetick.enable = true;
       dozzle.enable = true;
       #filebrowser.enable = true;
       filebrowser-quantum.enable = true;
@@ -70,14 +72,15 @@
       gatus.enable = true;
       healthchecks.enable = true;
 
-      homeassistant.enable = false;
+      #homeassistant.enable = true;
       homepage.enable = true;
       immich.enable = true;
-      ittools.enable = false;
+      #ittools.enable = true;
       karakeep.enable = true;
       kimai.enable = true;
       lldap.enable = true;
       mealie.enable = true;
+
       #microbin.enable = true;
       monitoring = {
         enable = true;
@@ -106,7 +109,7 @@
       traefik.enable = true;
       #uptime-kuma.enable = true;
       #wg-easy.enable = true;
-      wg-portal.enable = true;
+      #wg-portal.enable = true;
       #vaultwarden.enable = true;
     };
   };

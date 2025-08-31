@@ -33,11 +33,16 @@
           DEFAULT_REALDEBRID_API_KEY.fromFile = config.sops.secrets."aiostreams/rd_api_key".path;
         };
       };
+      audiobookshelf = {
+        oidc = {
+          registerClient = true;
+          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$dQHFMSR+Fhdx84GamLJ5LA$jzJevY6G+J9tClLxIAqozoPOeytSduR0v1HMAFR++ko";
+        };
+      };
       authelia = {
         jwtSecretFile = config.sops.secrets."authelia/jwt_secret".path;
         sessionSecretFile = config.sops.secrets."authelia/session_secret".path;
         storageEncryptionKeyFile = config.sops.secrets."authelia/encryption_key".path;
-        authenticationBackend.type = "ldap";
         oidc = {
           enable = true;
           hmacSecretFile = config.sops.secrets."authelia/oidc_hmac_secret".path;
@@ -51,6 +56,7 @@
             redirect_uris = [];
           };
         };
+        containers.authelia.traefik.middleware.public.enable = true;
       };
 
       beszel = {
@@ -113,6 +119,15 @@
             }
           ];
       };
+      donetick = {
+        settings.is_user_creation_disabled = true;
+        jwtSecretFile = config.sops.secrets."donetick/jwt_secret".path;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."donetick/authelia/client_secret".path;
+          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$elNsvcPnuBeCRSPPVdTmtg$thuONNyx0kGKQhtSJwOqwCzWVrQ5yTu899MIrgEDkIA";
+        };
+      };
       filebrowser-quantum = {
         mounts = {
           ${config.home.homeDirectory} = {
@@ -147,7 +162,6 @@
         };
 
         oidc = {
-          allowedSubjects = [];
           enable = true;
           clientSecretFile = config.sops.secrets."gatus/authelia_client_secret".path;
           clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$4wovJBwfMgWMqeV9S4HZyg$HcnArT/vCP2e4N6tgNYWXwYj73cointfSM4ITOXKmzQ";
@@ -196,6 +210,10 @@
           clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$18FxDTnTEcrx4PFl8fHjhQ$Iv09KL9IJAMfHWIhPDr1f3kVf/D/BUyoPPQTEhGBPNM";
         };
         dbPasswordFile = config.sops.secrets."immich/db_password".path;
+        settings = {
+          oauth.autoLaunch = lib.mkForce true;
+          passwordLogin.enabled = lib.mkForce false;
+        };
       };
 
       karakeep = {
@@ -206,6 +224,11 @@
         };
         nextauthSecretFile = config.sops.secrets."karakeep/nextauth_secret".path;
         meiliMasterKeyFile = config.sops.secrets."karakeep/meili_master_key".path;
+
+        containers.karakeep.extraEnv = {
+          DISABLE_SIGNUPS = true;
+          DISABLE_PASSWORD_AUTH = true;
+        };
       };
 
       kimai = {
@@ -224,35 +247,53 @@
         jwtSecretFile = config.sops.secrets."lldap/jwtSecret".path;
         keySeedFile = config.sops.secrets."lldap/keySeed".path;
         adminPasswordFile = config.sops.secrets."lldap/adminPassword".path;
-        bootstrap = {
+        bootstrap = let
+          stacks = config.nps.stacks;
+        in {
           cleanUp = true;
           users = {
             niklas = {
               email = "niklas@${stacks.traefik.domain}";
               password_file = config.sops.secrets."lldap/niklas_password".path;
               displayName = "Niklas";
-              groups = [
-                "grafana_admin"
-                "immich_admin"
-                "jellyfin_admin"
-                "lldap_admin"
-                "mealie_admin"
-                "wg_portal_admin"
-                "filebrowser_quantum_admin"
+              groups = with stacks; [
+                monitoring.grafana.oidc.adminGroup
+                immich.oidc.adminGroup
+                streaming.jellyfin.oidc.adminGroup
+                lldap.adminGroup
+                mealie.oidc.adminGroup
+                wg-portal.oidc.adminGroup
+                filebrowser-quantum.oidc.adminGroup
+
+                # No group-based admin access supported yet, just user-roles
+                karakeep.oidc.userGroup
+                romm.oidc.userGroup
+                paperless.oidc.userGroup
+                gatus.oidc.userGroup
               ];
-            };
-            test = {
-              email = "test@${stacks.traefik.domain}";
-              password_file = config.sops.secrets."lldap/niklas_password".path;
-              displayName = "Testuser";
             };
             selma = {
               email = "selma@${stacks.traefik.domain}";
               password_file = config.sops.secrets."lldap/selma_password".path;
               displayName = "Selma";
+              groups = with stacks; [
+                streaming.jellyfin.oidc.userGroup
+                mealie.oidc.userGroup
+                immich.oidc.userGroup
+                paperless.oidc.userGroup
+              ];
+            };
+            guest = {
+              email = "guest@${stacks.traefik.domain}";
+              password_file = config.sops.secrets."lldap/guest_password".path;
+              displayName = "Gast";
+            };
+            test = {
+              email = "test@${stacks.traefik.domain}";
+              password_file = config.sops.secrets."lldap/niklas_password".path;
+              displayName = "Testuser";
               groups = [
-                "jellyfin_user"
-                "mealie_user"
+                stacks.wg-portal.oidc.userGroup
               ];
             };
           };
@@ -307,6 +348,8 @@
         extraEnv = {
           PAPERLESS_OCR_LANGUAGES = "eng deu";
           PAPERLESS_OCR_LANGUAGE = "eng+deu";
+          PAPERLESS_DISABLE_REGULAR_LOGIN = true;
+          PAPERLESS_REDIRECT_LOGIN_TO_SSO = true;
         };
         db = {
           username = "paperless";
