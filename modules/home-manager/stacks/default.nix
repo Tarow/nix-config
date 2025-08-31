@@ -270,6 +270,7 @@
                 romm.oidc.userGroup
                 paperless.oidc.userGroup
                 gatus.oidc.userGroup
+                vikunja.oidc.userGroup
               ];
             };
             selma = {
@@ -281,6 +282,7 @@
                 mealie.oidc.userGroup
                 immich.oidc.userGroup
                 paperless.oidc.userGroup
+                vikunja.oidc.userGroup
               ];
             };
             guest = {
@@ -429,6 +431,21 @@
         enablePrometheusExport = true;
         enableGrafanaMetricsDashboard = true;
         enableGrafanaAccessLogDashboard = true;
+      };
+
+      vikunja = {
+        db.type = "postgres";
+        db.postgresPasswordFile = config.sops.secrets."vikunja/postgres_password".path;
+        jwtSecretFile = config.sops.secrets."vikunja/jwt_secret".path;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."vikunja/authelia/client_secret".path;
+          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$5yan15Eue1VX6WsFW5LygA$//p0a4BWfLJKt4BMmagCF9HgokO5bIO6se99XmFHhA8";
+        };
+        settings = {
+          service.enableregistration = false;
+          auth.local.enabled = false;
+        };
       };
 
       wg-easy = {

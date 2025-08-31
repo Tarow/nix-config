@@ -108,9 +108,10 @@
       streaming.enable = true;
       traefik.enable = true;
       #uptime-kuma.enable = true;
+      vikunja.enable = true;
+      #vaultwarden.enable = true;
       #wg-easy.enable = true;
       #wg-portal.enable = true;
-      #vaultwarden.enable = true;
     };
   };
 
