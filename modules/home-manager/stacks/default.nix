@@ -56,7 +56,10 @@
             redirect_uris = [];
           };
         };
-        containers.authelia.traefik.middleware.public.enable = true;
+        containers.authelia = {
+          expose = true;
+          traefik.subDomain = "auth";
+        };
       };
 
       beszel = {
@@ -95,13 +98,24 @@
           ENROLL_INSTANCE_NAME = "homeserver";
           ENROLL_KEY.fromFile = config.sops.secrets."crowdsec/enroll_key".path;
         };
-        traefikIntegration = {
-          bouncerKeyFile = config.sops.secrets."crowdsec/traefik_bouncer_key".path;
+        enableGrafanaDashboard = true;
+        enablePrometheusExport = true;
+      };
+      davis = {
+        adminPasswordFile = config.sops.secrets."davis/admin_password".path;
+        db = {
+          type = "mysql";
+          userPasswordFile = config.sops.secrets."davis/db_user_password".path;
+          rootPasswordFile = config.sops.secrets."davis/db_root_password".path;
+        };
+        containers.davis = {
+          expose = true;
         };
       };
       dockdns = {
         extraEnv.NTASLER_DE_API_TOKEN.fromFile = config.sops.secrets."dockdns/cf_api_token".path;
         settings.dns.purgeUnknown = true;
+        settings.log.level = "debug";
         settings.domains = let
           domain = config.nps.stacks.traefik.domain or "";
         in
@@ -158,7 +172,7 @@
       gatus = {
         db = {
           type = "postgres";
-          postgresPasswordFile = config.sops.secrets."gatus/postgresPassword".path;
+          passwordFile = config.sops.secrets."gatus/postgresPassword".path;
         };
 
         oidc = {
@@ -232,11 +246,9 @@
       };
 
       kimai = {
-        adminEmail = "admin@admin.com";
+        adminEmail = stacks.lldap.bootstrap.users.niklas.email;
         adminPasswordFile = config.sops.secrets."kimai/admin_password".path;
         db = {
-          databaseName = "kimai";
-          username = "kimai";
           userPasswordFile = config.sops.secrets."kimai/db_user_password".path;
           rootPasswordFile = config.sops.secrets."kimai/db_root_password".path;
         };
@@ -275,7 +287,6 @@
             };
             selma = {
               email = "selma@${stacks.traefik.domain}";
-              password_file = config.sops.secrets."lldap/selma_password".path;
               displayName = "Selma";
               groups = with stacks; [
                 streaming.jellyfin.oidc.userGroup
@@ -292,7 +303,7 @@
             };
             test = {
               email = "test@${stacks.traefik.domain}";
-              password_file = config.sops.secrets."lldap/niklas_password".path;
+              #password_file = config.sops.secrets."lldap/niklas_password".path;
               displayName = "Testuser";
               groups = [
                 stacks.wg-portal.oidc.userGroup
@@ -431,11 +442,12 @@
         enablePrometheusExport = true;
         enableGrafanaMetricsDashboard = true;
         enableGrafanaAccessLogDashboard = true;
+        crowdsec.middleware.bouncerKeyFile = config.sops.secrets."crowdsec/traefik_bouncer_key".path;
       };
 
       vikunja = {
         db.type = "postgres";
-        db.postgresPasswordFile = config.sops.secrets."vikunja/postgres_password".path;
+        db.passwordFile = config.sops.secrets."vikunja/postgres_password".path;
         jwtSecretFile = config.sops.secrets."vikunja/jwt_secret".path;
         oidc = {
           enable = true;

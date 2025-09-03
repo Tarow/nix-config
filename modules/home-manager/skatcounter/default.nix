@@ -18,10 +18,11 @@ in {
 
       port = 8080;
       traefik.name = "skat";
-      traefik.middleware.public.enable = true;
 
+      expose = true;
       forwardAuth = {
         enable = true;
+        middlewareOrder = 1100;
       };
     };
   };
