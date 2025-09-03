@@ -386,7 +386,7 @@
           enable = true;
           username = "admin";
           passwordFile = config.sops.secrets."romm/admin_password".path;
-          email = "admin@example.com";
+          email = "admin@ntasler";
         };
 
         authSecretKeyFile = config.sops.secrets."romm/auth_secret_key".path;

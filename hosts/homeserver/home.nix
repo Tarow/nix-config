@@ -79,7 +79,7 @@
       immich.enable = true;
       #ittools.enable = true;
       karakeep.enable = true;
-      kimai.enable = true;
+      #kimai.enable = true;
       lldap.enable = true;
       mealie.enable = true;
 
