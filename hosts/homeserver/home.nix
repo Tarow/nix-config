@@ -69,7 +69,7 @@
       dozzle.enable = true;
       #filebrowser.enable = true;
       #filebrowser-quantum.enable = true;
-      #freshrss.enable = true;
+      freshrss.enable = true;
       #forgejo.enable = true;
       gatus.enable = true;
       healthchecks.enable = true;

@@ -5,7 +5,65 @@
   config,
   lib,
   ...
-}: {
+}: let
+  domain = "ntasler.de";
+  lldapUsers = with config.nps.stacks; {
+    readonly = {
+      id = "readonly";
+      displayName = "readonly";
+      password_file = config.sops.secrets."lldap/readonly_password".path;
+      email = "readonly@${domain}";
+      groups = [lldap.readOnlyGroup];
+    };
+    niklas = {
+      email = "niklas@${domain}";
+      password_file = config.sops.secrets."lldap/niklas_password".path;
+      displayName = "Niklas";
+      groups = [
+        monitoring.grafana.oidc.adminGroup
+        immich.oidc.adminGroup
+        streaming.jellyfin.oidc.adminGroup
+        lldap.adminGroup
+        mealie.oidc.adminGroup
+        wg-portal.oidc.adminGroup
+        filebrowser-quantum.oidc.adminGroup
+
+        # No group-based admin access supported yet, just user-roles
+        karakeep.oidc.userGroup
+        romm.oidc.userGroup
+        paperless.oidc.userGroup
+        gatus.oidc.userGroup
+        vikunja.oidc.userGroup
+        freshrss.oidc.userGroup
+      ];
+    };
+    selma = {
+      email = "selma@${domain}";
+      displayName = "Selma";
+      groups = [
+        streaming.jellyfin.oidc.userGroup
+        mealie.oidc.userGroup
+        immich.oidc.userGroup
+        paperless.oidc.userGroup
+        vikunja.oidc.userGroup
+      ];
+    };
+    guest = {
+      email = "guest@${domain}";
+      password_file = config.sops.secrets."lldap/guest_password".path;
+      displayName = "Guest";
+    };
+    test = {
+      email = "test@${domain}";
+      password_file = config.sops.secrets."lldap/test_password".path;
+      displayName = "Testuser";
+      groups = [
+        wg-portal.oidc.userGroup
+        freshrss.oidc.userGroup
+      ];
+    };
+  };
+in {
   imports = [inputs.nix-podman-stacks.homeModules.nps];
 
   # Add default config to every container
@@ -43,6 +101,10 @@
         jwtSecretFile = config.sops.secrets."authelia/jwt_secret".path;
         sessionSecretFile = config.sops.secrets."authelia/session_secret".path;
         storageEncryptionKeyFile = config.sops.secrets."authelia/encryption_key".path;
+        ldap = {
+          username = lldapUsers.readonly.id;
+          passwordFile = lldapUsers.readonly.password_file;
+        };
         oidc = {
           enable = true;
           hmacSecretFile = config.sops.secrets."authelia/oidc_hmac_secret".path;
@@ -56,6 +118,7 @@
             redirect_uris = [];
           };
         };
+
         containers.authelia = {
           expose = true;
           traefik.subDomain = "auth";
@@ -162,11 +225,17 @@
       };
       freshrss = {
         adminProvisioning = {
-          enable = true;
+          enable = false;
           username = "admin";
-          email = "admin@example.com";
+          email = "admin@ntasler.de";
           passwordFile = config.sops.secrets."freshrss/admin_password".path;
           apiPasswordFile = config.sops.secrets."freshrss/admin_api_password".path;
+        };
+        oidc = {
+          enable = true;
+          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$W0jLoTPPDwal2PULWcmlSg$HtzE9xiR+5lHFO8eRqlI27+lqLYWPbqSybyyiaL/y8s";
+          clientSecretFile = config.sops.secrets."freshrss/authelia/client_secret".path;
+          cryptoKeyFile = config.sops.secrets."freshrss/authelia/crypto_key".path;
         };
       };
       gatus = {
@@ -255,61 +324,13 @@
       };
 
       lldap = {
-        baseDn = "DC=ntasler,DC=de";
+        baseDn = domain |> lib.splitString "." |> lib.concatMapStringsSep "," (p: "DC=${p}");
         jwtSecretFile = config.sops.secrets."lldap/jwtSecret".path;
         keySeedFile = config.sops.secrets."lldap/keySeed".path;
         adminPasswordFile = config.sops.secrets."lldap/adminPassword".path;
-        bootstrap = let
-          stacks = config.nps.stacks;
-        in {
+        bootstrap = {
           cleanUp = true;
-          users = {
-            niklas = {
-              email = "niklas@${stacks.traefik.domain}";
-              password_file = config.sops.secrets."lldap/niklas_password".path;
-              displayName = "Niklas";
-              groups = with stacks; [
-                monitoring.grafana.oidc.adminGroup
-                immich.oidc.adminGroup
-                streaming.jellyfin.oidc.adminGroup
-                lldap.adminGroup
-                mealie.oidc.adminGroup
-                wg-portal.oidc.adminGroup
-                filebrowser-quantum.oidc.adminGroup
-
-                # No group-based admin access supported yet, just user-roles
-                karakeep.oidc.userGroup
-                romm.oidc.userGroup
-                paperless.oidc.userGroup
-                gatus.oidc.userGroup
-                vikunja.oidc.userGroup
-              ];
-            };
-            selma = {
-              email = "selma@${stacks.traefik.domain}";
-              displayName = "Selma";
-              groups = with stacks; [
-                streaming.jellyfin.oidc.userGroup
-                mealie.oidc.userGroup
-                immich.oidc.userGroup
-                paperless.oidc.userGroup
-                vikunja.oidc.userGroup
-              ];
-            };
-            guest = {
-              email = "guest@${stacks.traefik.domain}";
-              password_file = config.sops.secrets."lldap/guest_password".path;
-              displayName = "Gast";
-            };
-            test = {
-              email = "test@${stacks.traefik.domain}";
-              #password_file = config.sops.secrets."lldap/niklas_password".path;
-              displayName = "Testuser";
-              groups = [
-                stacks.wg-portal.oidc.userGroup
-              ];
-            };
-          };
+          users = lldapUsers;
         };
       };
 
@@ -379,6 +400,10 @@
           clientId = "8c55dd45-1c75-4e01-bdd1-300af3eadcc7";
           clientSecretFile = config.sops.secrets."pocketid/traefik/clientSecret".path;
           encryptionSecretFile = config.sops.secrets."pocketid/traefik/middlewareSecret".path;
+        };
+        ldap = {
+          username = lldapUsers.readonly.id;
+          passwordFile = lldapUsers.readonly.password_file;
         };
       };
       romm = {
