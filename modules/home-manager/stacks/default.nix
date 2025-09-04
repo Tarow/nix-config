@@ -16,6 +16,7 @@
       groups = [lldap.readOnlyGroup];
     };
     niklas = {
+      id = "niklas";
       email = "niklas@${domain}";
       password_file = config.sops.secrets."lldap/niklas_password".path;
       displayName = "Niklas";
@@ -78,7 +79,7 @@ in {
     );
   };
 
-  config.nps = rec {
+  config.nps = {
     hostIP4Address = config.tarow.facts.ip4Address;
     hostUid = config.tarow.facts.uid;
     defaultTz = "Europe/Berlin";
@@ -180,21 +181,20 @@ in {
         settings.dns.purgeUnknown = true;
         settings.log.level = "debug";
         settings.domains = let
-          domain = config.nps.stacks.traefik.domain or "";
-        in
-          lib.optionals (domain != "") [
-            {
-              name = domain;
-              a = hostIP4Address;
-            }
-            {
-              name = "*.${domain}";
-              a = hostIP4Address;
-            }
-            {
-              name = "vpn.${domain}";
-            }
-          ];
+          hostIP4Address = config.nps.hostIP4Address;
+        in [
+          {
+            name = domain;
+            a = hostIP4Address;
+          }
+          {
+            name = "*.${domain}";
+            a = hostIP4Address;
+          }
+          {
+            name = "vpn.${domain}";
+          }
+        ];
       };
       donetick = {
         settings.is_user_creation_disabled = true;
@@ -224,13 +224,8 @@ in {
         settings.auth.methods.password.enabled = false;
       };
       freshrss = {
-        adminProvisioning = {
-          enable = false;
-          username = "admin";
-          email = "admin@ntasler.de";
-          passwordFile = config.sops.secrets."freshrss/admin_password".path;
-          apiPasswordFile = config.sops.secrets."freshrss/admin_api_password".path;
-        };
+        # First OIDC-logged-in account will have admin rights
+        # See <https://freshrss.github.io/FreshRSS/en/admins/16_OpenID-Connect.html> for setup
         oidc = {
           enable = true;
           clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$W0jLoTPPDwal2PULWcmlSg$HtzE9xiR+5lHFO8eRqlI27+lqLYWPbqSybyyiaL/y8s";
@@ -252,7 +247,7 @@ in {
       };
       healthchecks = {
         secretKeyFile = config.sops.secrets."healthchecks/secret_key".path;
-        superUserEmail = stacks.lldap.bootstrap.users.niklas.email;
+        superUserEmail = lldapUsers.niklas.email;
         superUserPasswordFile = config.sops.secrets."healthchecks/superuser_password".path;
         containers.healthchecks = {
           forwardAuth = {
@@ -315,7 +310,7 @@ in {
       };
 
       kimai = {
-        adminEmail = stacks.lldap.bootstrap.users.niklas.email;
+        adminEmail = lldapUsers.niklas.email;
         adminPasswordFile = config.sops.secrets."kimai/admin_password".path;
         db = {
           userPasswordFile = config.sops.secrets."kimai/db_user_password".path;
@@ -409,9 +404,9 @@ in {
       romm = {
         adminProvisioning = {
           enable = true;
-          username = "admin";
-          passwordFile = config.sops.secrets."romm/admin_password".path;
-          email = "admin@ntasler";
+          username = lldapUsers.niklas.id;
+          passwordFile = lldapUsers.niklas.password_file;
+          email = lldapUsers.niklas.email;
         };
 
         authSecretKeyFile = config.sops.secrets."romm/auth_secret_key".path;
