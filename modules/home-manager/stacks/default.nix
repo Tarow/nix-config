@@ -4,6 +4,7 @@
   inputs,
   config,
   lib,
+  pkgs,
   ...
 }: let
   domain = "ntasler.de";
@@ -425,6 +426,10 @@ in {
         db = {
           userPasswordFile = config.sops.secrets."romm/db/user_password".path;
           rootPasswordFile = config.sops.secrets."romm/db/root_password".path;
+        };
+        igir = {
+          enable = true;
+          package = pkgs.unstable.igir;
         };
       };
       streaming =

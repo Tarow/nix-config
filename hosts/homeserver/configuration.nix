@@ -49,6 +49,19 @@
           "force group" = user;
           "valid users" = user;
         };
+        "hdd" = let
+          user = config.tarow.facts.username;
+        in {
+          "path" = "/mnt/hdd1";
+          "browseable" = "yes";
+          "read only" = "no";
+          "guest ok" = "no";
+          "create mask" = "0644";
+          "directory mask" = "0755";
+          "force user" = user;
+          "force group" = user;
+          "valid users" = user;
+        };
       };
     };
   };
@@ -92,23 +105,17 @@
   services.borgbackup.jobs = let
     ping = endpoint: "${lib.getExe pkgs.curl} --retry 3 --retry-max-time 30 https://healthchecks.ntasler.de/ping/JOqUfNcwwLmCwSsaGVCY1A/${endpoint}";
 
-    # Backup private samba shares.
-    sambaPaths =
-      (builtins.removeAttrs config.services.samba.settings ["global"])
-      |> lib.filterAttrs (_: value: value."guest ok" != "yes")
-      |> lib.mapAttrsToList (name: value: value.path);
-
     base = {
-      paths =
-        [
-          "${config.tarow.facts.userhome}/stacks"
-          "/mnt/hdd1/media/pictures/immich"
-        ]
-        ++ sambaPaths;
+      paths = [
+        "${config.tarow.facts.userhome}/stacks"
+        "/mnt/hdd1/media/pictures/immich"
+        "/mnt/hdd1/shares/niklas"
+      ];
       encryption = {
         mode = "repokey-blake2";
         passCommand = "cat ${config.sops.secrets."borg/passphrase".path}";
       };
+
       compression = "auto,lzma";
       startAt = "daily";
       dateFormat = "+%Y-%m-%dT%H:%M:%S";
