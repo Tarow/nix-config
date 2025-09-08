@@ -246,6 +246,37 @@ in {
           clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$4wovJBwfMgWMqeV9S4HZyg$HcnArT/vCP2e4N6tgNYWXwYj73cointfSM4ITOXKmzQ";
         };
       };
+      guacamole = {
+        containers.guacamole = {
+          forwardAuth = {
+            enable = true;
+            rules = [
+              {
+                policy = "two_factor";
+              }
+            ];
+          };
+          templateMount = [
+            {
+              templatePath = pkgs.writeText "user-mapping.xml" ''
+                <user-mapping>
+                  <authorize username="${lldapUsers.niklas.id}" password="{{ file.Read `${lldapUsers.niklas.password_file}` }}">
+                      <connection name="Host SSH">
+                          <protocol>ssh</protocol>
+                          <param name="hostname">host.containers.internal</param>
+                          <param name="port">22</param>
+                          <param name="username">${lldapUsers.niklas.id}</param>
+                          <param name="private-key">{{ file.Read `${config.sops.secrets."guacamole/ssh_private_key".path}` }}</param>
+                          <param name="command">bash</param>
+                      </connection>
+                  </authorize>
+                </user-mapping>
+              '';
+              destPath = "/etc/guacamole/user-mapping.xml";
+            }
+          ];
+        };
+      };
       healthchecks = {
         secretKeyFile = config.sops.secrets."healthchecks/secret_key".path;
         superUserEmail = lldapUsers.niklas.email;
