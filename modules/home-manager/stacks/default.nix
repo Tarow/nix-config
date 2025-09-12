@@ -538,7 +538,6 @@ in {
       };
 
       storyteller = {
-        enable = true;
         secretKeyFile = config.sops.secrets."storyteller/secret_key".path;
         oidc = {
           enable = true;

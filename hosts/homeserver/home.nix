@@ -112,6 +112,7 @@
       };
       #sshwifty.enable = true;
       stirling-pdf.enable = true;
+      storyteller.enable = true;
       #streaming.enable = true;
       traefik.enable = true;
       #uptime-kuma.enable = true;
