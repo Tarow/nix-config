@@ -541,8 +541,8 @@ in {
         enable = true;
         secretKeyFile = config.sops.secrets."storyteller/secret_key".path;
         oidc = {
-          registerClient = true;
-          #clientSecretFile = config.sops.secrets."storyteller/authelia/client_secret".path;
+          enable = true;
+          clientSecretFile = config.sops.secrets."storyteller/authelia/client_secret".path;
           clientSecretHash = "$pbkdf2-sha512$310000$lRGcfTq0UOnzsyWOf4WCYw$R1jpZLd0sUh.SRVnLuFJDDURwyCXGnomxioKc8xSXkkFO3IvFpiT5xIE25wRyKdQlqGKSxfNqPG.nJWWNtJPsw";
         };
         containers.storyteller = {
@@ -550,28 +550,18 @@ in {
           extraConfig.Service.ExecStartPost = [
             (lib.getExe (
               pkgs.writeShellApplication {
-                name = "storyteller-init";
+                name = "storyteller-admin-init";
                 runtimeInputs = with pkgs; [podman coreutils sqlite libossp_uuid yq-go];
                 text = ''
                   user_perm_uuid="$(uuid)"
                   user_uuid="$(uuid)"
                   user_name="${lldapUsers.niklas.id}"
                   user_email="${lldapUsers.niklas.email}"
-                  autheliaUrl="${config.nps.containers.authelia.traefik.serviceUrl}"
-                  autheliaClientSecret="$(< ${config.sops.secrets."storyteller/authelia/client_secret".path})"
                   podman exec authelia rm -f export.yml
                   podman exec authelia authelia storage user identifiers export --file export.yml
                   sub=$(podman exec authelia cat export.yml | yq '.identifiers[] | select(.username == "${lldapUsers.niklas.id}") | .identifier')
 
                   sqlite3 ${config.nps.storageBaseDir}/storyteller/storyteller.db <<SQL
-
-                  DELETE FROM settings WHERE name = 'authProviders';
-                  INSERT INTO settings (uuid, name, value)
-                  VALUES (
-                    '$(uuid)',
-                    'authProviders',
-                    '[{"kind":"custom","name":"Authelia","issuer":"$autheliaUrl","clientId":"storyteller","clientSecret":"$autheliaClientSecret","type":"oidc"}]'
-                  );
 
                   DELETE FROM user_permission
                   WHERE uuid IN (
