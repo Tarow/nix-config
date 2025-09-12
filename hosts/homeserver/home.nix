@@ -100,15 +100,19 @@
         ];
       };
       #n8n.enable = true;
-      ntfy.enable = true;
+      #ntfy.enable = true;
+
+      #outline.enable = true;
+
       paperless.enable = true;
       #pocketid.enable = true;
       romm.enable = true;
       skatcounter = {
         enable = true;
       };
+      #sshwifty.enable = true;
       stirling-pdf.enable = true;
-      streaming.enable = true;
+      #streaming.enable = true;
       traefik.enable = true;
       #uptime-kuma.enable = true;
       #vikunja.enable = true;

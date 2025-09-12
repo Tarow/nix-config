@@ -37,6 +37,8 @@
         gatus.oidc.userGroup
         vikunja.oidc.userGroup
         freshrss.oidc.userGroup
+        outline.oidc.userGroup
+        storyteller.oidc.userGroup
       ];
     };
     selma = {
@@ -62,6 +64,7 @@
       groups = [
         wg-portal.oidc.userGroup
         freshrss.oidc.userGroup
+        outline.oidc.userGroup
       ];
     };
   };
@@ -113,7 +116,6 @@ in {
           jwksRsaKeyFile = config.sops.secrets."authelia/oidc_rsa_pk".path;
 
           # Define a dummy client with two_factor to enable the related settings
-          #
           clients.dummy = {
             public = true;
             authorization_policy = "two_factor";
@@ -122,8 +124,8 @@ in {
         };
 
         containers.authelia = {
-          expose = true;
           traefik.subDomain = "auth";
+          expose = true;
         };
       };
 
@@ -245,6 +247,35 @@ in {
           clientSecretFile = config.sops.secrets."gatus/authelia_client_secret".path;
           clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$4wovJBwfMgWMqeV9S4HZyg$HcnArT/vCP2e4N6tgNYWXwYj73cointfSM4ITOXKmzQ";
         };
+        containers.gatus.environment.GATUS_LOG_LEVEL = "DEBUG";
+
+        settings.endpoints = let
+          # Check that all exposed services are reachable via the public IP
+          exposedContainers = config.services.podman.containers |> lib.filterAttrs (_: c: c.expose);
+          exposedEndpointChecks =
+            exposedContainers
+            |> lib.mapAttrs (name: c: {
+              url = c.traefik.serviceUrl;
+              name = "${lib.toSentenceCase name} External";
+              client.dns-resolver = "tcp://1.1.1.1:53";
+              group = "ext_availability";
+
+              headers.Accept = "text/html";
+            })
+            |> lib.attrValues;
+        in
+          exposedEndpointChecks
+          ++ [
+            {
+              name = "External IP";
+              url = "icmp://vpn.${domain}";
+              client.dns-resolver = "tcp://1.1.1.1:53";
+              group = "ext_availability";
+              conditions = [
+                "[CONNECTED] == true"
+              ];
+            }
+          ];
       };
       guacamole = {
         containers.guacamole = {
@@ -394,6 +425,16 @@ in {
         enableGrafanaDashboard = true;
         enablePrometheusExport = true;
       };
+      outline = {
+        secretKeyFile = config.sops.secrets."outline/secret_key".path;
+        utilsSecretFile = config.sops.secrets."outline/utils_secret".path;
+        db.passwordFile = config.sops.secrets."outline/db_password".path;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."outline/authelia/client_secret".path;
+          clientSecretHash = "$pbkdf2-sha512$310000$Hza0NJjEkCNvMl5Z0Yn8QQ$Y/d.qKdU9igqRtkQZ3IFc5r.D4i9MG6VgF9/JwbXFu8cGMbLeQCo644vY7LPm3CZe1G0HRxrpqlbqcsncraYEA";
+        };
+      };
       paperless = {
         adminProvisioning = {
           username = "admin";
@@ -463,6 +504,117 @@ in {
           package = pkgs.unstable.igir;
         };
       };
+
+      sshwifty = let
+        privateKeyFile = "/run/secrets/ssh_pk";
+        webPasswordFile = "/run/secrets/web_password";
+      in {
+        containers.sshwifty = {
+          forwardAuth = {
+            enable = true;
+            rules = [{policy = "two_factor";}];
+          };
+          volumes = [
+            "${config.sops.secrets."sshwifty/ssh_private_key".path}:${privateKeyFile}"
+            "${config.sops.secrets."sshwifty/web_password".path}:${webPasswordFile}"
+          ];
+        };
+        settings = {
+          SharedKey = "{{ file.Read `${config.sops.secrets."sshwifty/web_password".path}`}}";
+          Presets = [
+            {
+              Title = "SSH NixOS";
+              Type = "SSH";
+              Host = "host.containers.internal:22";
+              Meta = {
+                User = lldapUsers.niklas.id;
+                Encoding = "utf-8";
+                "Private Key" = "file://${privateKeyFile}";
+                Authentication = "Private Key";
+              };
+            }
+          ];
+        };
+      };
+
+      storyteller = {
+        enable = true;
+        secretKeyFile = config.sops.secrets."storyteller/secret_key".path;
+        oidc = {
+          registerClient = true;
+          #clientSecretFile = config.sops.secrets."storyteller/authelia/client_secret".path;
+          clientSecretHash = "$pbkdf2-sha512$310000$lRGcfTq0UOnzsyWOf4WCYw$R1jpZLd0sUh.SRVnLuFJDDURwyCXGnomxioKc8xSXkkFO3IvFpiT5xIE25wRyKdQlqGKSxfNqPG.nJWWNtJPsw";
+        };
+        containers.storyteller = {
+          devices = ["/dev/dri:/dev/dri"];
+          extraConfig.Service.ExecStartPost = [
+            (lib.getExe (
+              pkgs.writeShellApplication {
+                name = "storyteller-init";
+                runtimeInputs = with pkgs; [podman coreutils sqlite libossp_uuid yq-go];
+                text = ''
+                  user_perm_uuid="$(uuid)"
+                  user_uuid="$(uuid)"
+                  user_name="${lldapUsers.niklas.id}"
+                  user_email="${lldapUsers.niklas.email}"
+                  autheliaUrl="${config.nps.containers.authelia.traefik.serviceUrl}"
+                  autheliaClientSecret="$(< ${config.sops.secrets."storyteller/authelia/client_secret".path})"
+                  podman exec authelia rm -f export.yml
+                  podman exec authelia authelia storage user identifiers export --file export.yml
+                  sub=$(podman exec authelia cat export.yml | yq '.identifiers[] | select(.username == "${lldapUsers.niklas.id}") | .identifier')
+
+                  sqlite3 ${config.nps.storageBaseDir}/storyteller/storyteller.db <<SQL
+
+                  DELETE FROM settings WHERE name = 'authProviders';
+                  INSERT INTO settings (uuid, name, value)
+                  VALUES (
+                    '$(uuid)',
+                    'authProviders',
+                    '[{"kind":"custom","name":"Authelia","issuer":"$autheliaUrl","clientId":"storyteller","clientSecret":"$autheliaClientSecret","type":"oidc"}]'
+                  );
+
+                  DELETE FROM user_permission
+                  WHERE uuid IN (
+                      SELECT user_permission_uuid
+                      FROM user
+                      WHERE username = '$user_name'
+                  );
+                  DELETE FROM user WHERE username = '$user_name';
+
+                  INSERT INTO user_permission (
+                      uuid, book_create, book_read, book_process, book_download, book_list,
+                      user_create, user_list, user_read, user_delete, settings_update, book_delete,
+                      book_update, invite_list, invite_delete, user_update, collection_create
+                  ) VALUES (
+                      '$user_perm_uuid', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+                  );
+                  INSERT INTO user (
+                      id, user_permission_uuid, username, name, email
+                  ) VALUES (
+                      '$user_uuid',
+                      '$user_perm_uuid',
+                      '$user_name',
+                      '$user_name',
+                      '$user_email'
+                  );
+
+                  DELETE FROM account WHERE user_id = '$user_uuid';
+                  INSERT INTO account (id, user_id, type, provider, provider_account_id)
+                  VALUES (
+                      '$(uuid)',
+                      '$user_uuid',
+                      'oidc',
+                      'authelia',
+                      '$sub'
+                  );
+                  SQL
+                '';
+              }
+            ))
+          ];
+        };
+      };
+
       streaming =
         {
           gluetun = {
@@ -491,8 +643,9 @@ in {
         // lib.genAttrs ["sonarr" "radarr" "bazarr" "prowlarr"] (name: {
           extraEnv."${lib.toUpper name}__AUTH__APIKEY".fromFile = config.sops.secrets."servarr/api_key".path;
         });
+
       traefik = {
-        domain = "ntasler.de";
+        domain = domain;
         extraEnv.CF_DNS_API_TOKEN.fromFile = config.sops.secrets."traefik/cf_api_token".path;
         geoblock.allowedCountries = ["DE"];
         enablePrometheusExport = true;
