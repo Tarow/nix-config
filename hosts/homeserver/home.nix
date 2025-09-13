@@ -73,7 +73,7 @@
       #forgejo.enable = true;
       gatus.enable = true;
       guacamole.enable = true;
-      healthchecks.enable = true;
+      #healthchecks.enable = true;
 
       #homeassistant.enable = true;
       homepage.enable = true;
