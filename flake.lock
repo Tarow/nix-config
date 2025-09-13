@@ -383,11 +383,11 @@
         "sops-nix": "sops-nix"
       },
       "locked": {
-        "lastModified": 1757703876,
-        "narHash": "sha256-bEkrNFrd1L1QPVpnS+05NyaxxClk7ZsconGdiDEGMH0=",
+        "lastModified": 1757781945,
+        "narHash": "sha256-9CuS9lYFXer173h2HlnaThkjYwcIQZ7fBE0YMyzT1JQ=",
         "owner": "Tarow",
         "repo": "nix-podman-stacks",
-        "rev": "e731e42d3b7f297c6d5d07881b54df7f742c5a85",
+        "rev": "f0b1a6de8a86dd954c5dc737533574430a842d05",
         "type": "github"
       },
       "original": {
@@ -419,11 +419,11 @@
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1757103352,
-        "narHash": "sha256-PtT7ix43ss8PONJ1VJw3f6t2yAoGH+q462Sn8lrmWmk=",
+        "lastModified": 1757775351,
+        "narHash": "sha256-xWsxmNHwt9jV/yFJqzsNeilpH4BR8MPe44Yt0eaGAIM=",
         "owner": "NixOS",
         "repo": "nixos-hardware",
-        "rev": "11b2a10c7be726321bb854403fdeec391e798bf0",
+        "rev": "f89c620d3d6e584d98280b48f0af7be4f8506ab5",
         "type": "github"
       },
       "original": {
@@ -540,11 +540,11 @@
         "systems": "systems_3"
       },
       "locked": {
-        "lastModified": 1757746879,
-        "narHash": "sha256-dLRazMovNAYIdvEt6Mfot5QPs9huu8cAWesTelh/UOk=",
+        "lastModified": 1757773905,
+        "narHash": "sha256-lM1K3cJsPQyiSGI3rE/F7u02fA/JYBsinMN49IQCY1s=",
         "owner": "notashelf",
         "repo": "nvf",
-        "rev": "850559fd513c926154d325f686119fc6e2fd477c",
+        "rev": "7e74ee604a7c18dda21e6a809720ad37ab5bae43",
         "type": "github"
       },
       "original": {
