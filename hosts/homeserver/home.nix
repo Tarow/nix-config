@@ -82,6 +82,9 @@
       karakeep.enable = true;
       #kimai.enable = true;
       lldap.enable = true;
+
+      mazanoke.enable = true;
+
       mealie.enable = true;
 
       #microbin.enable = true;
@@ -112,7 +115,7 @@
       };
       #sshwifty.enable = true;
       stirling-pdf.enable = true;
-      storyteller.enable = true;
+      #storyteller.enable = true;
       #streaming.enable = true;
       traefik.enable = true;
       #uptime-kuma.enable = true;
