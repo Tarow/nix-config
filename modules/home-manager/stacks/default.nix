@@ -19,7 +19,7 @@
     niklas = {
       id = "niklas";
       email = "niklas@${domain}";
-      password_file = config.sops.secrets."lldap/niklas_password".path;
+      password_file = config.sops.secrets."users/niklas/password".path;
       displayName = "Niklas";
       groups = [
         monitoring.grafana.oidc.adminGroup
@@ -54,12 +54,12 @@
     };
     guest = {
       email = "guest@${domain}";
-      password_file = config.sops.secrets."lldap/guest_password".path;
+      password_file = config.sops.secrets."users/guest/password".path;
       displayName = "Guest";
     };
     test = {
       email = "test@${domain}";
-      password_file = config.sops.secrets."lldap/test_password".path;
+      password_file = config.sops.secrets."users/test/password".path;
       displayName = "Testuser";
       groups = [
         wg-portal.oidc.userGroup
@@ -418,9 +418,23 @@ in {
 
       ntfy = {
         extraEnv = {
-          NTFY_WEB_PUSH_EMAIL_ADDRESS = "admin@ntasler.de";
+          NTFY_WEB_PUSH_EMAIL_ADDRESS = "admin@${domain}";
           NTFY_WEB_PUSH_PUBLIC_KEY.fromFile = config.sops.secrets."ntfy/web_push_public_key".path;
           NTFY_WEB_PUSH_PRIVATE_KEY.fromFile = config.sops.secrets."ntfy/web_push_private_key".path;
+        };
+        settings = {
+          enable-login = true;
+          auth-default-access = "deny-all";
+          auth-users = [
+            "niklas:{{ file.Read `${config.sops.secrets."users/niklas/password_bcrypt".path}` }}:admin"
+            "monitoring:{{ file.Read `${config.sops.secrets."users/monitoring/password_bcrypt".path}` }}:user"
+          ];
+          auth-access = [
+            "monitoring:monitoring:rw"
+          ];
+          auth-tokens = [
+            "monitoring:{{ file.Read `${config.sops.secrets."users/monitoring/ntfy_access_token".path}` }}"
+          ];
         };
         enableGrafanaDashboard = true;
         enablePrometheusExport = true;
@@ -481,20 +495,17 @@ in {
           passwordFile = lldapUsers.niklas.password_file;
           email = lldapUsers.niklas.email;
         };
-
         authSecretKeyFile = config.sops.secrets."romm/auth_secret_key".path;
         romLibraryPath = "${config.nps.externalStorageBaseDir}/romm/library";
         extraEnv = {
           IGDB_CLIENT_ID.fromFile = config.sops.secrets."romm/igdb_client_id".path;
           IGDB_CLIENT_SECRET.fromFile = config.sops.secrets."romm/igdb_client_secret".path;
         };
-
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."romm/authelia/client_secret".path;
           clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$pki2TtHTQZnqLA+j+yPuzg$7KOitH9Co3DLmb4bVNoepg2PHARG2VNCAywieLwt9SE";
         };
-
         db = {
           userPasswordFile = config.sops.secrets."romm/db/user_password".path;
           rootPasswordFile = config.sops.secrets."romm/db/root_password".path;

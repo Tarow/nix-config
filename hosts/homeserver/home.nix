@@ -78,7 +78,7 @@
       #homeassistant.enable = true;
       homepage.enable = true;
       immich.enable = true;
-      #ittools.enable = true;
+      ittools.enable = true;
       karakeep.enable = true;
       #kimai.enable = true;
       lldap.enable = true;
@@ -103,7 +103,7 @@
         ];
       };
       #n8n.enable = true;
-      #ntfy.enable = true;
+      ntfy.enable = true;
 
       #outline.enable = true;
 
