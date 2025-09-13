@@ -247,35 +247,61 @@ in {
           clientSecretFile = config.sops.secrets."gatus/authelia_client_secret".path;
           clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$4wovJBwfMgWMqeV9S4HZyg$HcnArT/vCP2e4N6tgNYWXwYj73cointfSM4ITOXKmzQ";
         };
-        containers.gatus.environment.GATUS_LOG_LEVEL = "DEBUG";
 
-        settings.endpoints = let
-          # Check that all exposed services are reachable via the public IP
-          exposedContainers = config.services.podman.containers |> lib.filterAttrs (_: c: c.expose);
-          exposedEndpointChecks =
-            exposedContainers
-            |> lib.mapAttrs (name: c: {
-              url = c.traefik.serviceUrl;
-              name = "${lib.toSentenceCase name} External";
-              client.dns-resolver = "tcp://1.1.1.1:53";
-              group = "ext_availability";
-
-              headers.Accept = "text/html";
-            })
-            |> lib.attrValues;
-        in
-          exposedEndpointChecks
-          ++ [
-            {
-              name = "External IP";
-              url = "icmp://vpn.${domain}";
-              client.dns-resolver = "tcp://1.1.1.1:53";
-              group = "ext_availability";
-              conditions = [
-                "[CONNECTED] == true"
-              ];
-            }
-          ];
+        containers.gatus.extraEnv = {
+          NTFY_ACCESS_TOKEN.fromFile = config.sops.secrets."users/monitoring/ntfy_access_token".path;
+        };
+        settings = {
+          alerting.ntfy = {
+            topic = "monitoring";
+            url = "http://${config.nps.containers.ntfy.traefik.serviceAddressInternal}";
+            token = "\${NTFY_ACCESS_TOKEN}";
+            click = config.nps.containers.gatus.traefik.serviceUrl;
+            default-alert = {
+              description = "Gatus Healthcheck Failed";
+              send-on-resolved = true;
+              failure-threshold = 1;
+              success-threshold = 1;
+            };
+          };
+          endpoints = let
+            # Check that all exposed services are reachable via the public IP
+            exposedContainers = config.services.podman.containers |> lib.filterAttrs (_: c: c.expose);
+            exposedEndpointChecks =
+              exposedContainers
+              |> lib.mapAttrs (name: c: {
+                url = c.traefik.serviceUrl;
+                name = "${lib.toSentenceCase name} External";
+                client.dns-resolver = "tcp://1.1.1.1:53";
+                group = "ext_availability";
+                headers.Accept = "text/html";
+              })
+              |> lib.attrValues;
+          in
+            (exposedEndpointChecks
+              ++ [
+                {
+                  name = "External IP";
+                  url = "icmp://vpn.${domain}";
+                  client.dns-resolver = "tcp://1.1.1.1:53";
+                  group = "ext_availability";
+                  conditions = [
+                    "[CONNECTED] == true"
+                  ];
+                }
+              ])
+            |> map (e:
+              {
+                alerts = [
+                  {
+                    enabled = config.nps.stacks.ntfy.enable;
+                    type = "ntfy";
+                    description = "Error for Gatus Healthcheck: ${e.name}";
+                  }
+                ];
+              }
+              // e);
+        };
       };
       guacamole = {
         containers.guacamole = {
