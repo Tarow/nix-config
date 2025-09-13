@@ -103,8 +103,13 @@
   };
 
   services.borgbackup.jobs = let
-    ping = endpoint: "${lib.getExe pkgs.curl} --retry 3 --retry-max-time 30 https://healthchecks.ntasler.de/ping/JOqUfNcwwLmCwSsaGVCY1A/${endpoint}";
-
+    ping = lib.getExe (pkgs.writeShellScriptBin "notify-backup" ''
+      success=$([ "''${2}" -eq 0 ] && echo true || echo false)
+      duration="$(( $(date +%s) - "''${START_TIME}" ))s"
+      token="$(< ${config.sops.secrets."gatus/external_endpoint_token".path})"
+      ${lib.getExe pkgs.curl} --retry 3 --retry-max-time 30 \
+        -H "Authorization: Bearer ''${token}" -X POST "https://gatus.ntasler.de/api/v1/endpoints/backups_$1/external?success=$success&duration=$duration"
+    '');
     base = {
       paths = [
         "${config.tarow.facts.userhome}/stacks"
@@ -130,18 +135,17 @@
         weekly = 4;
         monthly = 3;
       };
+      preHook = "export START_TIME=$(${pkgs.coreutils}/bin/date +%s)";
     };
   in
     {
       remote = {
         repo = "ssh://u363719@u363719.your-storagebox.de:23/./backups/homeserver";
-        preHook = ping "homeserver-remote/start?create=1";
-        postHook = ping "homeserver-remote/$exitStatus";
+        postHook = "${ping} backup-remote $exitStatus";
       };
       local = {
         repo = "/mnt/hdd1/backups/homeserver";
-        preHook = ping "homeserver-local/start?create=1";
-        postHook = ping "homeserver-local/$exitStatus";
+        postHook = "${ping} backup-local $exitStatus";
       };
     }
     |> lib.mapAttrs (_: job: (base // job));

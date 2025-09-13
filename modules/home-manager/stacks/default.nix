@@ -250,8 +250,19 @@ in {
 
         containers.gatus.extraEnv = {
           NTFY_ACCESS_TOKEN.fromFile = config.sops.secrets."users/monitoring/ntfy_access_token".path;
+          EXTERNAL_ENDPOINT_PUSH_TOKEN.fromFile = config.sops.secrets."gatus/external_endpoint_token".path;
         };
-        settings = {
+        settings = let
+          mkAlert = endpoint: {
+            alerts = [
+              {
+                enabled = config.nps.stacks.ntfy.enable;
+                type = "ntfy";
+                description = "Error for Gatus Healthcheck: ${endpoint.name}";
+              }
+            ];
+          };
+        in {
           alerting.ntfy = {
             topic = "monitoring";
             url = "http://${config.nps.containers.ntfy.traefik.serviceAddressInternal}";
@@ -265,44 +276,47 @@ in {
             };
           };
           endpoints = let
+            general = [
+              {
+                name = "External IP";
+                url = "icmp://vpn.${domain}";
+                client.dns-resolver = "tcp://1.1.1.1:53";
+                group = "ext_availability";
+                conditions = [
+                  "[CONNECTED] == true"
+                ];
+              }
+            ];
+
             # Check that all exposed services are reachable via the public IP
             exposedContainers = config.services.podman.containers |> lib.filterAttrs (_: c: c.expose);
             exposedEndpointChecks =
               exposedContainers
               |> lib.mapAttrs (name: c: {
                 url = c.traefik.serviceUrl;
-                name = "${lib.toSentenceCase name} External";
+                name = "${name} External";
                 client.dns-resolver = "tcp://1.1.1.1:53";
                 group = "ext_availability";
                 headers.Accept = "text/html";
               })
               |> lib.attrValues;
           in
-            (exposedEndpointChecks
-              ++ [
-                {
-                  name = "External IP";
-                  url = "icmp://vpn.${domain}";
-                  client.dns-resolver = "tcp://1.1.1.1:53";
-                  group = "ext_availability";
-                  conditions = [
-                    "[CONNECTED] == true"
-                  ];
-                }
-              ])
-            |> map (e:
-              {
-                alerts = [
-                  {
-                    enabled = config.nps.stacks.ntfy.enable;
-                    type = "ntfy";
-                    description = "Error for Gatus Healthcheck: ${e.name}";
-                  }
-                ];
-              }
-              // e);
+            (general ++ exposedEndpointChecks) |> map (e: (mkAlert e) // e);
+
+          external-endpoints = let
+            backups =
+              ["Local" "Remote"]
+              |> map (name: {
+                name = "Backup ${name}";
+                group = "backups";
+                token = "\${EXTERNAL_ENDPOINT_PUSH_TOKEN}";
+                heartbeat.interval = "25h";
+              });
+          in
+            backups |> map (e: (mkAlert e) // e);
         };
       };
+
       guacamole = {
         containers.guacamole = {
           forwardAuth = {
