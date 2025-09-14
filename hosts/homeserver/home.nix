@@ -82,11 +82,9 @@
       karakeep.enable = true;
       #kimai.enable = true;
       lldap.enable = true;
-
+      #komga.enable = true;
       mazanoke.enable = true;
-
       mealie.enable = true;
-
       #microbin.enable = true;
       monitoring = {
         enable = true;

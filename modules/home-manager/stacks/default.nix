@@ -39,6 +39,7 @@
         freshrss.oidc.userGroup
         outline.oidc.userGroup
         storyteller.oidc.userGroup
+        komga.oidc.userGroup
       ];
     };
     selma = {
@@ -421,6 +422,17 @@ in {
         };
       };
 
+      komga = {
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."komga/authelia/client_secret".path;
+          clientSecretHash = "$pbkdf2-sha512$310000$hpnCEXSjuNUt7j8PnuChUQ$GBRaBPzMpQ7zXqhFZiwMVD.8/miZcFHjf9r/cTOT9Hm1u3Dj/V8PiEjfZd8ZnmUp7S6Si4lpb9LP1I.tn9LOlg";
+        };
+        containers.komga.homepage.settings.widget = {
+          enable = true;
+          key = "f93e508dd6644083867f023b243c358b";
+        };
+      };
       lldap = {
         baseDn = domain |> lib.splitString "." |> lib.concatMapStringsSep "," (p: "DC=${p}");
         jwtSecretFile = config.sops.secrets."lldap/jwtSecret".path;
