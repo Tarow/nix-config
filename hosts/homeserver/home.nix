@@ -12,6 +12,7 @@
     {
       tarow = lib.tarow.enableModules [
         "aichat"
+        "audiobook-organizer"
         "core"
         "fastfetch"
         "git"
@@ -64,6 +65,7 @@
       crowdsec.enable = true;
       davis.enable = true;
       dockdns.enable = true;
+      dockdns.containers.dockdns.image = lib.mkForce "ghcr.io/tarow/dockdns:main";
       docker-socket-proxy.enable = true;
       #donetick.enable = true;
       dozzle.enable = true;
@@ -114,7 +116,13 @@
       #sshwifty.enable = true;
       stirling-pdf.enable = true;
       #storyteller.enable = true;
-      #streaming.enable = true;
+      streaming =
+        {
+          enable = true;
+          jellyfin.enable = false;
+        }
+        // lib.genAttrs ["radarr" "sonarr" "bazarr" "jellyfin"] (_: {enable = false;});
+
       traefik.enable = true;
       #uptime-kuma.enable = true;
       #vikunja.enable = true;

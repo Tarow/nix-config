@@ -29,6 +29,7 @@
         mealie.oidc.adminGroup
         wg-portal.oidc.adminGroup
         filebrowser-quantum.oidc.adminGroup
+        audiobookshelf.oidc.adminGroup
 
         # No group-based admin access supported yet, just user-roles
         karakeep.oidc.userGroup
@@ -51,6 +52,7 @@
         immich.oidc.userGroup
         paperless.oidc.userGroup
         vikunja.oidc.userGroup
+        audiobookshelf.oidc.adminGroup
       ];
     };
     guest = {
@@ -75,12 +77,13 @@ in {
   # Add default config to every container
   options.services.podman.containers = lib.mkOption {
     type = lib.types.attrsOf (
-      lib.types.submodule {
+      lib.types.submodule ({config, ...}: {
+        #homepage.settings.description = lib.mkIf (config.homepage.category != null) (lib.mkForce null);
         extraConfig.Unit = {
           Wants = ["sops-nix.service"];
           After = ["sops-nix.service"];
         };
-      }
+      })
     );
   };
 
