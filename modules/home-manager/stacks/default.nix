@@ -126,6 +126,7 @@ in {
             redirect_uris = [];
           };
         };
+        sessionProvider = "redis";
 
         containers.authelia = {
           traefik.subDomain = "auth";
