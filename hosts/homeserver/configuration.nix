@@ -102,6 +102,9 @@
     enabledCollectors = ["systemd"];
   };
 
+  services.scrutiny = {
+    enable = true;
+  };
   services.borgbackup.jobs = let
     ping = lib.getExe (pkgs.writeShellScriptBin "notify-backup" ''
       success=$([ "''${2}" -eq 0 ] && echo true || echo false)

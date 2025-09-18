@@ -25,6 +25,7 @@
         "neovim"
         "golang"
         "podman"
+        "scrutiny"
       ];
     }
   ];
@@ -38,12 +39,6 @@
     core.configLocation = "~/nix-config#homeserver";
   };
 
-  services.podman.containers.echo = {
-    image = "docker.io/ealen/echo-server";
-    traefik.name = "echo";
-    port = 80;
-    forwardAuth.enable = true;
-  };
   nps = {
     storageBaseDir = "${config.home.homeDirectory}/stacks";
     externalStorageBaseDir = "/mnt/hdd1";
@@ -65,7 +60,6 @@
       crowdsec.enable = true;
       davis.enable = true;
       dockdns.enable = true;
-      dockdns.containers.dockdns.image = lib.mkForce "ghcr.io/tarow/dockdns:main";
       docker-socket-proxy.enable = true;
       #donetick.enable = true;
       dozzle.enable = true;
