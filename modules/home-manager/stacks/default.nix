@@ -452,6 +452,17 @@ in {
         };
       };
 
+      memos = {
+        oidc = {
+          registerClient = true;
+          clientSecretHash = "$pbkdf2-sha512$310000$03AyfuIXuhkOzRYW7DBqTQ$kZbrRphuyXmrkVeUteyxmlbHdZMPDrO4f7QSYFK.b8hOGUuRQ32lz5zeAXlM161A8nDfuts8ToSY2x.LHcFZrg";
+        };
+        db = {
+          passwordFile = config.sops.secrets."memos/db_password".path;
+          type = "postgres";
+        };
+      };
+
       microbin = {
         extraEnv = {
           MICROBIN_ADMIN_USERNAME = "admin";

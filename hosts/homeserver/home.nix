@@ -65,7 +65,7 @@
       dozzle.enable = true;
       #filebrowser.enable = true;
       #filebrowser-quantum.enable = true;
-      freshrss.enable = true;
+      #freshrss.enable = true;
       #forgejo.enable = true;
       gatus.enable = true;
       guacamole.enable = true;
@@ -81,6 +81,7 @@
       #komga.enable = true;
       mazanoke.enable = true;
       mealie.enable = true;
+      #memos.enable = true;
       #microbin.enable = true;
       monitoring = {
         enable = true;
