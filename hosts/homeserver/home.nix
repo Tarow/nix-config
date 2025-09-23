@@ -57,6 +57,8 @@
       #bytestash.enable = true;
       #calibre.enable = true;
       #changedetection.enable = true;
+      glance.enable = true;
+      glance.containers.glance.traefik.subDomain = lib.mkForce "glance";
       crowdsec.enable = true;
       davis.enable = true;
       dockdns.enable = true;
@@ -114,7 +116,6 @@
       streaming =
         {
           enable = true;
-          jellyfin.enable = false;
         }
         // lib.genAttrs ["radarr" "sonarr" "bazarr" "jellyfin"] (_: {enable = false;});
 
