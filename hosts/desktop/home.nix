@@ -2,14 +2,17 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }: {
   imports = [
+    inputs.cmdmark.homeModules.cmdmark
     ./stacks.nix
     {
       tarow = lib.tarow.enableModules [
         "aichat"
         "angular"
+        "cmdmark"
         "core"
         "copilot"
         "direnv"

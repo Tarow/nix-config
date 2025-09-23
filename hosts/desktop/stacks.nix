@@ -80,6 +80,29 @@
         };
       };
 
+      romm = {
+        enable = true;
+        authSecretKeyFile = config.sops.secrets."romm/auth_secret_key".path;
+        romLibraryPath = "${config.nps.externalStorageBaseDir}/romm/library";
+        extraEnv = {
+          IGDB_CLIENT_ID.fromFile = config.sops.secrets."romm/igdb_client_id".path;
+          IGDB_CLIENT_SECRET.fromFile = config.sops.secrets."romm/igdb_client_secret".path;
+        };
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."romm/authelia/client_secret".path;
+          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$pki2TtHTQZnqLA+j+yPuzg$7KOitH9Co3DLmb4bVNoepg2PHARG2VNCAywieLwt9SE";
+        };
+        db = {
+          userPasswordFile = config.sops.secrets."romm/db/user_password".path;
+          rootPasswordFile = config.sops.secrets."romm/db/root_password".path;
+        };
+        igir = {
+          enable = true;
+          package = pkgs.unstable.igir;
+        };
+      };
+
       blocky.enable = true;
       docker-socket-proxy.enable = true;
       homepage.enable = true;

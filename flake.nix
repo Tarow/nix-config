@@ -58,6 +58,12 @@
       #url = "path:/home/niklas/projects/nix-stacks";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    cmdmark = {
+      url = "github:Tarow/cmdmark";
+      #url = "path:/home/niklas/projects/cmdmark";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = {
     self,

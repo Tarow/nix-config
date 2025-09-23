@@ -330,6 +330,63 @@ in {
         };
       };
 
+      glance = {
+        settings.pages.home = {
+          columns.start = {
+            rank = 500;
+            size = "small";
+            widgets = [
+              {
+                type = "server-stats";
+                servers = [
+                  {
+                    type = "local";
+                    name = "Server";
+                  }
+                ];
+              }
+              {
+                type = "bookmarks";
+                groups = import ./glance-bookmarks.nix;
+              }
+              {
+                type = "reddit";
+                subreddit = "selfhosted";
+                collapse-after = 3;
+              }
+            ];
+          };
+
+          columns.end = {
+            rank = 1500;
+            size = "small";
+            widgets = [
+              {
+                type = "clock";
+                time-format = "24h";
+                date-format = "d MMMM yyyy";
+                show-seconds = true;
+                show-timezone = true;
+                timezone = config.nps.defaultTz;
+              }
+              {
+                type = "search";
+                search-engine = "google";
+                new-tab = true;
+              }
+              {
+                type = "calendar";
+                first-day-of-week = "monday";
+              }
+              {
+                type = "weather";
+                location = "Mönchengladbach, Germany";
+              }
+            ];
+          };
+        };
+      };
+
       guacamole = {
         containers.guacamole = {
           forwardAuth = {
