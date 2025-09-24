@@ -276,7 +276,7 @@ in {
             default-alert = {
               description = "Gatus Healthcheck Failed";
               send-on-resolved = true;
-              failure-threshold = 1;
+              failure-threshold = 3;
               success-threshold = 1;
             };
           };
