@@ -75,6 +75,7 @@
 
       #homeassistant.enable = true;
       homepage.enable = true;
+      #hortusfox.enable = true;
       immich.enable = true;
       ittools.enable = true;
       karakeep.enable = true;
@@ -88,7 +89,7 @@
       monitoring = {
         enable = true;
         grafana.dashboards = [./node-exporter-dashboard.json];
-        prometheus.config.scrape_configs = [
+        prometheus.settings.scrape_configs = [
           # Scrape configs from Node-Exporter (setup on system level)
           {
             job_name = "node";

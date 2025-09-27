@@ -276,7 +276,7 @@ in {
             default-alert = {
               description = "Gatus Healthcheck Failed";
               send-on-resolved = true;
-              failure-threshold = 3;
+              failure-threshold = 2;
               success-threshold = 1;
             };
           };
@@ -446,6 +446,22 @@ in {
           }
         ];
       };
+      hortusfox = {
+        db = {
+          userPasswordFile = config.sops.secrets."hortusfox/db_user_password".path;
+          rootPasswordFile = config.sops.secrets."hortusfox/db_root_password".path;
+        };
+        containers.hortusfox.forwardAuth.enable = true;
+        adminEmail = lldapUsers.niklas.email;
+        extraEnv = {
+          PROXY_ENABLE = true;
+          PROXY_HEADER_EMAIL = "Remote-Email";
+          PROXY_HEADER_USERNAME = "Remote-User";
+          PROXY_AUTO_SIGNUP = true;
+          PROXY_WHITELIST = config.nps.stacks.traefik.ip4;
+          PROXY_HIDE_LOGOUT = true;
+        };
+      };
       immich = {
         oidc = {
           enable = true;
@@ -528,11 +544,55 @@ in {
         };
       };
 
-      monitoring.grafana = {
-        oidc = {
+      monitoring = {
+        grafana = {
+          oidc = {
+            enable = true;
+            clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$7/u7j+Jk0uexxJ4CaylQWw$t2EQJPYklJFqr6+MqJg7uCgmZaYaH+KgEtOpEGdQta8";
+            clientSecretFile = config.sops.secrets."grafana/authelia/client_secret".path;
+          };
+        };
+        prometheus.rules.groups = let
+          cpuThresh = 90;
+          ramThresh = 85;
+        in [
+          {
+            name = "resource.usage";
+            rules = [
+              {
+                alert = "HighCpuUsage";
+                expr = ''100 - (avg by(instance)(rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > ${toString cpuThresh}'';
+                for = "20m";
+                labels = {
+                  severity = "warning";
+                };
+                annotations = {
+                  summary = "High CPU usage";
+                  description = "CPU usage is above ${toString cpuThresh}% (current value: {{ $value }}%)";
+                };
+              }
+              {
+                alert = "HighRamUsage";
+                expr = ''(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > ${toString ramThresh}'';
+                labels = {
+                  severity = "warning";
+                };
+                annotations = {
+                  summary = "High RAM usage";
+                  description = "RAM usage is above ${toString ramThresh}% (current value: {{ $value }}%)";
+                };
+              }
+            ];
+          }
+        ];
+
+        alertmanager = {
           enable = true;
-          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$7/u7j+Jk0uexxJ4CaylQWw$t2EQJPYklJFqr6+MqJg7uCgmZaYaH+KgEtOpEGdQta8";
-          clientSecretFile = config.sops.secrets."grafana/authelia/client_secret".path;
+          ntfy = {
+            enable = true;
+            tokenFile = config.sops.secrets."users/monitoring/ntfy_access_token".path;
+            settings.ntfy.notification.topic = "monitoring";
+          };
         };
       };
 
