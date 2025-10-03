@@ -26,6 +26,7 @@
         "golang"
         "podman"
         "scrutiny"
+        "npsSettings"
       ];
     }
   ];

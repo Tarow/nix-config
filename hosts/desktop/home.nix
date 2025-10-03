@@ -5,6 +5,7 @@
   ...
 }: {
   imports = [
+    ./stacks.nix
     {
       tarow = lib.tarow.enableModules [
         "aichat"
@@ -29,12 +30,13 @@
         "stylix"
         "vscode"
         "zen-browser"
+        "podman"
       ];
     }
   ];
 
   tarow = {
-    facts.ip4Address = "10.1.1.210";
+    facts.ip4Address = "10.1.1.148";
     core.configLocation = "~/nix-config#desktop";
     git-clone.repos = {
       nix-config = {
@@ -73,10 +75,5 @@
     ];
   };
 
-  #systemd.user.sessionVariables = config.home.sessionVariables;
-
-  #services.podman.containers."podman1-exporter" = {
-  #  image = "ealen/echo-server";
-  #};
   programs.zellij.enable = true;
 }

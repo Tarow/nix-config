@@ -72,22 +72,27 @@
     };
   };
 in {
-  imports = [inputs.nix-podman-stacks.homeModules.nps];
+  imports = [
+    inputs.nix-podman-stacks.homeModules.nps
+    {
+      # Add default config to every container
+      options.services.podman.containers = lib.mkOption {
+        type = lib.types.attrsOf (
+          lib.types.submodule ({config, ...}: {
+            #homepage.settings.description = lib.mkIf (config.homepage.category != null) (lib.mkForce null);
+            extraConfig.Unit = {
+              Wants = ["sops-nix.service"];
+              After = ["sops-nix.service"];
+            };
+          })
+        );
+      };
+    }
+  ];
 
-  # Add default config to every container
-  options.services.podman.containers = lib.mkOption {
-    type = lib.types.attrsOf (
-      lib.types.submodule ({config, ...}: {
-        #homepage.settings.description = lib.mkIf (config.homepage.category != null) (lib.mkForce null);
-        extraConfig.Unit = {
-          Wants = ["sops-nix.service"];
-          After = ["sops-nix.service"];
-        };
-      })
-    );
-  };
+  options.tarow.npsSettings.enable = lib.mkEnableOption "Settings for Nix Podman Stacks";
 
-  config.nps = {
+  config.nps = lib.mkIf config.tarow.npsSettings.enable {
     hostIP4Address = config.tarow.facts.ip4Address;
     hostUid = config.tarow.facts.uid;
     defaultTz = "Europe/Berlin";
@@ -509,7 +514,7 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."outline/authelia/client_secret".path;
-          clientSecretHash = "$pbkdf2-sha512$310000$Hza0NJjEkCNvMl5Z0Yn8QQ$Y/d.qKdU9igqRtkQZ3IFc5r.D4i9MG6VgF9/JwbXFu8cGMbLeQCo644vY7LPm3CZe1G0HRxrpqlbqcsncraYEA";
+          clientSecretHash = "$pbkdf2-sha512$310000$NZWRZbYxrmbsOG12AGE2eA$3ZZoqHOxpWciUaB3U0Zc14lMigmXFtkEH5r2yRMWuHlRqM2Go3Z7C0grzbQD6Gy9RtnpctNJrcb1fWuQ4uMOHA";
         };
       };
       paperless = {
