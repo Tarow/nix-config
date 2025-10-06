@@ -30,6 +30,7 @@
         wg-portal.oidc.adminGroup
         filebrowser-quantum.oidc.adminGroup
         audiobookshelf.oidc.adminGroup
+        timetracker.oidc.adminGroup
 
         # No group-based admin access supported yet, just user-roles
         karakeep.oidc.userGroup
@@ -131,6 +132,7 @@ in {
             redirect_uris = [];
           };
         };
+        settings.log.level = "debug";
         sessionProvider = "redis";
 
         containers.authelia = {
@@ -152,6 +154,7 @@ in {
         enablePrometheusExport = true;
         containers.blocky = {
           homepage.settings.href = "${config.nps.containers.grafana.traefik.serviceUrl}/d/blocky";
+          glance.url = "${config.nps.containers.grafana.traefik.serviceUrl}/d/blocky";
           gatus = {
             enable = true;
             settings = {
@@ -476,15 +479,59 @@ in {
         };
       };
 
-      monitoring.grafana = {
-        oidc = {
+      monitoring = {
+        grafana = {
+          oidc = {
+            enable = true;
+            clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$7/u7j+Jk0uexxJ4CaylQWw$t2EQJPYklJFqr6+MqJg7uCgmZaYaH+KgEtOpEGdQta8";
+            clientSecretFile = config.sops.secrets."grafana/authelia/client_secret".path;
+          };
+        };
+        prometheus.rules.groups = let
+          cpuThresh = 90;
+          ramThresh = 85;
+        in [
+          {
+            name = "resource.usage";
+            rules = [
+              {
+                alert = "HighCpuUsage";
+                expr = ''100 - (avg by(instance)(rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > ${toString cpuThresh}'';
+                for = "20m";
+                labels = {
+                  severity = "warning";
+                };
+                annotations = {
+                  summary = "High CPU usage";
+                  description = "CPU usage is above ${toString cpuThresh}% (current value: {{ $value }}%)";
+                };
+              }
+              {
+                alert = "HighMemoryUsage";
+                expr = ''(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > ${toString ramThresh}'';
+                labels = {
+                  severity = "warning";
+                };
+                annotations = {
+                  summary = "High memory usage";
+                  description = "Memory usage is above ${toString ramThresh}% (current value: {{ $value }}%)";
+                };
+              }
+            ];
+          }
+        ];
+
+        alertmanager = {
           enable = true;
-          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$7/u7j+Jk0uexxJ4CaylQWw$t2EQJPYklJFqr6+MqJg7uCgmZaYaH+KgEtOpEGdQta8";
-          clientSecretFile = config.sops.secrets."grafana/authelia/client_secret".path;
+          ntfy = {
+            enable = true;
+            settings.ntfy.notification.topic = "monitoring";
+          };
         };
       };
 
       ntfy = {
+        containers.ntfy.ports = ["8081:80"];
         extraEnv = {
           NTFY_WEB_PUSH_EMAIL_ADDRESS = "admin@${domain}";
           NTFY_WEB_PUSH_PUBLIC_KEY.fromFile = config.sops.secrets."ntfy/web_push_public_key".path;
@@ -670,6 +717,19 @@ in {
           extraEnv."${lib.toUpper name}__AUTH__APIKEY".fromFile = config.sops.secrets."servarr/api_key".path;
         });
 
+      timetracker = {
+        secretKeyFile = config.sops.secrets."timetracker/secret_key".path;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."timetracker/authelia/client_secret".path;
+          clientSecretHash = "$pbkdf2-sha512$310000$k3oAaquy0xlAiE.coG.Uqg$rsXtFxuVOSuXFH6E3kEEpmDIoce1kKxW3sXZxaS.rdVKIxjbNPZEagb5UJdgOlJB/C4/VIbV8yRwIqPJ9UQMJA";
+        };
+        db.passwordFile = config.sops.secrets."timetracker/db_password".path;
+        containers.timetracker.extraEnv = {
+          #AUTH_METHOD = "oidc";
+        };
+      };
+
       traefik = {
         domain = domain;
         extraEnv.CF_DNS_API_TOKEN.fromFile = config.sops.secrets."traefik/cf_api_token".path;
@@ -692,6 +752,13 @@ in {
         settings = {
           service.enableregistration = false;
           auth.local.enabled = false;
+        };
+      };
+
+      webtop = {
+        containers.webtop = {
+          devices = ["/dev/dri/renderD128:/dev/dri/renderD128"];
+          environment.DRINODE = "/dev/dri/renderD128";
         };
       };
 

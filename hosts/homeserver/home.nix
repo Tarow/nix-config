@@ -87,7 +87,7 @@
       monitoring = {
         enable = true;
         grafana.dashboards = [./node-exporter-dashboard.json];
-        prometheus.config.scrape_configs = [
+        prometheus.settings.scrape_configs = [
           # Scrape configs from Node-Exporter (setup on system level)
           {
             job_name = "node";
@@ -119,10 +119,12 @@
         }
         // lib.genAttrs ["radarr" "sonarr" "bazarr" "jellyfin"] (_: {enable = false;});
 
+      timetracker.enable = true;
       traefik.enable = true;
       #uptime-kuma.enable = true;
       #vikunja.enable = true;
       #vaultwarden.enable = true;
+      webtop.enable = true;
       #wg-easy.enable = true;
       #wg-portal.enable = true;
     };
