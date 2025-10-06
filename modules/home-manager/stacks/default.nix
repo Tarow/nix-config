@@ -525,6 +525,7 @@ in {
           enable = true;
           ntfy = {
             enable = true;
+            tokenFile = config.sops.secrets."users/monitoring/ntfy_access_token".path;
             settings.ntfy.notification.topic = "monitoring";
           };
         };
