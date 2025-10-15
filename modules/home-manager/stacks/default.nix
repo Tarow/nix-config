@@ -589,7 +589,6 @@ in {
       };
 
       ntfy = {
-        containers.ntfy.ports = ["8081:80"];
         extraEnv = {
           NTFY_WEB_PUSH_EMAIL_ADDRESS = "admin@${domain}";
           NTFY_WEB_PUSH_PUBLIC_KEY.fromFile = config.sops.secrets."ntfy/web_push_public_key".path;
