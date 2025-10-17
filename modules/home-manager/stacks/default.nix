@@ -31,10 +31,10 @@
         filebrowser-quantum.oidc.adminGroup
         audiobookshelf.oidc.adminGroup
         timetracker.oidc.adminGroup
+        romm.oidc.adminGroup
 
         # No group-based admin access supported yet, just user-roles
         karakeep.oidc.userGroup
-        romm.oidc.userGroup
         paperless.oidc.userGroup
         gatus.oidc.userGroup
         vikunja.oidc.userGroup
