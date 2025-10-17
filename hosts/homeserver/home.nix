@@ -59,8 +59,7 @@
       #bytestash.enable = true;
       #calibre.enable = true;
       #changedetection.enable = true;
-      glance.enable = true;
-      glance.containers.glance.traefik.subDomain = lib.mkForce "glance";
+      #glance.enable = true;
       crowdsec.enable = true;
       davis.enable = true;
       dockdns.enable = true;
@@ -121,12 +120,12 @@
         }
         // lib.genAttrs ["radarr" "sonarr" "bazarr" "jellyfin"] (_: {enable = false;});
 
-      timetracker.enable = true;
+      # timetracker.enable = true;
       traefik.enable = true;
       #uptime-kuma.enable = true;
       #vikunja.enable = true;
       #vaultwarden.enable = true;
-      webtop.enable = true;
+      #webtop.enable = true;
       #wg-easy.enable = true;
       #wg-portal.enable = true;
     };

@@ -54,6 +54,7 @@
         paperless.oidc.userGroup
         vikunja.oidc.userGroup
         audiobookshelf.oidc.adminGroup
+        timetracker.oidc.userGroup
       ];
     };
     guest = {
@@ -784,6 +785,7 @@ in {
         db.passwordFile = config.sops.secrets."timetracker/db_password".path;
         containers.timetracker.extraEnv = {
           #AUTH_METHOD = "oidc";
+          ALLOW_SELF_REGISTER = false;
         };
       };
 
