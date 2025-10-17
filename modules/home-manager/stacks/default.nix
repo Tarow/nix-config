@@ -285,7 +285,7 @@ in {
             default-alert = {
               description = "Gatus Healthcheck Failed";
               send-on-resolved = true;
-              failure-threshold = 1;
+              failure-threshold = 2;
               success-threshold = 1;
             };
           };
@@ -573,6 +573,28 @@ in {
                 annotations = {
                   summary = "High memory usage";
                   description = "Memory usage is above ${toString ramThresh}% (current value: {{ $value }}%)";
+                };
+              }
+            ];
+          }
+          # Test-Alert every sunday at 18:45 UTC time to verify alerting pipeline
+          {
+            name = "test.integration";
+            rules = [
+              {
+                alert = "WeeklyTestAlert";
+                expr = ''
+                  (day_of_week() == 7)
+                  and (hour() == 18)
+                  and (minute() >= 45)
+                  and (minute() < 50)
+                '';
+                labels = {
+                  severity = "test";
+                };
+                annotations = {
+                  summary = "Weekly integration test: Prometheus → Alertmanager → ntfy";
+                  description = "This is a scheduled test alert to verify the alerting pipeline.";
                 };
               }
             ];
