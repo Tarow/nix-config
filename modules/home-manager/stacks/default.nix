@@ -551,6 +551,7 @@ in {
         in [
           {
             name = "resource.usage";
+            interval = "30s";
             rules = [
               {
                 alert = "HighCpuUsage";
@@ -577,17 +578,18 @@ in {
               }
             ];
           }
-          # Test-Alert every sunday at 18:45 UTC time to verify alerting pipeline
+          # Test-Alert every sunday at 19:00 UTC time to verify alerting pipeline
           {
             name = "test.integration";
+            interval = "1m";
             rules = [
               {
                 alert = "WeeklyTestAlert";
                 expr = ''
                   (day_of_week() == 7)
                   and (hour() == 18)
-                  and (minute() >= 45)
-                  and (minute() < 50)
+                  and (minute() >= 0)
+                  and (minute() < 2)
                 '';
                 labels = {
                   severity = "test";
