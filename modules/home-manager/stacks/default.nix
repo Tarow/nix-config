@@ -586,7 +586,7 @@ in {
               {
                 alert = "WeeklyTestAlert";
                 expr = ''
-                  (day_of_week() == 7)
+                  (day_of_week() == 0)
                   and (hour() == 18)
                   and (minute() >= 0)
                   and (minute() < 2)
