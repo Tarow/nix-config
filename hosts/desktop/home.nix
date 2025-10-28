@@ -6,7 +6,6 @@
   ...
 }: {
   imports = [
-    inputs.cmdmark.homeModules.cmdmark
     #./stacks.nix
     {
       tarow = lib.tarow.enableModules [
