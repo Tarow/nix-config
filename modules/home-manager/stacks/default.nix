@@ -267,13 +267,17 @@ in {
           EXTERNAL_ENDPOINT_PUSH_TOKEN.fromFile = config.sops.secrets."gatus/external_endpoint_token".path;
         };
         settings = let
-          mkAlert = endpoint: {
+          mkAlert = {
+            endpoint,
+            extraSettings ? {},
+          }: {
             alerts = [
-              {
-                enabled = config.nps.stacks.ntfy.enable;
-                type = "ntfy";
-                description = "Error for Gatus Healthcheck: ${endpoint.name}";
-              }
+              ({
+                  enabled = config.nps.stacks.ntfy.enable;
+                  type = "ntfy";
+                  description = "Error for Gatus Healthcheck: ${endpoint.name}";
+                }
+                // extraSettings)
             ];
           };
         in {
@@ -315,7 +319,7 @@ in {
               })
               |> lib.attrValues;
           in
-            (general ++ exposedEndpointChecks) |> map (e: (mkAlert e) // e);
+            (general ++ exposedEndpointChecks) |> map (e: (mkAlert {endpoint = e;}) // e);
 
           external-endpoints = let
             backups =
@@ -327,7 +331,13 @@ in {
                 heartbeat.interval = "25h";
               });
           in
-            backups |> map (e: (mkAlert e) // e);
+            backups
+            |> map (e:
+              (mkAlert {
+                endpoint = e;
+                extraSettings.failure-threshold = 1;
+              })
+              // e);
         };
       };
 
