@@ -31,10 +31,10 @@
         filebrowser-quantum.oidc.adminGroup
         audiobookshelf.oidc.adminGroup
         timetracker.oidc.adminGroup
+        romm.oidc.adminGroup
 
         # No group-based admin access supported yet, just user-roles
         karakeep.oidc.userGroup
-        romm.oidc.userGroup
         paperless.oidc.userGroup
         gatus.oidc.userGroup
         vikunja.oidc.userGroup
@@ -54,6 +54,7 @@
         paperless.oidc.userGroup
         vikunja.oidc.userGroup
         audiobookshelf.oidc.adminGroup
+        timetracker.oidc.userGroup
       ];
     };
     guest = {
@@ -284,7 +285,7 @@ in {
             default-alert = {
               description = "Gatus Healthcheck Failed";
               send-on-resolved = true;
-              failure-threshold = 1;
+              failure-threshold = 2;
               success-threshold = 1;
             };
           };
@@ -550,6 +551,7 @@ in {
         in [
           {
             name = "resource.usage";
+            interval = "30s";
             rules = [
               {
                 alert = "HighCpuUsage";
@@ -576,6 +578,29 @@ in {
               }
             ];
           }
+          # Test-Alert every sunday at 19:00 UTC time to verify alerting pipeline
+          {
+            name = "test.integration";
+            interval = "1m";
+            rules = [
+              {
+                alert = "WeeklyTestAlert";
+                expr = ''
+                  (day_of_week() == 7)
+                  and (hour() == 18)
+                  and (minute() >= 0)
+                  and (minute() < 2)
+                '';
+                labels = {
+                  severity = "test";
+                };
+                annotations = {
+                  summary = "Weekly integration test: Prometheus → Alertmanager → ntfy";
+                  description = "This is a scheduled test alert to verify the alerting pipeline.";
+                };
+              }
+            ];
+          }
         ];
 
         alertmanager = {
@@ -589,7 +614,6 @@ in {
       };
 
       ntfy = {
-        containers.ntfy.ports = ["8081:80"];
         extraEnv = {
           NTFY_WEB_PUSH_EMAIL_ADDRESS = "admin@${domain}";
           NTFY_WEB_PUSH_PUBLIC_KEY.fromFile = config.sops.secrets."ntfy/web_push_public_key".path;
@@ -785,6 +809,7 @@ in {
         db.passwordFile = config.sops.secrets."timetracker/db_password".path;
         containers.timetracker.extraEnv = {
           #AUTH_METHOD = "oidc";
+          ALLOW_SELF_REGISTER = false;
         };
       };
 

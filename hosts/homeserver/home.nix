@@ -2,6 +2,7 @@
   lib,
   config,
   pkgs,
+  inputs,
   ...
 }: {
   imports = [
@@ -101,6 +102,7 @@
         ];
       };
       #n8n.enable = true;
+      #networking-toolbox.enable = true;
       ntfy.enable = true;
 
       #outline.enable = true;
@@ -120,12 +122,12 @@
         }
         // lib.genAttrs ["radarr" "sonarr" "bazarr" "jellyfin"] (_: {enable = false;});
 
-      timetracker.enable = true;
+      # timetracker.enable = true;
       traefik.enable = true;
       #uptime-kuma.enable = true;
       #vikunja.enable = true;
       #vaultwarden.enable = true;
-      webtop.enable = true;
+      #webtop.enable = true;
       #wg-easy.enable = true;
       #wg-portal.enable = true;
     };
