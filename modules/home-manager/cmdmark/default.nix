@@ -1,11 +1,12 @@
 {
   lib,
   config,
-  pkgs,
+  inputs,
   ...
 }: let
   cfg = config.tarow.cmdmark;
 in {
+  imports = [inputs.cmdmark.homeModules.cmdmark];
   options.tarow.cmdmark = {
     enable = lib.options.mkEnableOption "cmdmark";
   };

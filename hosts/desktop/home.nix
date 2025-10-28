@@ -7,7 +7,7 @@
 }: {
   imports = [
     inputs.cmdmark.homeModules.cmdmark
-    ./stacks.nix
+    #./stacks.nix
     {
       tarow = lib.tarow.enableModules [
         "aichat"
