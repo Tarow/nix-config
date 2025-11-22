@@ -450,7 +450,10 @@ in {
       };
       homepage = {
         bookmarks = import ./homepage-bookmarks.nix;
-        containers.homepage.volumes = ["${./homepage-background.jpg}:/app/public/images/background.jpg"];
+        containers.homepage.volumes = [
+          "${./homepage-background.jpg}:/app/public/images/background.jpg"
+          "${pkgs.writeText "custom.js" (import ./homepage-customjs.nix config.nps.containers.dozzle.traefik.serviceUrl)}:/app/config/custom.js"
+        ];
         settings.background = {
           image = "/images/background.jpg";
           opacity = 50;
