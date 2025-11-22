@@ -1,68 +1,109 @@
 dozzleUri: ''
   (function () {
-    console.log(
-      "[custom.js] Injecting Dozzle log buttons"
-    );
+    console.log("[custom.js] Injecting Dozzle context menu with icons");
 
-    const DOZZLE_ICON =
-      "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/dozzle.png";
     const DOZZLE_BASE = "${dozzleUri}/show?name=";
+    const DOZZLE_ICON = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/dozzle.png";
 
-    function inject(tile) {
-      if (!tile) return;
+    // Create a reusable context menu element
+    const menu = document.createElement("div");
+    menu.style.position = "absolute";
+    menu.style.background = "var(--theme-background, #fff)";
+    menu.style.color = "var(--theme-foreground, #000)";
+    menu.style.border = "1px solid var(--theme-border, #ccc)";
+    menu.style.borderRadius = "4px";
+    menu.style.boxShadow = "0 2px 8px rgba(0,0,0,0.2)";
+    menu.style.padding = "4px 0";
+    menu.style.zIndex = 9999;
+    menu.style.display = "none";
+    menu.style.minWidth = "160px";
+    menu.style.fontSize = "14px";
+    menu.style.fontFamily = "inherit";
+    document.body.appendChild(menu);
 
-      const id = tile.id;
+    // Hide menu on click outside
+    document.addEventListener("click", () => {
+      menu.style.display = "none";
+    });
+
+    function createMenuItem(label, href, iconUrl) {
+      const item = document.createElement("div");
+      item.style.display = "flex";
+      item.style.alignItems = "center";
+      item.style.gap = "6px";
+      item.style.padding = "6px 12px";
+      item.style.cursor = "pointer";
+      item.style.color = "inherit";
+      item.style.background = "transparent";
+
+      // Optional icon
+      if (iconUrl) {
+        const img = document.createElement("img");
+        img.src = iconUrl;
+        img.alt = label;
+        img.width = 16;
+        img.height = 16;
+        img.style.width = "16px";
+        img.style.height = "16px";
+        img.style.objectFit = "contain";
+        item.appendChild(img);
+      }
+
+      const span = document.createElement("span");
+      span.textContent = label;
+      item.appendChild(span);
+
+      // Hover effect
+      item.addEventListener("mouseenter", () => {
+        item.style.background = "var(--theme-hover, rgba(0,0,0,0.05))";
+      });
+      item.addEventListener("mouseleave", () => {
+        item.style.background = "transparent";
+      });
+
+      item.addEventListener("click", e => {
+        e.stopPropagation();
+        window.open(href, "_blank");
+        menu.style.display = "none";
+      });
+
+      return item;
+    }
+
+    function showMenu(tile, x, y) {
+      const id = tile.id || tile.getAttribute("data-name");
       if (!id) return;
 
-      const tags = tile.querySelector(".service-tags");
-      if (!tags) return;
+      menu.innerHTML = "";
 
-      // Prevent duplicates
-      if (tags.querySelector(".custom-dozzle-button")) return;
+      // Add Dozzle Logs menu item (with icon)
+      menu.appendChild(createMenuItem("View Dozzle Logs", DOZZLE_BASE + encodeURIComponent(id), DOZZLE_ICON));
 
-      // Build Dozzle URL
-      const url = DOZZLE_BASE + encodeURIComponent(id);
+      // Future external links can be added here:
+      // menu.appendChild(createMenuItem("Another Link", "https://example.com", "https://example.com/icon.png"));
 
-      // <a> wrapper
-      const a = document.createElement("a");
-      a.href = url;
-      a.target = "_blank";
-      a.rel = "noreferrer";
-      a.className =
-        "custom-dozzle-button flex items-center justify-center cursor-pointer service-tag";
-
-      // Inner div with padding
-      const wrap = document.createElement("div");
-      wrap.className =
-        "w-auto text-center overflow-hidden p-4 hover:bg-theme-500/10 dark:hover:bg-theme-900/20 rounded-b-[3px]";
-
-      // Reduce horizontal padding on the side that touches the previous button
-      wrap.style.paddingLeft = "2px";
-
-      // Dozzle Icon
-      const img = document.createElement("img");
-      img.src = DOZZLE_ICON;
-      img.loading = "lazy";
-      img.alt = "Dozzle Logs";
-      img.width = 16;
-      img.height = 16;
-      img.style.width = "16px";
-      img.style.height = "16px";
-      img.style.objectFit = "contain";
-
-      wrap.appendChild(img);
-      a.appendChild(wrap);
-
-      tags.style.gap = "0px";
-      tags.appendChild(a);
+      menu.style.left = x + "px";
+      menu.style.top = y + "px";
+      menu.style.display = "block";
     }
 
-    function scan() {
-      document.querySelectorAll("li.service").forEach((tile) => inject(tile));
+    function attachContextMenus() {
+      document.querySelectorAll("li.service").forEach(tile => {
+        if (tile.dataset.contextMenuAttached) return;
+        tile.dataset.contextMenuAttached = "true";
+
+        tile.addEventListener("contextmenu", e => {
+          e.preventDefault();
+          showMenu(tile, e.pageX, e.pageY);
+        });
+      });
     }
 
-    const observer = new MutationObserver(() => scan());
+    // Observe dynamic changes to service tiles
+    const observer = new MutationObserver(() => attachContextMenus());
     observer.observe(document.body, { childList: true, subtree: true });
-    scan();
+
+    // Initial attach
+    attachContextMenus();
   })();
 ''
