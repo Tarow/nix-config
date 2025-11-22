@@ -14,6 +14,7 @@
       tarow = lib.tarow.enableModules [
         "aichat"
         "audiobook-organizer"
+        "cmdmark"
         "core"
         "fastfetch"
         "git"
@@ -72,6 +73,7 @@
       #freshrss.enable = true;
       #forgejo.enable = true;
       gatus.enable = true;
+      #gatus.containers.gatus.extraEnv.GATUS_LOG_LEVEL = "DEBUG";
       guacamole.enable = true;
       #healthchecks.enable = true;
 
