@@ -68,6 +68,7 @@
       docker-socket-proxy.enable = true;
       #donetick.enable = true;
       dozzle.enable = true;
+      #ephemera.enable = true;
       #filebrowser.enable = true;
       #filebrowser-quantum.enable = true;
       #freshrss.enable = true;
