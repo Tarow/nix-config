@@ -386,11 +386,11 @@
         "sops-nix": "sops-nix"
       },
       "locked": {
-        "lastModified": 1763836431,
-        "narHash": "sha256-F2RZftM0/0lwRq0MZfRfCxYcQCVqy1CepVscnIwpe60=",
+        "lastModified": 1763860737,
+        "narHash": "sha256-DtsAXoa23IHD+4PxyTRGFEsalMAFUWIMKgSPtJPbO68=",
         "owner": "Tarow",
         "repo": "nix-podman-stacks",
-        "rev": "34b87abe9bb8bae40da51391441eb79a2f461fd3",
+        "rev": "c56641bca1b1d5dcf600b4716095a38ea0b1b4e1",
         "type": "github"
       },
       "original": {
@@ -658,11 +658,11 @@
         "tinted-zed": "tinted-zed"
       },
       "locked": {
-        "lastModified": 1763740035,
-        "narHash": "sha256-h33/8bTP5ww1oKwrXgK2fuJPsNlWPzdG4jsvUlr6qqM=",
+        "lastModified": 1763845106,
+        "narHash": "sha256-S3HH655nydKoLTuqX8qcJidZH0PiWGB/YcoPomH1DaQ=",
         "owner": "danth",
         "repo": "stylix",
-        "rev": "206e6ee4d11adcc80d8cbe612e14e08641474fc8",
+        "rev": "b9b8173a6e31c6d06f328307ddbdf7d6af82b7ad",
         "type": "github"
       },
       "original": {
