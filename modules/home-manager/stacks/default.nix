@@ -42,6 +42,8 @@
         outline.oidc.userGroup
         storyteller.oidc.userGroup
         komga.oidc.userGroup
+        tandoor.oidc.userGroup
+        kitchenowl.oidc.userGroup
       ];
     };
     selma = {
@@ -55,6 +57,7 @@
         vikunja.oidc.userGroup
         audiobookshelf.oidc.adminGroup
         timetracker.oidc.userGroup
+        tandoor.oidc.userGroup
       ];
     };
     guest = {
@@ -70,6 +73,7 @@
         wg-portal.oidc.userGroup
         freshrss.oidc.userGroup
         outline.oidc.userGroup
+        tandoor.oidc.userGroup
       ];
     };
   };
@@ -505,6 +509,15 @@ in {
         };
       };
 
+      kitchenowl = {
+        jwtSecretFile = config.sops.secrets."kitchenowl/jwt_secret".path;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."kitchenowl/authelia/client_secret".path;
+          clientSecretHash = "$pbkdf2-sha512$310000$5ZQnccLzdHqeP4E4PXqwcw$Gn4fk603AFjiRTKjwx1Wi5VB49dP12nDTV4W2cV0ECl9s4mGuIceEyZErslCqZqF.YTgyws1UTsP6Rr5d7iOow";
+        };
+      };
+
       komga = {
         oidc = {
           enable = true;
@@ -811,6 +824,21 @@ in {
         // lib.genAttrs ["sonarr" "radarr" "bazarr" "prowlarr"] (name: {
           extraEnv."${lib.toUpper name}__AUTH__APIKEY".fromFile = config.sops.secrets."servarr/api_key".path;
         });
+
+      tandoor = {
+        secretKeyFile = config.sops.secrets."tandoor/secret_key".path;
+        db.passwordFile = config.sops.secrets."tandoor/db_password".path;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."tandoor/authelia/client_secret".path;
+          clientSecretHash = "$pbkdf2-sha512$310000$Q6QZjjNRyjk9qA9WDro9mw$CNS90obOUuJk/OLNZOSBUCCR7deIZnaWFb0QF4j6gaiOB3SkEAOpLyJd88AHb3uCP3f6enaed3jyP5Got2RfLA";
+        };
+        containers.tandoor.extraEnv = {
+          # https://docs.tandoor.dev/system/configuration/#default-permissions
+          SOCIAL_DEFAULT_ACCESS = 1;
+          SOCIAL_DEFAULT_GROUP = "user";
+        };
+      };
 
       timetracker = {
         secretKeyFile = config.sops.secrets."timetracker/secret_key".path;

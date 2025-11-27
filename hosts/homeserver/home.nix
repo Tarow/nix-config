@@ -55,6 +55,7 @@
       audiobookshelf.enable = true;
       authelia.enable = true;
       #baikal.enable = true;
+      #bentopdf.enable = true;
       #beszel.enable = true;
       blocky.enable = true;
       #bytestash.enable = true;
@@ -85,6 +86,7 @@
       ittools.enable = true;
       karakeep.enable = true;
       #kimai.enable = true;
+      #kitchenowl.enable = true;
       lldap.enable = true;
       #komga.enable = true;
       mazanoke.enable = true;
@@ -126,6 +128,7 @@
         }
         // lib.genAttrs ["radarr" "sonarr" "bazarr" "jellyfin"] (_: {enable = false;});
 
+      #tandoor.enable = true;
       # timetracker.enable = true;
       traefik.enable = true;
       #uptime-kuma.enable = true;
