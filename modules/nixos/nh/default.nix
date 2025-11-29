@@ -14,6 +14,6 @@ in {
       enable = true;
       flake = coreCfg.flakeLocation;
     };
-    environment.shellAliases.us = lib.mkIf (coreCfg.flakeLocation != null && coreCfg.flakeConfigKey != null) "nh os switch ${coreCfg.flakeLocation} -C ${coreCfg.flakeConfigKey}";
+    environment.shellAliases.us = lib.mkIf (coreCfg.flakeLocation != null && coreCfg.flakeConfigKey != null) "nh os switch ${coreCfg.flakeLocation} -H ${coreCfg.flakeConfigKey}";
   };
 }
