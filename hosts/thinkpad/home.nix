@@ -13,6 +13,7 @@
       "aichat"
       "core"
       "git"
+      "nh"
       "shells"
       "golang"
       "ghostty"
@@ -25,7 +26,6 @@
       "firefox"
     ])
     {
-      core.configLocation = "~/nix-config#thinkpad";
       git-clone.repos.pkm = {
         uri = "git@github.com:Tarow/pkm.git";
         location = "~";

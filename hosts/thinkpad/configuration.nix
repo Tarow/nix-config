@@ -23,11 +23,11 @@
       "keyboard"
       "locale"
       "networkManager"
+      "nh"
       "pipewire"
       "printing"
       "shells"
     ])
-    {core.configLocation = "~/nix-config#thinkpad";}
   ];
 
   networking.hostName = "nixos";

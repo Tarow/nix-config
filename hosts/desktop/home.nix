@@ -23,6 +23,7 @@
         "java"
         "mpv"
         "neovim"
+        "nh"
         "npm"
         "react"
         "shells"
@@ -39,7 +40,7 @@
 
   tarow = {
     facts.ip4Address = "10.1.1.148";
-    core.configLocation = "~/nix-config#desktop";
+
     git-clone.repos = {
       nix-config = {
         uri = "https://github.com/Tarow/nix-config.git";

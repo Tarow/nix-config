@@ -23,16 +23,15 @@
       "keyboard"
       "locale"
       "networkManager"
+      "nh"
       "pipewire"
       "printing"
       "shells"
       "sops"
-      "soundblaster"
       "stylix"
     ])
     {facts.ip4Address = "10.1.1.210";}
 
-    {core.configLocation = "~/nix-config#desktop";}
     {monitors.configuration = ./monitors.xml;}
     {
       sops.extraSopsFiles = [../../secrets/desktop/secrets.yaml];

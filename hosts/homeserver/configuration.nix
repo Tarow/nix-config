@@ -13,10 +13,7 @@
 
   tarow = {
     facts.ip4Address = "10.1.1.99";
-    core = {
-      enable = true;
-      configLocation = "~/nix-config#homeserver";
-    };
+    nh.enable = true;
     bootLoader.enable = true;
     shells.enable = true;
     sops = {

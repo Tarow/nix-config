@@ -4,14 +4,12 @@
   outputs,
   lib,
   config,
-  osConfig ? { },
+  osConfig ? {},
   pkgs,
   ...
-}:
-let
+}: let
   isStandalone = !config.submoduleSupport.enable;
-in
-{
+in {
   imports = [
     inputs.nix-index-database.homeModules.nix-index
     {
@@ -24,7 +22,10 @@ in
     package = lib.mkIf isStandalone pkgs.nix;
     gc.automatic = true;
     # Run garbage collection every day at 12:30
-    gc.frequency = if pkgs.stdenv.isLinux then "12:30" else "daily";
+    gc.frequency =
+      if pkgs.stdenv.isLinux
+      then "12:30"
+      else "daily";
     settings = {
       extra-experimental-features = [
         "nix-command"
@@ -70,13 +71,13 @@ in
     ];
     "nil" = {
       "formatting" = {
-        "command" = [ "alejandra" ];
+        "command" = ["alejandra"];
       };
     };
     "nix.serverSettings" = {
       "nil" = {
         "formatting" = {
-          "command" = [ "alejandra" ];
+          "command" = ["alejandra"];
         };
       };
       "nixd" = {
@@ -84,7 +85,7 @@ in
           "expr" = "import <nixpkgs>{}";
         };
         "formatting" = {
-          "command" = [ "alejandra" ];
+          "command" = ["alejandra"];
         };
       };
     };

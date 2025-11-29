@@ -12,11 +12,11 @@
     (lib.tarow.enableModules [
       "core"
       "docker"
+      "nh"
       "shells"
       "stylix"
       "wsl"
     ])
-    {core.configLocation = "~/nix-config#wsl2";}
   ];
 
   environment.systemPackages = [pkgs.wget];

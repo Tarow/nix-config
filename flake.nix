@@ -86,6 +86,7 @@
     ];
 
     mkSystem = {
+      name ? null,
       system ? "x86_64-linux",
       systemConfig,
       userConfigs ? null,
@@ -97,7 +98,10 @@
         };
         modules =
           [
-            {nixpkgs.hostPlatform = system;}
+            {
+              nixpkgs.hostPlatform = system;
+              tarow.core.flakeConfigKey = name;
+            }
             ./modules/nixos
             ./modules/shared
             ./hosts/shared/shared.nix
@@ -120,6 +124,7 @@
       };
 
     mkHome = {
+      name ? null,
       system ? "x86_64-linux",
       cfgPath,
       lib ? mkLib hmPackages.${system},
@@ -128,6 +133,7 @@
         pkgs = hmPackages.${system};
         extraSpecialArgs = {inherit inputs outputs lib;};
         modules = [
+          {tarow.core.flakeConfigKey = name;}
           ./modules/home-manager
           ./modules/shared
           ./hosts/shared/shared.nix
@@ -135,24 +141,23 @@
           cfgPath
         ];
       };
+
+    hosts = ["wsl2" "thinkpad" "desktop" "homeserver"];
+    homes = hosts;
   in {
-    overlays = import ./overlays {
-      inherit inputs;
-    };
+    overlays = import ./overlays {inherit inputs;};
 
-    nixosConfigurations = {
-      wsl2 = mkSystem {systemConfig = ./hosts/wsl2/configuration.nix;};
-      thinkpad = mkSystem {systemConfig = ./hosts/thinkpad/configuration.nix;};
-      desktop = mkSystem {systemConfig = ./hosts/desktop/configuration.nix;};
-      homeserver = mkSystem {systemConfig = ./hosts/homeserver/configuration.nix;};
-    };
+    nixosConfigurations = nixpkgs.lib.genAttrs hosts (name:
+      mkSystem {
+        inherit name;
+        systemConfig = ./hosts/${name}/configuration.nix;
+      });
 
-    homeConfigurations = {
-      wsl2 = mkHome {cfgPath = ./hosts/wsl2/home.nix;};
-      thinkpad = mkHome {cfgPath = ./hosts/thinkpad/home.nix;};
-      desktop = mkHome {cfgPath = ./hosts/desktop/home.nix;};
-      homeserver = mkHome {cfgPath = ./hosts/homeserver/home.nix;};
-    };
+    homeConfigurations = nixpkgs.lib.genAttrs homes (name:
+      mkHome {
+        inherit name;
+        cfgPath = ./hosts/${name}/home.nix;
+      });
 
     devShells = forAllSystems (system: import ./shell.nix {pkgs = nixpkgs.legacyPackages.${system};});
 

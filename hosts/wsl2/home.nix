@@ -28,6 +28,7 @@
         "golang"
         "java"
         "neovim"
+        "nh"
         "npm"
         "react"
         "shells"
@@ -36,7 +37,6 @@
         "vscode"
       ])
       {
-        core.configLocation = "~/nix-config#wsl2";
         git-clone.repos.nix-config = {
           uri = "https://github.com/Tarow/nix-config.git";
           location = "~/projects";
