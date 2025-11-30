@@ -244,6 +244,11 @@ in {
         };
         settings.auth.methods.password.enabled = false;
       };
+
+      free-games-claimer = {
+        containers.free-games-claimer.exec = "node epic-games";
+      };
+
       freshrss = {
         # First OIDC-logged-in account will have admin rights
         # See <https://freshrss.github.io/FreshRSS/en/admins/16_OpenID-Connect.html> for setup

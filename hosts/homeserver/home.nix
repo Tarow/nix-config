@@ -74,6 +74,8 @@
       #filebrowser-quantum.enable = true;
       #freshrss.enable = true;
       #forgejo.enable = true;
+      #free-games-claimer.enable = true;
+
       gatus.enable = true;
       #gatus.containers.gatus.extraEnv.GATUS_LOG_LEVEL = "DEBUG";
       guacamole.enable = true;
