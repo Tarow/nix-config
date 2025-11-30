@@ -696,7 +696,6 @@ in {
           PAPERLESS_REDIRECT_LOGIN_TO_SSO = true;
         };
         db = {
-          username = "paperless";
           passwordFile = config.sops.secrets."paperless/db_password".path;
         };
         ftp = {
