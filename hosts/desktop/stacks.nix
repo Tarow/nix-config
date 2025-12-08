@@ -122,7 +122,7 @@
       */
 
       traefik = {
-        #enable = true;
+        enable = true;
         domain = "testing.ntasler.de";
         geoblock.allowedCountries = ["DE"];
         enablePrometheusExport = true;

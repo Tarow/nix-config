@@ -13,7 +13,6 @@ in {
     home.packages = [pkgs.ghostty];
     xdg.configFile."ghostty/config".text = lib.generators.toKeyValue {} {
       font-size = 11;
-      theme = "ayu";
       copy-on-select = "clipboard";
       shell-integration-features = "cursor,sudo,no-title";
       app-notifications = "no-clipboard-copy";
