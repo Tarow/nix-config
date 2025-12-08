@@ -141,7 +141,7 @@ in {
         sessionProvider = "redis";
 
         containers.authelia = {
-          traefik.name = "auth";
+          traefik.name = lib.mkForce "auth";
           expose = true;
         };
       };
