@@ -107,7 +107,7 @@
       docker-socket-proxy.enable = true;
       homepage.enable = true;
       monitoring.enable = true;
-      monitoring.containers.alloy.reverseProxy.serviceName = lib.mkForce "logs";
+      #monitoring.containers.alloy.reverseProxy.serviceName = lib.mkForce "logs";
 
       /*
         tsbridge = {

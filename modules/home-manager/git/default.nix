@@ -41,9 +41,10 @@ in {
   config.programs = lib.mkIf cfg.enable {
     git = {
       enable = true;
-      userEmail = config.tarow.facts.person.email;
-      userName = config.tarow.facts.person.name;
-      extraConfig = {
+
+      settings = {
+        user.email = config.tarow.facts.person.email;
+        user.name = config.tarow.facts.person.name;
         init.defaultBranch = "main";
         push.autoSetupRemote = true;
         pull.rebase = false;

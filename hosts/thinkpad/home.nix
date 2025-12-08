@@ -39,7 +39,6 @@
     obsidian
     telegram-desktop
     unstable.teams-for-linux
-    stremio
   ];
 
   #systemd.user.sessionVariables = config.home.sessionVariables;

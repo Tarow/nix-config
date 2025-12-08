@@ -20,12 +20,12 @@ in {
 
   nix = {
     package = lib.mkIf isStandalone pkgs.nix;
-    gc.automatic = true;
     # Run garbage collection every day at 12:30
-    gc.frequency =
-      if pkgs.stdenv.isLinux
-      then "12:30"
-      else "daily";
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
     settings = {
       extra-experimental-features = [
         "nix-command"
