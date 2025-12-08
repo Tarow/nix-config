@@ -62,7 +62,7 @@
       #calibre.enable = true;
       #changedetection.enable = true;
       #glance.enable = true;
-      glance.containers.glance.traefik.subDomain = lib.mkForce "glance";
+      glance.containers.glance.traefik.name = lib.mkForce "glance";
       crowdsec.enable = true;
       davis.enable = true;
       dockdns.enable = true;

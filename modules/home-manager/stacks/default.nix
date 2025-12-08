@@ -141,7 +141,7 @@ in {
         sessionProvider = "redis";
 
         containers.authelia = {
-          traefik.subDomain = "auth";
+          traefik.name = "auth";
           expose = true;
         };
       };
@@ -158,8 +158,8 @@ in {
         enableGrafanaDashboard = true;
         enablePrometheusExport = true;
         containers.blocky = {
-          homepage.settings.href = "${config.nps.containers.grafana.traefik.serviceUrl}/d/blocky";
-          glance.url = "${config.nps.containers.grafana.traefik.serviceUrl}/d/blocky";
+          homepage.settings.href = "${config.nps.containers.grafana.reverseProxy.serviceUrl}/d/blocky";
+          glance.url = "${config.nps.containers.grafana.reverseProxy.serviceUrl}/d/blocky";
           gatus = {
             enable = true;
             settings = {
@@ -294,7 +294,7 @@ in {
             topic = "monitoring";
             url = "http://${config.nps.containers.ntfy.traefik.serviceAddressInternal}";
             token = "\${NTFY_ACCESS_TOKEN}";
-            click = config.nps.containers.gatus.traefik.serviceUrl;
+            click = config.nps.containers.gatus.reverseProxy.serviceUrl;
             default-alert = {
               description = "Gatus Healthcheck Failed";
               send-on-resolved = true;
@@ -320,7 +320,7 @@ in {
             exposedEndpointChecks =
               exposedContainers
               |> lib.mapAttrs (name: c: {
-                url = c.traefik.serviceUrl;
+                url = c.reverseProxy.serviceUrl;
                 name = "${name} External";
                 client.dns-resolver = "tcp://1.1.1.1:53";
                 group = "ext_availability";
@@ -461,7 +461,7 @@ in {
         bookmarks = import ./homepage-bookmarks.nix;
         containers.homepage.volumes = [
           "${./homepage-background.jpg}:/app/public/images/background.jpg"
-          "${pkgs.writeText "custom.js" (import ./homepage-customjs.nix config.nps.containers.dozzle.traefik.serviceUrl)}:/app/config/custom.js"
+          "${pkgs.writeText "custom.js" (import ./homepage-customjs.nix config.nps.containers.dozzle.reverseProxy.serviceUrl)}:/app/config/custom.js"
         ];
         settings.background = {
           image = "/images/background.jpg";

@@ -69,6 +69,7 @@
     stremio
     pinta
     glow
+    spotify
   ];
 
   wayland.windowManager.hyprland.settings = {

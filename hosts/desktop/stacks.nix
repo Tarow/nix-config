@@ -37,10 +37,6 @@
           # Define a dummy client with two_factor to enable the related settings
         };
         sessionProvider = "redis";
-        containers.authelia = {
-          traefik.subDomain = "auth";
-          expose = true;
-        };
       };
       lldap = {
         enable = true;
@@ -51,13 +47,6 @@
       };
       freshrss = {
         enable = true;
-        adminProvisioning = {
-          enable = true;
-          username = "admin";
-          email = "admin@example.com";
-          passwordFile = pkgs.writeText "p" "password";
-          apiPasswordFile = pkgs.writeText "p" "password";
-        };
         # First OIDC-logged-in account will have admin rights
         # See <https://freshrss.github.io/FreshRSS/en/admins/16_OpenID-Connect.html> for setup
         oidc = {
@@ -88,6 +77,7 @@
           clientSecretFile = config.sops.secrets."outline/authelia/client_secret".path;
           clientSecretHash = "$pbkdf2-sha512$310000$NZWRZbYxrmbsOG12AGE2eA$3ZZoqHOxpWciUaB3U0Zc14lMigmXFtkEH5r2yRMWuHlRqM2Go3Z7C0grzbQD6Gy9RtnpctNJrcb1fWuQ4uMOHA";
         };
+        containers.outline.extraConfig.Container.DNS = "100.100.100.100";
       };
 
       romm = {
@@ -117,9 +107,22 @@
       docker-socket-proxy.enable = true;
       homepage.enable = true;
       monitoring.enable = true;
+      monitoring.containers.alloy.reverseProxy.serviceName = lib.mkForce "logs";
+
+      /*
+        tsbridge = {
+        enable = true;
+        tailnetDomain = "taimen-manta.ts.net";
+        defaultTags = ["tag:desktop"];
+        oauth = {
+          clientId = "ktMTxmGi6N11CNTRL";
+          clientSecretFile = config.sops.secrets."tsbridge/oauth_client_secret".path;
+        };
+      };
+      */
 
       traefik = {
-        enable = true;
+        #enable = true;
         domain = "testing.ntasler.de";
         geoblock.allowedCountries = ["DE"];
         enablePrometheusExport = true;
