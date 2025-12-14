@@ -84,6 +84,8 @@
       #homeassistant.enable = true;
       homepage.enable = true;
 
+      hortusfox.enable = true;
+
       immich.enable = true;
       ittools.enable = true;
       karakeep.enable = true;

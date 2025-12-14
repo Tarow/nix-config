@@ -477,6 +477,25 @@ in {
           }
         ];
       };
+
+      hortusfox = {
+        adminEmail = lldapUsers.niklas.email;
+        containers.hortusfox.forwardAuth.enable = true;
+        extraEnv = {
+          PROXY_OVERWRITE_VALUES = true;
+          PROXY_ENABLE = true;
+          PROXY_HEADER_EMAIL = "Remote-Email";
+          PROXY_HEADER_USERNAME = "Remote-User";
+          PROXY_AUTO_SIGNUP = true;
+          PROXY_WHITELIST = config.nps.stacks.traefik.ip4;
+          PROXY_HIDE_LOGOUT = true;
+        };
+        db = {
+          userPasswordFile = config.sops.secrets."hortusfox/db_user_password".path;
+          rootPasswordFile = config.sops.secrets."hortusfox/db_root_password".path;
+        };
+      };
+
       immich = {
         oidc = {
           enable = true;
