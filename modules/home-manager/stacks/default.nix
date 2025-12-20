@@ -32,6 +32,7 @@
         audiobookshelf.oidc.adminGroup
         timetracker.oidc.adminGroup
         romm.oidc.adminGroup
+        jotty.oidc.adminGroup
 
         # No group-based admin access supported yet, just user-roles
         karakeep.oidc.userGroup
@@ -193,6 +194,7 @@ in {
           userPasswordFile = config.sops.secrets."davis/db_user_password".path;
           rootPasswordFile = config.sops.secrets."davis/db_root_password".path;
         };
+
         containers.davis = {
           expose = true;
         };
@@ -507,6 +509,12 @@ in {
           oauth.autoLaunch = lib.mkForce true;
           passwordLogin.enabled = lib.mkForce false;
         };
+      };
+
+      jotty.oidc = {
+        enable = true;
+        clientSecretFile = config.sops.secrets."jotty/authelia/client_secret".path;
+        clientSecretHash = "$pbkdf2-sha512$310000$0j5MB8kcaIkFOFaI8iFoyA$cQ4WPcKzQfTBNSDS4wL3htx9WtLVhSiNl7Dq0iuB5dMYGw4.KlhACDEtFimgORt3YsXbKhj7ZkqQZ6eO1u30fQ";
       };
 
       karakeep = {

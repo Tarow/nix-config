@@ -88,6 +88,8 @@
 
       immich.enable = true;
       ittools.enable = true;
+      jotty.enable = true;
+
       karakeep.enable = true;
       #kimai.enable = true;
       #kitchenowl.enable = true;
@@ -141,6 +143,7 @@
       #webtop.enable = true;
       #wg-easy.enable = true;
       #wg-portal.enable = true;
+      yopass.enable = true;
     };
   };
 
