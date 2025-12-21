@@ -45,6 +45,7 @@
         komga.oidc.userGroup
         tandoor.oidc.userGroup
         kitchenowl.oidc.userGroup
+        norish.oidc.userGroup
       ];
     };
     selma = {
@@ -59,6 +60,7 @@
         audiobookshelf.oidc.adminGroup
         timetracker.oidc.userGroup
         tandoor.oidc.userGroup
+        norish.oidc.userGroup
       ];
     };
     guest = {
@@ -668,6 +670,16 @@ in {
             tokenFile = config.sops.secrets."users/monitoring/ntfy_access_token".path;
             settings.ntfy.notification.topic = "monitoring";
           };
+        };
+      };
+
+      norish = {
+        masterKeyFile = config.sops.secrets."norish/master_key".path;
+        db.passwordFile = config.sops.secrets."norish/db_password".path;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."norish/authelia/client_secret".path;
+          clientSecretHash = "$pbkdf2-sha512$310000$zGCwkBJkaLwul.Qj9rimjw$LpAl0eLMQVFLnzl1Gbm/1VZvXE1wg0CorWDbZp13m1NHzkq51UcfxTjD2XkzCCoxw8Vx23LJq.IHWEAkMtL93A";
         };
       };
 

@@ -115,6 +115,8 @@
       };
       #n8n.enable = true;
       #networking-toolbox.enable = true;
+
+      norish.enable = true;
       ntfy.enable = true;
 
       #outline.enable = true;
