@@ -18,6 +18,7 @@
           <height>1440</height>
           <rate>143.975</rate>
         </mode>
+        <colormode>bt2100</colormode>
       </monitor>
     </logicalmonitor>
     <logicalmonitor>
