@@ -87,7 +87,7 @@
       hortusfox.enable = true;
 
       immich.enable = true;
-      ittools.enable = true;
+      it-tools.enable = true;
       jotty.enable = true;
 
       karakeep.enable = true;

@@ -108,8 +108,8 @@ in {
 
     stacks = {
       aiostreams = {
+        secretKeyFile = config.sops.secrets."aiostreams/secret_key".path;
         extraEnv = {
-          SECRET_KEY.fromFile = config.sops.secrets."aiostreams/secret_key".path;
           TMDB_ACCESS_TOKEN.fromFile = config.sops.secrets."aiostreams/tmdb_access_token".path;
           DEFAULT_REALDEBRID_API_KEY.fromFile = config.sops.secrets."aiostreams/rd_api_key".path;
         };
@@ -144,7 +144,7 @@ in {
         sessionProvider = "redis";
 
         containers.authelia = {
-          traefik.name = lib.mkForce "auth";
+          traefik.subDomain = "auth";
           expose = true;
         };
       };
@@ -179,7 +179,7 @@ in {
         };
       };
       bytestash = {
-        extraEnv.JWT_SECRET.fromFile = config.sops.secrets."bytestash/jwt_secret".path;
+        jwtSecretFile = config.sops.secrets."bytestash/jwt_secret".path;
       };
       crowdsec = {
         extraEnv = {
@@ -421,26 +421,21 @@ in {
               }
             ];
           };
-          templateMount = [
-            {
-              templatePath = pkgs.writeText "user-mapping.xml" ''
-                <user-mapping>
-                  <authorize username="${lldapUsers.niklas.id}" password="{{ file.Read `${lldapUsers.niklas.password_file}` }}">
-                      <connection name="Host SSH">
-                          <protocol>ssh</protocol>
-                          <param name="hostname">host.containers.internal</param>
-                          <param name="port">22</param>
-                          <param name="username">${lldapUsers.niklas.id}</param>
-                          <param name="private-key">{{ file.Read `${config.sops.secrets."guacamole/ssh_private_key".path}` }}</param>
-                          <param name="command">bash</param>
-                      </connection>
-                  </authorize>
-                </user-mapping>
-              '';
-              destPath = "/etc/guacamole/user-mapping.xml";
-            }
-          ];
         };
+        userMappingXml = ''
+          <user-mapping>
+            <authorize username="${lldapUsers.niklas.id}" password="{{ file.Read `${lldapUsers.niklas.password_file}` }}">
+                <connection name="Host SSH">
+                    <protocol>ssh</protocol>
+                    <param name="hostname">host.containers.internal</param>
+                    <param name="port">22</param>
+                    <param name="username">${lldapUsers.niklas.id}</param>
+                    <param name="private-key">{{ file.Read `${config.sops.secrets."guacamole/ssh_private_key".path}` }}</param>
+                    <param name="command">bash</param>
+                </connection>
+            </authorize>
+          </user-mapping>
+        '';
       };
       healthchecks = {
         secretKeyFile = config.sops.secrets."healthchecks/secret_key".path;
@@ -506,10 +501,10 @@ in {
           clientSecretFile = config.sops.secrets."immich/authelia/client_secret".path;
           clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$18FxDTnTEcrx4PFl8fHjhQ$Iv09KL9IJAMfHWIhPDr1f3kVf/D/BUyoPPQTEhGBPNM";
         };
-        dbPasswordFile = config.sops.secrets."immich/db_password".path;
+        db.passwordFile = config.sops.secrets."immich/db_password".path;
         settings = {
-          oauth.autoLaunch = lib.mkForce true;
-          passwordLogin.enabled = lib.mkForce false;
+          oauth.autoLaunch = true;
+          passwordLogin.enabled = false;
         };
       };
 
@@ -742,6 +737,7 @@ in {
           passwordFile = config.sops.secrets."paperless/ftp_password".path;
         };
       };
+
       pocketid = {
         traefikIntegration = {
           enable = true;
@@ -755,12 +751,6 @@ in {
         };
       };
       romm = {
-        adminProvisioning = {
-          enable = true;
-          username = lldapUsers.niklas.id;
-          passwordFile = lldapUsers.niklas.password_file;
-          email = lldapUsers.niklas.email;
-        };
         authSecretKeyFile = config.sops.secrets."romm/auth_secret_key".path;
         romLibraryPath = "${config.nps.externalStorageBaseDir}/romm/library";
         extraEnv = {
@@ -930,8 +920,8 @@ in {
       };
 
       wg-easy = {
+        adminPasswordFile = config.sops.secrets."wg-easy/init_password".path;
         extraEnv = {
-          INIT_PASSWORD.fromFile = config.sops.secrets."wg-easy/init_password".path;
           DISABLE_IPV6 = true;
         };
       };
