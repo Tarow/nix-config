@@ -1,12 +1,14 @@
 keys:
   - &desktop age1p4e0revwefgws4dl5tuwharh5wylv2sy2xxszevng8ej7du9sp5q84t4zg
   - &homeserver age194ynt5xm3jhqztzpn8h8jtjnxr8gq7y475nwpe3ugukxnr270ulsmuke9p
+  - &relsat age18xhqlpqn4thwmvswtnrrde458w2dg2srr8wwr2sfe3fra3r3dgksaq3967
 creation_rules:
   - path_regex: secrets/secrets.yaml$
     key_groups:
       - age:
           - *desktop
           - *homeserver
+          - *relsat
 
   - path_regex: secrets/desktop/[^/]+\.(yaml|json|env|ini)$
     key_groups:
@@ -18,3 +20,8 @@ creation_rules:
       - age:
           - *homeserver
           - *desktop
+
+  - path_regex: secrets/relsat/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *relsat
