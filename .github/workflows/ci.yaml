@@ -32,6 +32,11 @@ jobs:
             homeCfgKey: homeserver
             os-label: ubuntu-latest
 
+          - hostName: Relsat
+            nixosCfgKey: relsat
+            homeCfgKey: relsat
+            os-label: ubuntu-latest
+
       fail-fast: false
 
     name: Build ${{ matrix.hostName }}

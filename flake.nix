@@ -142,7 +142,7 @@
         ];
       };
 
-    hosts = ["wsl2" "thinkpad" "desktop" "homeserver"];
+    hosts = ["wsl2" "thinkpad" "desktop" "homeserver" "relsat"];
     homes = hosts;
   in {
     overlays = import ./overlays {inherit inputs;};
