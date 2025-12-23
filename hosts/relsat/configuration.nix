@@ -9,7 +9,14 @@
     ./hardware-configuration.nix
   ];
 
-  system.stateVersion = "24.11";
+  # Todos:
+  # Check IP subnet
+  # OIDC clientSecretHash override
+  # Storagebox ssh key authorized hosts
+  # disko config
+  # borg  backup paths
+
+  system.stateVersion = "25.11";
 
   tarow = {
     facts.ip4Address = "10.1.1.99";
@@ -18,10 +25,18 @@
     shells.enable = true;
     sops = {
       enable = true;
-      extraSopsFiles = [../../secrets/homeserver/secrets.yaml];
+      extraSopsFiles = [../../secrets/relsat/secrets.yaml];
     };
 
-    wg-server.enable = true;
+    wg-server = {
+      enable = true;
+      ip = "10.3.3.1/24";
+      endpoint = "vpn.relsat.de";
+      peers = [
+        (import ../modules/nixos/wg-server/peers.nix config).homeserver
+      ];
+    };
+
     samba = {
       enable = true;
       extraSettings = {
@@ -75,7 +90,7 @@
   boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = lib.mkForce 0;
   networking = rec {
     firewall = {
-      allowedUDPPorts = [9 53 80 443 51820 51825];
+      allowedUDPPorts = [9 53 80 443 51820];
       allowedTCPPorts = [21 53 80 443] ++ (lib.range 40000 40009);
     };
     hostName = "homeserver";
@@ -109,7 +124,7 @@
       duration="$(( $(date +%s) - "''${START_TIME}" ))s"
       token="$(< ${config.sops.secrets."gatus/external_endpoint_token".path})"
       ${lib.getExe pkgs.curl} --retry 3 --retry-max-time 30 \
-        -H "Authorization: Bearer ''${token}" -X POST "https://gatus.ntasler.de/api/v1/endpoints/backups_$1/external?success=$success&duration=$duration"
+        -H "Authorization: Bearer ''${token}" -X POST "https://gatus.relsat.de/api/v1/endpoints/backups_$1/external?success=$success&duration=$duration"
     '');
     base = {
       paths = [
@@ -141,11 +156,11 @@
   in
     {
       remote = {
-        repo = "ssh://u363719@u363719.your-storagebox.de:23/./backups/homeserver";
+        repo = "ssh://u363719@u363719.your-storagebox.de:23/./backups/relsat";
         postHook = "${ping} backup-remote $exitStatus";
       };
       local = {
-        repo = "/mnt/hdd1/backups/homeserver";
+        repo = "/mnt/hdd1/backups/relsat";
         postHook = "${ping} backup-local $exitStatus";
       };
     }

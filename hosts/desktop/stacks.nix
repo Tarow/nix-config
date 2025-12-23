@@ -4,18 +4,6 @@
   pkgs,
   ...
 }: {
-  imports = [
-    {
-      nixpkgs.overlays = [
-        (final: prev: {
-          sd-switch = pkgs.unstable.sd-switch;
-        })
-      ];
-    }
-  ];
-
-  home.file."version.txt".text = config.home.version.release;
-
   nps = {
     hostIP4Address = "10.1.1.148";
     hostUid = 1000;

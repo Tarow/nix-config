@@ -53,7 +53,7 @@
     };
     monitors.configuration = ./monitors.xml;
 
-    sops.extraSopsFiles = [../../secrets/desktop/secrets.yaml];
+    sops.extraSopsFiles = [../../secrets/desktop/secrets.yaml ../../secrets/homeserver/secrets.yaml];
   };
 
   home.stateVersion = "24.11";
