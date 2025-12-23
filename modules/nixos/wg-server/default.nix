@@ -46,6 +46,7 @@ in {
     };
 
     networking.wireguard.interfaces.${cfg.internalInterface} = {
+      dynamicEndpointRefreshSeconds = 300;
       ips = [cfg.ip];
       listenPort = cfg.port;
 
