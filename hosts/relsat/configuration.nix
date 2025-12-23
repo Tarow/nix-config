@@ -33,7 +33,7 @@
       ip = "10.3.3.1/24";
       endpoint = "vpn.relsat.de";
       peers = [
-        (import ../modules/nixos/wg-server/peers.nix config).homeserver
+        (import ../../modules/nixos/wg-server/peers.nix config).homeserver
       ];
     };
 
