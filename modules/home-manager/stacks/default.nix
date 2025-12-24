@@ -149,14 +149,6 @@ in {
         };
       };
 
-      beszel = {
-        ed25519PrivateKeyFile = config.sops.secrets."beszel/ssh_key".path;
-        ed25519PublicKeyFile = config.sops.secrets."beszel/ssh_pub_key".path;
-        oidc = {
-          registerClient = true;
-          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$iTcxhF8YJvibvv9jyHKPsg$+srgYmZS5vXMyLmkyGZbaP2yC3ILohBXmJ1wXtAMOl0";
-        };
-      };
       blocky = {
         enableGrafanaDashboard = true;
         enablePrometheusExport = true;
@@ -178,12 +170,9 @@ in {
           };
         };
       };
-      bytestash = {
-        jwtSecretFile = config.sops.secrets."bytestash/jwt_secret".path;
-      };
       crowdsec = {
         extraEnv = {
-          ENROLL_INSTANCE_NAME = "homeserver";
+          ENROLL_INSTANCE_NAME = "relsat";
           ENROLL_KEY.fromFile = config.sops.secrets."crowdsec/enroll_key".path;
         };
         enableGrafanaDashboard = true;
@@ -202,7 +191,7 @@ in {
         };
       };
       dockdns = {
-        extraEnv.NTASLER_DE_API_TOKEN.fromFile = config.sops.secrets."dockdns/cf_api_token".path;
+        extraEnv.NTASLER_DE_API_TOKEN.fromFile = config.sops.secrets."CLOUDFLARE_API_KEY".path;
         settings.dns.purgeUnknown = true;
         settings.log.level = "debug";
         settings.domains = let
@@ -336,7 +325,7 @@ in {
 
           external-endpoints = let
             backups =
-              ["Local" "Remote"]
+              ["Local" "Remote" "Relsat-Local" "Relsat-Remote"]
               |> map (name: {
                 name = "Backup ${name}";
                 group = "backups";
@@ -701,6 +690,7 @@ in {
         enableGrafanaDashboard = true;
         enablePrometheusExport = true;
       };
+
       outline = {
         secretKeyFile = config.sops.secrets."outline/secret_key".path;
         utilsSecretFile = config.sops.secrets."outline/utils_secret".path;
@@ -889,7 +879,7 @@ in {
 
       traefik = {
         domain = domain;
-        extraEnv.CF_DNS_API_TOKEN.fromFile = config.sops.secrets."traefik/cf_api_token".path;
+        extraEnv.CF_DNS_API_TOKEN.fromFile = config.sops.secrets."CLOUDFLARE_API_KEY".path;
         geoblock.allowedCountries = ["DE"];
         enablePrometheusExport = true;
         enableGrafanaMetricsDashboard = true;

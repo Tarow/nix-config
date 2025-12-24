@@ -124,7 +124,7 @@
       duration="$(( $(date +%s) - "''${START_TIME}" ))s"
       token="$(< ${config.sops.secrets."gatus/external_endpoint_token".path})"
       ${lib.getExe pkgs.curl} --retry 3 --retry-max-time 30 \
-        -H "Authorization: Bearer ''${token}" -X POST "https://gatus.relsat.de/api/v1/endpoints/backups_$1/external?success=$success&duration=$duration"
+        -H "Authorization: Bearer ''${token}" -X POST "https://gatus.ntasler.de/api/v1/endpoints/backups_$1/external?success=$success&duration=$duration"
     '');
     base = {
       paths = [
@@ -157,11 +157,11 @@
     {
       remote = {
         repo = "ssh://u363719@u363719.your-storagebox.de:23/./backups/relsat";
-        postHook = "${ping} backup-remote $exitStatus";
+        postHook = "${ping} backup-relsat-remote $exitStatus";
       };
       local = {
         repo = "/mnt/hdd1/backups/relsat";
-        postHook = "${ping} backup-local $exitStatus";
+        postHook = "${ping} backup-relsat-local $exitStatus";
       };
     }
     |> lib.mapAttrs (_: job: (base // job));

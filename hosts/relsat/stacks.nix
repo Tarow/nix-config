@@ -4,7 +4,18 @@
   pkgs,
   ...
 }: {
-  nps = {
+  nps = let
+    domain = "relsat.de";
+    lldapUsers = {
+      readonly = {
+        id = "readonly";
+        displayName = "readonly";
+        password_file = config.sops.secrets."lldap/readonly_password".path;
+        email = "readonly@${domain}";
+        groups = [config.nps.stacks.lldap.readOnlyGroup];
+      };
+    };
+  in {
     hostIP4Address = "10.1.1.148";
     hostUid = 1000;
     storageBaseDir = "${config.home.homeDirectory}/stacks";
@@ -16,7 +27,10 @@
         jwtSecretFile = config.sops.secrets."authelia/jwt_secret".path;
         sessionSecretFile = config.sops.secrets."authelia/session_secret".path;
         storageEncryptionKeyFile = config.sops.secrets."authelia/encryption_key".path;
-
+        ldap = {
+          username = lldapUsers.readonly.id;
+          passwordFile = lldapUsers.readonly.password_file;
+        };
         oidc = {
           enable = true;
           hmacSecretFile = config.sops.secrets."authelia/oidc_hmac_secret".path;
@@ -28,7 +42,7 @@
       };
       lldap = {
         enable = true;
-        baseDn = "DC=ntasler,DC=de";
+        baseDn = "DC=relsat,DC=de";
         jwtSecretFile = config.sops.secrets."lldap/jwtSecret".path;
         keySeedFile = config.sops.secrets."lldap/keySeed".path;
         adminPasswordFile = config.sops.secrets."lldap/adminPassword".path;
@@ -47,7 +61,7 @@
         enableGrafanaMetricsDashboard = true;
         enableGrafanaAccessLogDashboard = true;
 
-        extraEnv.CF_DNS_API_TOKEN.fromFile = config.sops.secrets."traefik/cf_api_token".path;
+        extraEnv.CF_DNS_API_TOKEN.fromFile = config.sops.secrets."CLOUDFLARE_API_KEY".path;
       };
     };
   };

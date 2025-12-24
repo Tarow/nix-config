@@ -31,6 +31,7 @@
   sops.secrets."ssh_authorized_keys".path = "${config.home.homeDirectory}/.ssh/authorized_keys";
   tarow = {
     facts.ip4Address = "10.1.1.99";
+    sops.extraSopsFiles = [../../secrets/relsat/secrets.yaml];
   };
 
   # On Remote SSH connections, settings in the ~/.config/Code folder won't be honored.
