@@ -117,7 +117,7 @@
         enableGrafanaMetricsDashboard = true;
         enableGrafanaAccessLogDashboard = true;
 
-        extraEnv.CF_DNS_API_TOKEN.fromFile = config.sops.secrets."traefik/cf_api_token".path;
+        extraEnv.CF_DNS_API_TOKEN.fromFile = config.sops.secrets."CLOUDFLARE_API_KEY".path;
 
         dynamicConfig = {
           http.middlewares = {
