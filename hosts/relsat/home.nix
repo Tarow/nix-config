@@ -5,7 +5,7 @@
   ...
 }: {
   imports = [
-    ./stacks.nix
+    #./stacks.nix
     {
       tarow = lib.tarow.enableModules [
         "core"
@@ -20,7 +20,7 @@
         "vscode"
         "neovim"
         "podman"
-        "scrutiny"
+#        "scrutiny"
       ];
     }
   ];
@@ -30,7 +30,7 @@
   home.stateVersion = "25.11";
   sops.secrets."ssh_authorized_keys".path = "${config.home.homeDirectory}/.ssh/authorized_keys";
   tarow = {
-    facts.ip4Address = "10.1.1.99";
+    facts.ip4Address = "192.168.178.2";
     sops.extraSopsFiles = [../../secrets/relsat/secrets.yaml];
   };
 

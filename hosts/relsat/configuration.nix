@@ -5,7 +5,7 @@
   ...
 }: {
   imports = [
-    ./disk-config.nix
+ #   ./disk-config.nix
     ./hardware-configuration.nix
   ];
 
@@ -19,7 +19,7 @@
   system.stateVersion = "25.11";
 
   tarow = {
-    facts.ip4Address = "10.1.1.99";
+    facts.ip4Address = "192.168.178.2";
     nh.enable = true;
     bootLoader.enable = true;
     shells.enable = true;
@@ -29,7 +29,7 @@
     };
 
     wg-server = {
-      enable = true;
+      enable = false;
       ip = "10.3.3.1/24";
       endpoint = "vpn.relsat.de";
       peers = [
@@ -93,12 +93,12 @@
       allowedUDPPorts = [9 53 80 443 51820];
       allowedTCPPorts = [21 53 80 443] ++ (lib.range 40000 40009);
     };
-    hostName = "homeserver";
-    defaultGateway = "10.1.1.1";
+    hostName = "relsat";
+    defaultGateway = "192.168.178.1";
     nameservers = [defaultGateway "1.1.1.1" "9.9.9.9"];
     resolvconf.extraOptions = ["timeout:2"];
 
-    interfaces.enp1s0 = {
+    interfaces.enp3s0 = {
       wakeOnLan.enable = true;
       ipv4.addresses = [
         {
