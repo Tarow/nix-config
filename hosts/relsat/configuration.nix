@@ -5,7 +5,7 @@
   ...
 }: {
   imports = [
- #   ./disk-config.nix
+    #   ./disk-config.nix
     ./hardware-configuration.nix
   ];
 
@@ -29,8 +29,9 @@
     };
 
     wg-server = {
-      enable = false;
+      enable = true;
       ip = "10.3.3.1/24";
+      externalInterface = "enp3s0";
       endpoint = "vpn.relsat.de";
       peers = [
         (import ../../modules/nixos/wg-server/peers.nix config).homeserver

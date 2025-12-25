@@ -16,7 +16,7 @@
       };
     };
   in {
-    hostIP4Address = "10.1.1.148";
+    hostIP4Address = config.tarow.facts.ip4Address;
     hostUid = 1000;
     storageBaseDir = "${config.home.homeDirectory}/stacks";
     externalStorageBaseDir = "/mnt/hdd1";
@@ -46,6 +46,7 @@
         jwtSecretFile = config.sops.secrets."lldap/jwtSecret".path;
         keySeedFile = config.sops.secrets."lldap/keySeed".path;
         adminPasswordFile = config.sops.secrets."lldap/adminPassword".path;
+        bootstrap.users = lldapUsers;
       };
 
       blocky.enable = true;
@@ -55,7 +56,7 @@
 
       traefik = {
         enable = true;
-        domain = "relsat.de";
+        domain = domain;
         geoblock.allowedCountries = ["DE"];
         enablePrometheusExport = true;
         enableGrafanaMetricsDashboard = true;

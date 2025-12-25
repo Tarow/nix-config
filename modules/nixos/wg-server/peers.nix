@@ -9,7 +9,7 @@ config: {
   relsat-server = {
     name = "relsat";
     endpoint = "vpn.relsat.de:51820";
-    publicKey = "hh/YZ5sBzDH9ow10JkH0VUhpl5yGzcNteCtaWF2q9TA=";
+    publicKey = "dciLvDLmbdg2u54WdS0JG8NF0vp25zDP3DrdOLiRq2g=";
     presharedKeyFile = config.sops.secrets."wireguard/psk_relsat".path;
     allowedIPs = ["192.168.178.0/24" "10.3.3.0/24"];
   };

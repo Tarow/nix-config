@@ -38,7 +38,7 @@ in {
         "editor.fontSize" = lib.mkForce 14;
 
         "update.mode" = "none";
-        "terminal.integrated.suggest.enabled " = false;
+        "terminal.integrated.suggest.enabled" = false;
         # "workbench.sideBar.location" = "right";
       };
 

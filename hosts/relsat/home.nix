@@ -5,7 +5,7 @@
   ...
 }: {
   imports = [
-    #./stacks.nix
+    ./stacks.nix
     {
       tarow = lib.tarow.enableModules [
         "core"
@@ -20,7 +20,7 @@
         "vscode"
         "neovim"
         "podman"
-#        "scrutiny"
+        "scrutiny"
       ];
     }
   ];
