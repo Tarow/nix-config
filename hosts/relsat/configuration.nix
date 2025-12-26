@@ -5,7 +5,6 @@
   ...
 }: {
   imports = [
-    #   ./disk-config.nix
     ./hardware-configuration.nix
   ];
 
@@ -40,43 +39,59 @@
 
     samba = {
       enable = true;
-      extraSettings = {
-        "public" = {
-          "path" = "/mnt/hdd1/shares/public";
-          "browseable" = "yes";
-          "read only" = "no";
-          "guest ok" = "yes";
-          "create mask" = "0666";
-          "directory mask" = "0777";
-        };
-        "${config.tarow.facts.username}" = let
-          user = config.tarow.facts.username;
-        in {
-          "path" = "/mnt/hdd1/shares/${user}";
-          "browseable" = "yes";
-          "read only" = "no";
-          "guest ok" = "no";
-          "create mask" = "0644";
-          "directory mask" = "0755";
-          "force user" = user;
-          "force group" = user;
-          "valid users" = user;
-        };
-        "hdd" = let
-          user = config.tarow.facts.username;
-        in {
-          "path" = "/mnt/hdd1";
-          "browseable" = "yes";
-          "read only" = "no";
-          "guest ok" = "no";
-          "create mask" = "0644";
-          "directory mask" = "0755";
-          "force user" = user;
-          "force group" = user;
-          "valid users" = user;
-        };
-      };
+      extraSettings =
+        {
+          "public" = {
+            "path" = "/mnt/hdd1/shares/public";
+            "browseable" = "yes";
+            "read only" = "no";
+            "guest ok" = "yes";
+            "create mask" = "0666";
+            "directory mask" = "0777";
+          };
+          "hdd" = let
+            user = config.tarow.facts.username;
+          in {
+            "path" = "/mnt/hdd1";
+            "browseable" = "yes";
+            "read only" = "no";
+            "guest ok" = "no";
+            "create mask" = "0644";
+            "directory mask" = "0755";
+            "force user" = user;
+            "force group" = user;
+            "valid users" = user;
+          };
+        }
+        // ([config.tarow.facts.username "hermann"]
+          |> map (user:
+            lib.nameValuePair user {
+              "path" = "/mnt/hdd1/shares/${user}";
+              "browseable" = "yes";
+              "read only" = "no";
+              "guest ok" = "no";
+              "create mask" = "0644";
+              "directory mask" = "0755";
+              "force user" = user;
+              "force group" = user;
+              "valid users" = user;
+            })
+          |> lib.listToAttrs);
     };
+  };
+
+  users.groups."hermann".gid = 1001;
+
+  users.users."hermann" = {
+    isNormalUser = true;
+    description = "hermann";
+
+    uid = 1001;
+    group = config.users.groups."hermann".name;
+
+    extraGroups = ["users"];
+    shell = pkgs.fish;
+    linger = true;
   };
 
   services.openssh = {
@@ -131,7 +146,7 @@
       paths = [
         "${config.tarow.facts.userhome}/stacks"
         "/mnt/hdd1/media/pictures/immich"
-        "/mnt/hdd1/shares/niklas"
+        "/mnt/hdd1/shares"
       ];
       encryption = {
         mode = "repokey-blake2";

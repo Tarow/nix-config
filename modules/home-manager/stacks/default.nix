@@ -172,7 +172,7 @@ in {
       };
       crowdsec = {
         extraEnv = {
-          ENROLL_INSTANCE_NAME = "relsat";
+          ENROLL_INSTANCE_NAME = "homeserver";
           ENROLL_KEY.fromFile = config.sops.secrets."crowdsec/enroll_key".path;
         };
         enableGrafanaDashboard = true;

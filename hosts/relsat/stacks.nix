@@ -1,9 +1,4 @@
-{
-  lib,
-  config,
-  pkgs,
-  ...
-}: {
+{config, ...}: {
   nps = let
     domain = "relsat.de";
     lldapUsers = {
@@ -40,6 +35,25 @@
         };
         sessionProvider = "redis";
       };
+
+      immich = {
+        enable = true;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."immich/authelia/client_secret".path;
+          clientSecretHash = "$pbkdf2-sha512$310000$l8pHo5lLbManfxNCLP3gTQ$.o9bL6ol7SUf7X4dvlCaPPsgBgEk2jelCutnUXtG9nCVK7EU2KIUe0NcyPmpVP0EBUW.A8Sj1LIq4ngJm.f0Aw";
+        };
+        db.passwordFile = config.sops.secrets."immich/db_password".path;
+        settings = {
+          oauth.autoLaunch = true;
+          passwordLogin.enabled = false;
+        };
+
+        containers.immich.volumes = [
+          "${config.nps.externalStorageBaseDir}/shares/hermann/Fotos:/mnt/hdd/fotos:ro"
+        ];
+      };
+
       lldap = {
         enable = true;
         baseDn = "DC=relsat,DC=de";
@@ -52,7 +66,48 @@
       blocky.enable = true;
       docker-socket-proxy.enable = true;
       homepage.enable = true;
+      mazanoke.enable = true;
       monitoring.enable = true;
+
+      norish = {
+        enable = true;
+        masterKeyFile = config.sops.secrets."norish/master_key".path;
+        db.passwordFile = config.sops.secrets."norish/db_password".path;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."norish/authelia/client_secret".path;
+          clientSecretHash = "$pbkdf2-sha512$310000$iCUXG7YDbRaMGNrucrPjyw$ZUIAIlt6DDzFfFFf6xnU6FeS/fj9fGoTnII9bcUpMVwhnxU8gQskO01StyVIp.HHAZpN4poVkR/lFf1i7pBk2A";
+        };
+      };
+
+      paperless = {
+        enable = true;
+        adminProvisioning = {
+          username = "niklas";
+          passwordFile = config.sops.secrets."users/niklas/password".path;
+          email = "niklas@${domain}";
+        };
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."paperless/authelia/client_secret".path;
+          clientSecretHash = "$pbkdf2-sha512$310000$Yfb9s6emwWSI1kepQSmhUQ$tZiLJlDZKByzc0tMm5wWQIWnaSLCE0b4RJ9k0bbI7s3JGjOQ4mRsHbcBlCqF2J3FibZv0GLL4RON9ALwMSAC3g";
+        };
+        secretKeyFile = config.sops.secrets."paperless/secret_key".path;
+        extraEnv = {
+          PAPERLESS_OCR_LANGUAGES = "eng deu";
+          PAPERLESS_OCR_LANGUAGE = "eng+deu";
+          PAPERLESS_DISABLE_REGULAR_LOGIN = true;
+          PAPERLESS_REDIRECT_LOGIN_TO_SSO = true;
+        };
+        db = {
+          passwordFile = config.sops.secrets."paperless/db_password".path;
+        };
+
+        containers.paperless = {
+          environment.PAPERLESS_CONSUMPTION_DIR = "/consume";
+          volumes = ["${config.nps.externalStorageBaseDir}/shares/hermann/paperless_consume:/consume"];
+        };
+      };
 
       traefik = {
         enable = true;

@@ -27,6 +27,8 @@ in {
         "remote.SSH.remotePlatform" = {
           "ntasler" = "linux";
           "ntasler.de" = "linux";
+          "relsat" = "linux";
+          "relsat.de" = "linux";
         };
 
         "editor.formatOnSave" = true;
