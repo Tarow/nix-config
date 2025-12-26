@@ -34,6 +34,7 @@
       endpoint = "vpn.relsat.de";
       peers = [
         (import ../../modules/nixos/wg-server/peers.nix config).homeserver
+        (import ../../modules/nixos/wg-server/peers.nix config).hermann-phone
       ];
     };
 

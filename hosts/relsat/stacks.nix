@@ -64,6 +64,29 @@
       };
 
       blocky.enable = true;
+
+      dockdns = {
+        enable = true;
+        extraEnv.RELSAT_DE_API_TOKEN.fromFile = config.sops.secrets."CLOUDFLARE_API_KEY".path;
+        settings.dns.purgeUnknown = true;
+        settings.log.level = "debug";
+        settings.domains = let
+          hostIP4Address = config.nps.hostIP4Address;
+        in [
+          {
+            name = domain;
+            a = hostIP4Address;
+          }
+          {
+            name = "*.${domain}";
+            a = hostIP4Address;
+          }
+          {
+            name = "vpn.${domain}";
+          }
+        ];
+      };
+
       docker-socket-proxy.enable = true;
       homepage.enable = true;
       mazanoke.enable = true;
