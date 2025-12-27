@@ -130,7 +130,7 @@
 
         containers.paperless = {
           environment.PAPERLESS_CONSUMPTION_DIR = "/consume";
-          volumes = ["${config.nps.externalStorageBaseDir}/shares/hermann/paperless_consume:/consume"];
+          volumes = ["${config.nps.externalStorageBaseDir}/shares/paperless_consume:/consume"];
         };
       };
 

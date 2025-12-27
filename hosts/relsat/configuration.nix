@@ -63,6 +63,17 @@
             "force group" = user;
             "valid users" = user;
           };
+          "paperless_consume" = {
+            "path" = "/mnt/hdd1/shares/paperless_consume";
+            "browseable" = "yes";
+            "read only" = "no";
+            "guest ok" = "no";
+            "create mask" = "0666";
+            "directory mask" = "0755";
+            "valid users" = "${config.tarow.facts.username}, hermann";
+            "force user" = config.tarow.facts.username;
+            "force group" = config.tarow.facts.username;
+          };
         }
         // ([config.tarow.facts.username "hermann"]
           |> map (user:
