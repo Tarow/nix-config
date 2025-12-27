@@ -23,6 +23,11 @@ in {
           hostname = "jkammering.de";
           user = "jonvus";
         };
+        relsat = {
+          host = "relsat relsat.de";
+          hostname = "relsat.de";
+          user = "niklas";
+        };
       };
     };
   };

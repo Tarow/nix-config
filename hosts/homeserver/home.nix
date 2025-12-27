@@ -62,8 +62,8 @@
       #bytestash.enable = true;
       #calibre.enable = true;
       #changedetection.enable = true;
-      #glance.enable = true;
-      glance.containers.glance.traefik.name = lib.mkForce "glance";
+      glance.enable = true;
+      glance.containers.glance.traefik.subDomain = "glance";
       crowdsec.enable = true;
       davis.enable = true;
       dockdns.enable = true;
@@ -149,6 +149,4 @@
       yopass.enable = true;
     };
   };
-
- 
 }

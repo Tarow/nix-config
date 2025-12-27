@@ -105,6 +105,7 @@
 
       paperless = {
         enable = true;
+        enableTika = true;
         adminProvisioning = {
           username = "niklas";
           passwordFile = config.sops.secrets."users/niklas/password".path;
@@ -121,6 +122,7 @@
           PAPERLESS_OCR_LANGUAGE = "eng+deu";
           PAPERLESS_DISABLE_REGULAR_LOGIN = true;
           PAPERLESS_REDIRECT_LOGIN_TO_SSO = true;
+          PAPERLESS_CONSUMER_RECURSIVE = true;
         };
         db = {
           passwordFile = config.sops.secrets."paperless/db_password".path;

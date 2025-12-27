@@ -702,6 +702,7 @@ in {
         };
       };
       paperless = {
+        enableTika = true;
         adminProvisioning = {
           username = "admin";
           passwordFile = config.sops.secrets."paperless/admin_password".path;
