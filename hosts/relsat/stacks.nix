@@ -36,6 +36,22 @@
         sessionProvider = "redis";
       };
 
+      booklore = {
+        enable = true;
+        oidc = {
+          registerClient = true;
+        };
+        db = {
+          userPasswordFile = config.sops.secrets."booklore/db_user_password".path;
+          rootPasswordFile = config.sops.secrets."booklore/db_root_password".path;
+        };
+      };
+
+      ephemera = {
+        enable = true;
+        downloadDirectory = "${config.nps.storageBaseDir}/booklore/bookdrop";
+      };
+
       immich = {
         enable = true;
         oidc = {
