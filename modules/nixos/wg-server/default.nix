@@ -29,9 +29,7 @@ in {
       type = types.str;
       default = config.sops.secrets."wireguard/pk".path;
     };
-    peers =
-      (options.networking.wireguard.interfaces.type.getSubOptions []).peers
-      // {default = lib.removeAttrs (import ./peers.nix config) ["homeserver"] |> lib.attrValues;};
+    peers = (options.networking.wireguard.interfaces.type.getSubOptions []).peers;
     endpoint = mkOption {
       type = types.str;
       default = (import ./peers.nix config).homeserver.endpoint;

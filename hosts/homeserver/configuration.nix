@@ -21,7 +21,16 @@
       extraSopsFiles = [../../secrets/homeserver/secrets.yaml];
     };
 
-    wg-server.enable = true;
+    wg-server = {
+      enable = true;
+      peers = let
+        peers = import ../../modules/nixos/wg-server/peers.nix config;
+      in [
+        peers.relsat-server
+        peers.niklas-phone
+        peers.niklas-tablet
+      ];
+    };
     samba = {
       enable = true;
       extraSettings = {
