@@ -46,6 +46,7 @@
         tandoor.oidc.userGroup
         kitchenowl.oidc.userGroup
         norish.oidc.userGroup
+        vaultwarden.oidc.userGroup
       ];
     };
     selma = {
@@ -110,8 +111,11 @@ in {
       aiostreams = {
         secretKeyFile = config.sops.secrets."aiostreams/secret_key".path;
         extraEnv = {
+          REGEX_FILTER_ACCESS = "all";
           TMDB_ACCESS_TOKEN.fromFile = config.sops.secrets."aiostreams/tmdb_access_token".path;
-          DEFAULT_REALDEBRID_API_KEY.fromFile = config.sops.secrets."aiostreams/rd_api_key".path;
+          TMDB_API_KEY.fromFile = config.sops.secrets."aiostreams/tmdb_api_key".path;
+          FORCED_REALDEBRID_API_KEY.fromFile = config.sops.secrets."aiostreams/rd_api_key".path;
+          ALLOWED_REGEX_PATTERNS_URLS = ''[\"https://raw.githubusercontent.com/Vidhin05/Releases-Regex/main/merged-anime-regexes.json\",\"https://raw.githubusercontent.com/Vidhin05/Releases-Regex/main/merged-regexes.json\"]'';
         };
       };
       audiobookshelf = {
