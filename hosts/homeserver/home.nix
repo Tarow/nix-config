@@ -56,9 +56,11 @@
       audiobookshelf.enable = true;
       authelia.enable = true;
       #baikal.enable = true;
+
       bentopdf.enable = true;
       #beszel.enable = true;
       blocky.enable = true;
+      booklore.enable = true;
       #bytestash.enable = true;
       #calibre.enable = true;
       #changedetection.enable = true;
@@ -70,7 +72,7 @@
       docker-socket-proxy.enable = true;
       #donetick.enable = true;
       dozzle.enable = true;
-      #ephemera.enable = true;
+      ephemera.enable = true;
       #filebrowser.enable = true;
       #filebrowser-quantum.enable = true;
       #freshrss.enable = true;
@@ -93,11 +95,12 @@
 
       karakeep.enable = true;
       #kimai.enable = true;
+
       #kitchenowl.enable = true;
       lldap.enable = true;
       #komga.enable = true;
       mazanoke.enable = true;
-      mealie.enable = true;
+      #mealie.enable = true;
       #memos.enable = true;
       #microbin.enable = true;
       monitoring = {
@@ -124,12 +127,12 @@
 
       paperless.enable = true;
       #pocketid.enable = true;
-      romm.enable = true;
+      #romm.enable = true;
       skatcounter = {
         enable = true;
       };
       #sshwifty.enable = true;
-      stirling-pdf.enable = true;
+      #stirling-pdf.enable = true;
 
       #storyteller.enable = true;
       streaming =
@@ -144,11 +147,7 @@
       #uptime-kuma.enable = true;
       #vikunja.enable = true;
       vaultwarden.enable = true;
-      vaultwarden.oidc = {
-        enable = true;
-        clientSecretFile = config.sops.secrets."vaultwarden/authelia/client_secret".path;
-        clientSecretHash = "$pbkdf2-sha512$310000$sSmacTpk/NvTUq2IIQCWpw$8hQxlByXM70jhjYf1EYBqClZ.JnLIcdQDeRJrqVFGu2zqlbjKX1Dsu1PXhv9yLCUP/LdqFbZorPkzlIJ1pA.QQ";
-      };
+
       #webtop.enable = true;
       #wg-easy.enable = true;
       #wg-portal.enable = true;
