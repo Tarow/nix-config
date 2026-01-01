@@ -87,11 +87,11 @@
       #homeassistant.enable = true;
       homepage.enable = true;
 
-      hortusfox.enable = true;
+      #hortusfox.enable = true;
 
       immich.enable = true;
       it-tools.enable = true;
-      jotty.enable = true;
+      #jotty.enable = true;
 
       karakeep.enable = true;
       #kimai.enable = true;
