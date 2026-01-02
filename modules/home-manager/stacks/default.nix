@@ -236,7 +236,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."donetick/authelia/client_secret".path;
-          #clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$elNsvcPnuBeCRSPPVdTmtg$thuONNyx0kGKQhtSJwOqwCzWVrQ5yTu899MIrgEDkIA";
         };
       };
       filebrowser-quantum = {
@@ -252,7 +251,6 @@ in {
         };
         oidc = {
           enable = true;
-          #clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$SKzEY6iUGM8T5jpdjBt/qg$Eipoepsk2j0Dxp/DDdoj/ZcmRbkf3FLnjgr4oP2xZ2s";
           clientSecretFile = config.sops.secrets."filebrowser-quantum/authelia/client_secret".path;
         };
         settings.auth.methods.password.enabled = false;
@@ -267,7 +265,6 @@ in {
         # See <https://freshrss.github.io/FreshRSS/en/admins/16_OpenID-Connect.html> for setup
         oidc = {
           enable = true;
-          #clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$W0jLoTPPDwal2PULWcmlSg$HtzE9xiR+5lHFO8eRqlI27+lqLYWPbqSybyyiaL/y8s";
           clientSecretFile = config.sops.secrets."freshrss/authelia/client_secret".path;
           cryptoKeyFile = config.sops.secrets."freshrss/authelia/crypto_key".path;
         };
@@ -281,7 +278,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."gatus/authelia_client_secret".path;
-          #clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$4wovJBwfMgWMqeV9S4HZyg$HcnArT/vCP2e4N6tgNYWXwYj73cointfSM4ITOXKmzQ";
         };
 
         containers.gatus.extraEnv = {
@@ -509,7 +505,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."immich/authelia/client_secret".path;
-          #clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$18FxDTnTEcrx4PFl8fHjhQ$Iv09KL9IJAMfHWIhPDr1f3kVf/D/BUyoPPQTEhGBPNM";
         };
         db.passwordFile = config.sops.secrets."immich/db_password".path;
         settings = {
@@ -521,14 +516,11 @@ in {
       jotty.oidc = {
         enable = true;
         clientSecretFile = config.sops.secrets."jotty/authelia/client_secret".path;
-        ##clientSecretHash = "$pbkdf2-sha512$310000$0j5MB8kcaIkFOFaI8iFoyA$cQ4WPcKzQfTBNSDS4wL3htx9WtLVhSiNl7Dq0iuB5dMYGw4.KlhACDEtFimgORt3YsXbKhj7ZkqQZ6eO1u30fQ";
       };
 
       karakeep = {
         oidc = {
           enable = true;
-          ##clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$j1iaujV4SedP9TISGPon4w$EY+mQ3fH8C74+PrGw3TrGQRvKzCCjthYV43Hqrs31tk";
-          ##clientSecretHash.toHash = config.sops.secrets."karakeep/authelia/client_secret".path;
           clientSecretFile = config.sops.secrets."karakeep/authelia/client_secret".path;
         };
         nextauthSecretFile = config.sops.secrets."karakeep/nextauth_secret".path;
@@ -537,7 +529,6 @@ in {
         containers.karakeep.extraEnv = {
           DISABLE_SIGNUPS = true;
           DISABLE_PASSWORD_AUTH = true;
-          # SOME_HASH.fromCommand = ''${lib.getExe pkgs.authelia} crypto hash generate pbkdf2 --no-confirm --password "$(<${config.sops.secrets."karakeep/authelia/client_secret".path})"'';
         };
       };
 
@@ -555,7 +546,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."kitchenowl/authelia/client_secret".path;
-          #clientSecretHash = "$pbkdf2-sha512$310000$5ZQnccLzdHqeP4E4PXqwcw$Gn4fk603AFjiRTKjwx1Wi5VB49dP12nDTV4W2cV0ECl9s4mGuIceEyZErslCqZqF.YTgyws1UTsP6Rr5d7iOow";
         };
       };
 
@@ -563,7 +553,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."komga/authelia/client_secret".path;
-          #clientSecretHash = "$pbkdf2-sha512$310000$hpnCEXSjuNUt7j8PnuChUQ$GBRaBPzMpQ7zXqhFZiwMVD.8/miZcFHjf9r/cTOT9Hm1u3Dj/V8PiEjfZd8ZnmUp7S6Si4lpb9LP1I.tn9LOlg";
         };
       };
       lldap = {
@@ -580,7 +569,6 @@ in {
       mealie = {
         oidc = {
           enable = true;
-          #clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$i7b124sTgqymSkCBnsZ0Qw$tDCVnQC1Kn191ygs2Rao7pCne3RNDnEYf7c1d11uBx0";
           clientSecretFile = config.sops.secrets."mealie/authelia/client_secret".path;
         };
       };
@@ -608,7 +596,6 @@ in {
         grafana = {
           oidc = {
             enable = true;
-            #clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$7/u7j+Jk0uexxJ4CaylQWw$t2EQJPYklJFqr6+MqJg7uCgmZaYaH+KgEtOpEGdQta8";
             clientSecretFile = config.sops.secrets."grafana/authelia/client_secret".path;
           };
         };
@@ -686,7 +673,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."norish/authelia/client_secret".path;
-          #clientSecretHash = "$pbkdf2-sha512$310000$zGCwkBJkaLwul.Qj9rimjw$LpAl0eLMQVFLnzl1Gbm/1VZvXE1wg0CorWDbZp13m1NHzkq51UcfxTjD2XkzCCoxw8Vx23LJq.IHWEAkMtL93A";
         };
       };
 
@@ -721,7 +707,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."outline/authelia/client_secret".path;
-          #clientSecretHash = "$pbkdf2-sha512$310000$NZWRZbYxrmbsOG12AGE2eA$3ZZoqHOxpWciUaB3U0Zc14lMigmXFtkEH5r2yRMWuHlRqM2Go3Z7C0grzbQD6Gy9RtnpctNJrcb1fWuQ4uMOHA";
         };
       };
       paperless = {
@@ -734,7 +719,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."paperless/authelia_client_secret".path;
-          #clientSecretHash = "$pbkdf2-sha512$310000$0IgF7vx.fWICGnbGGMQosw$v73kGV4a5sBX2Zc39aS.vLj..IepDX02NK.xsAYpUaAvXdIr65BYU6TnAmPiusjyaa.sCiF6vrmoEgWyWpr/SQ";
         };
         secretKeyFile = config.sops.secrets."paperless/secret_key".path;
         extraEnv = {
@@ -774,7 +758,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."romm/authelia/client_secret".path;
-          #clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$pki2TtHTQZnqLA+j+yPuzg$7KOitH9Co3DLmb4bVNoepg2PHARG2VNCAywieLwt9SE";
         };
         db = {
           userPasswordFile = config.sops.secrets."romm/db/user_password".path;
@@ -823,7 +806,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."storyteller/authelia/client_secret".path;
-          #clientSecretHash = "$pbkdf2-sha512$310000$lRGcfTq0UOnzsyWOf4WCYw$R1jpZLd0sUh.SRVnLuFJDDURwyCXGnomxioKc8xSXkkFO3IvFpiT5xIE25wRyKdQlqGKSxfNqPG.nJWWNtJPsw";
         };
         containers.storyteller = {
           devices = ["/dev/dri:/dev/dri"];
@@ -864,7 +846,6 @@ in {
             oidc = {
               enable = true;
               clientSecretFile = config.sops.secrets."jellyfin/authelia/client_secret".path;
-              #clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$bvFrDVncsSd6rRIsqwXTRA$epymT2YwTSB5PDByAp7mXGdrQ/N+aEEMOzXaWvQ5xUM";
             };
           };
         }
@@ -878,7 +859,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."tandoor/authelia/client_secret".path;
-          #clientSecretHash = "$pbkdf2-sha512$310000$Q6QZjjNRyjk9qA9WDro9mw$CNS90obOUuJk/OLNZOSBUCCR7deIZnaWFb0QF4j6gaiOB3SkEAOpLyJd88AHb3uCP3f6enaed3jyP5Got2RfLA";
         };
         containers.tandoor.extraEnv = {
           # https://docs.tandoor.dev/system/configuration/#default-permissions
@@ -892,7 +872,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."timetracker/authelia/client_secret".path;
-          #clientSecretHash = "$pbkdf2-sha512$310000$k3oAaquy0xlAiE.coG.Uqg$rsXtFxuVOSuXFH6E3kEEpmDIoce1kKxW3sXZxaS.rdVKIxjbNPZEagb5UJdgOlJB/C4/VIbV8yRwIqPJ9UQMJA";
         };
         db.passwordFile = config.sops.secrets."timetracker/db_password".path;
         containers.timetracker.extraEnv = {
@@ -915,7 +894,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."vaultwarden/authelia/client_secret".path;
-          #clientSecretHash = "$pbkdf2-sha512$310000$sSmacTpk/NvTUq2IIQCWpw$8hQxlByXM70jhjYf1EYBqClZ.JnLIcdQDeRJrqVFGu2zqlbjKX1Dsu1PXhv9yLCUP/LdqFbZorPkzlIJ1pA.QQ";
         };
         extraEnv = {
           SIGNUPS_ALLOWED = false;
@@ -930,7 +908,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."vikunja/authelia/client_secret".path;
-          #clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$5yan15Eue1VX6WsFW5LygA$//p0a4BWfLJKt4BMmagCF9HgokO5bIO6se99XmFHhA8";
         };
         settings = {
           service.enableregistration = false;
@@ -962,7 +939,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."wg-portal/authelia/client_secret".path;
-          #clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$OMvEmtEjIUjfRqW2FkZiQg$GAKvd0HJ8f8AE3F6LpBptew/PFcEchXfERhhf73IgnI";
         };
       };
     };

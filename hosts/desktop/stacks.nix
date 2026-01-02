@@ -39,7 +39,6 @@
         # See <https://freshrss.github.io/FreshRSS/en/admins/16_OpenID-Connect.html> for setup
         oidc = {
           enable = true;
-          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$W0jLoTPPDwal2PULWcmlSg$HtzE9xiR+5lHFO8eRqlI27+lqLYWPbqSybyyiaL/y8s";
           clientSecretFile = config.sops.secrets."freshrss/authelia/client_secret".path;
           cryptoKeyFile = config.sops.secrets."freshrss/authelia/crypto_key".path;
         };
@@ -63,7 +62,6 @@
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."outline/authelia/client_secret".path;
-          clientSecretHash = "$pbkdf2-sha512$310000$NZWRZbYxrmbsOG12AGE2eA$3ZZoqHOxpWciUaB3U0Zc14lMigmXFtkEH5r2yRMWuHlRqM2Go3Z7C0grzbQD6Gy9RtnpctNJrcb1fWuQ4uMOHA";
         };
         containers.outline.extraConfig.Container.DNS = "100.100.100.100";
       };
@@ -79,7 +77,6 @@
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."romm/authelia/client_secret".path;
-          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$pki2TtHTQZnqLA+j+yPuzg$7KOitH9Co3DLmb4bVNoepg2PHARG2VNCAywieLwt9SE";
         };
         db = {
           userPasswordFile = config.sops.secrets."romm/db/user_password".path;
