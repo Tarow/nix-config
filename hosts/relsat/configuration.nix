@@ -8,13 +8,6 @@
     ./hardware-configuration.nix
   ];
 
-  # Todos:
-  # Check IP subnet
-  # OIDC clientSecretHash override
-  # Storagebox ssh key authorized hosts
-  # disko config
-  # borg  backup paths
-
   system.stateVersion = "25.11";
 
   tarow = {
