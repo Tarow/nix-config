@@ -45,7 +45,7 @@
         komga.oidc.userGroup
         tandoor.oidc.userGroup
         kitchenowl.oidc.userGroup
-        norish.oidc.userGroup
+        norish.oidc.adminGroup
         vaultwarden.oidc.userGroup
         booklore.oidc.userGroup
       ];
@@ -280,6 +280,8 @@ in {
           clientSecretFile = config.sops.secrets."gatus/authelia_client_secret".path;
         };
 
+        # Needs Traefik for startup due to initial OIDC setup
+        containers.gatus.wantsContainer = ["traefik"];
         containers.gatus.extraEnv = {
           NTFY_ACCESS_TOKEN.fromFile = config.sops.secrets."users/monitoring/ntfy_access_token".path;
           EXTERNAL_ENDPOINT_PUSH_TOKEN.fromFile = config.sops.secrets."gatus/external_endpoint_token".path;
@@ -737,6 +739,7 @@ in {
       };
 
       pocketid = {
+        encryptionKeyFile = config.sops.secrets."pocketid/encryption_key".path;
         traefikIntegration = {
           enable = true;
           clientId = "8c55dd45-1c75-4e01-bdd1-300af3eadcc7";
@@ -839,6 +842,8 @@ in {
               HTTP_CONTROL_SERVER_LOG = "off";
             };
           };
+          containers.gluetun.ports = ["8888:8888"];
+
           qbittorrent.extraEnv = {
             TORRENTING_PORT.fromFile = config.sops.secrets."qbittorrent/torrenting_port".path;
           };
@@ -888,6 +893,7 @@ in {
         enableGrafanaMetricsDashboard = true;
         enableGrafanaAccessLogDashboard = true;
         crowdsec.middleware.bouncerKeyFile = config.sops.secrets."crowdsec/traefik_bouncer_key".path;
+        containers.traefik.extraConfig.Container.DNS = "1.1.1.1";
       };
 
       vaultwarden = {

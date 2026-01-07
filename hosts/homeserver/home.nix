@@ -76,7 +76,7 @@
       #filebrowser.enable = true;
       #filebrowser-quantum.enable = true;
       #freshrss.enable = true;
-      #forgejo.enable = true;
+      forgejo.enable = true;
       #free-games-claimer.enable = true;
 
       gatus.enable = true;
