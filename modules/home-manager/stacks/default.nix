@@ -48,6 +48,7 @@
         norish.oidc.adminGroup
         vaultwarden.oidc.userGroup
         booklore.oidc.userGroup
+        streaming.qui.oidc.userGroup
       ];
     };
     selma = {
@@ -843,7 +844,6 @@ in {
             };
           };
           containers.gluetun.ports = ["8888:8888"];
-
           qbittorrent.extraEnv = {
             TORRENTING_PORT.fromFile = config.sops.secrets."qbittorrent/torrenting_port".path;
           };
@@ -851,6 +851,13 @@ in {
             oidc = {
               enable = true;
               clientSecretFile = config.sops.secrets."jellyfin/authelia/client_secret".path;
+            };
+          };
+          qui = {
+            enable = true;
+            oidc = {
+              enable = true;
+              clientSecretFile = config.sops.secrets."qui/authelia/client_secret".path;
             };
           };
         }

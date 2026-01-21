@@ -61,6 +61,7 @@
       #beszel.enable = true;
       blocky.enable = true;
       booklore.enable = true;
+
       #bytestash.enable = true;
       #calibre.enable = true;
       #changedetection.enable = true;
@@ -131,6 +132,7 @@
       skatcounter = {
         enable = true;
       };
+      planning-poker.enable = true;
       #sshwifty.enable = true;
       #stirling-pdf.enable = true;
 
