@@ -88,6 +88,14 @@
         };
       };
 
+      trip = {
+        enable = true;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."trip/authelia/client_secret".path;
+        };
+      };
+
       blocky.enable = true;
       docker-socket-proxy.enable = true;
       homepage.enable = true;
@@ -105,6 +113,38 @@
         };
       };
       */
+
+      streaming =
+        {
+          enable = true;
+          gluetun = {
+            vpnProvider = "airvpn";
+            wireguardPrivateKeyFile = config.sops.secrets."gluetun/wg_pk".path;
+            wireguardPresharedKeyFile = config.sops.secrets."gluetun/wg_psk".path;
+            wireguardAddressesFile = config.sops.secrets."gluetun/wg_address".path;
+
+            extraEnv = {
+              FIREWALL_VPN_INPUT_PORTS.fromFile = config.sops.secrets."qbittorrent/torrenting_port".path;
+              SERVER_NAMES.fromFile = config.sops.secrets."gluetun/server_names".path;
+              HTTP_CONTROL_SERVER_LOG = "off";
+            };
+          };
+          profilarr.enable = true;
+          containers.gluetun.ports = ["8888:8888"];
+
+          qbittorrent.extraEnv = {
+            TORRENTING_PORT.fromFile = config.sops.secrets."qbittorrent/torrenting_port".path;
+          };
+          jellyfin = {
+            oidc = {
+              enable = true;
+              clientSecretFile = config.sops.secrets."jellyfin/authelia/client_secret".path;
+            };
+          };
+        }
+        // lib.genAttrs ["sonarr" "radarr" "bazarr" "prowlarr"] (name: {
+          extraEnv."${lib.toUpper name}__AUTH__APIKEY".fromFile = config.sops.secrets."servarr/api_key".path;
+        });
 
       traefik = {
         enable = true;
