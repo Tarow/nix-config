@@ -49,6 +49,7 @@
         vaultwarden.oidc.userGroup
         booklore.oidc.userGroup
         streaming.qui.oidc.userGroup
+        papra.oidc.userGroup
       ];
     };
     selma = {
@@ -187,9 +188,6 @@ in {
           rootPasswordFile = config.sops.secrets."booklore/db_root_password".path;
         };
       };
-      ephemera = {
-        downloadDirectory = "${config.nps.storageBaseDir}/booklore/bookdrop";
-      };
 
       crowdsec = {
         extraEnv = {
@@ -324,6 +322,12 @@ in {
                 conditions = [
                   "[CONNECTED] == true"
                 ];
+              }
+              {
+                name = "Relsat Server";
+                url = "https://relsat.de";
+                client.dns-resolver = "tcp://1.1.1.1:53";
+                group = "ext_availability";
               }
             ];
 
@@ -736,6 +740,14 @@ in {
         ftp = {
           enable = true;
           passwordFile = config.sops.secrets."paperless/ftp_password".path;
+        };
+      };
+
+      papra = {
+        authSecretFile = config.sops.secrets."papra/auth_secret".path;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."papra/authelia/client_secret".path;
         };
       };
 

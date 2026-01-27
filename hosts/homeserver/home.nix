@@ -73,11 +73,11 @@
       docker-socket-proxy.enable = true;
       #donetick.enable = true;
       dozzle.enable = true;
-      ephemera.enable = true;
+
       #filebrowser.enable = true;
       #filebrowser-quantum.enable = true;
       #freshrss.enable = true;
-      forgejo.enable = true;
+      #forgejo.enable = true;
       #free-games-claimer.enable = true;
 
       gatus.enable = true;
@@ -127,6 +127,7 @@
       #outline.enable = true;
 
       paperless.enable = true;
+      papra.enable = true;
       #pocketid.enable = true;
       #romm.enable = true;
       skatcounter = {
