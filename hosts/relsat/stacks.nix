@@ -47,11 +47,6 @@
         };
       };
 
-      ephemera = {
-        enable = true;
-        downloadDirectory = "${config.nps.storageBaseDir}/booklore/bookdrop";
-      };
-
       immich = {
         enable = true;
         oidc = {
