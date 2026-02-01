@@ -751,19 +751,6 @@ in {
         };
       };
 
-      pocketid = {
-        encryptionKeyFile = config.sops.secrets."pocketid/encryption_key".path;
-        traefikIntegration = {
-          enable = true;
-          clientId = "8c55dd45-1c75-4e01-bdd1-300af3eadcc7";
-          clientSecretFile = config.sops.secrets."pocketid/traefik/clientSecret".path;
-          encryptionSecretFile = config.sops.secrets."pocketid/traefik/middlewareSecret".path;
-        };
-        ldap = {
-          username = lldapUsers.readonly.id;
-          passwordFile = lldapUsers.readonly.password_file;
-        };
-      };
       romm = {
         authSecretKeyFile = config.sops.secrets."romm/auth_secret_key".path;
         romLibraryPath = "${config.nps.externalStorageBaseDir}/romm/library";

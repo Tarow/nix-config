@@ -128,7 +128,7 @@
 
       paperless.enable = true;
       papra.enable = true;
-      #pocketid.enable = true;
+
       #romm.enable = true;
       skatcounter = {
         enable = true;

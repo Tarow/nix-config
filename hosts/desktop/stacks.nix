@@ -34,7 +34,7 @@
         adminPasswordFile = config.sops.secrets."lldap/adminPassword".path;
       };
       freshrss = {
-        enable = true;
+        enable = false;
         # First OIDC-logged-in account will have admin rights
         # See <https://freshrss.github.io/FreshRSS/en/admins/16_OpenID-Connect.html> for setup
         oidc = {
@@ -86,17 +86,11 @@
           enable = true;
           package = pkgs.unstable.igir;
         };
-      };
-
-      trip = {
-        enable = true;
-        oidc = {
-          enable = true;
-          clientSecretFile = config.sops.secrets."trip/authelia/client_secret".path;
-        };
+        containers.romm.volumeMap.assets = lib.mkForce "${config.home.homeDirectory}/tmp/romm/testassets:/romm/assets";
       };
 
       blocky.enable = true;
+      dozzle.enable = true;
       docker-socket-proxy.enable = true;
       homepage.enable = true;
       monitoring.enable = true;
