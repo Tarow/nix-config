@@ -54,8 +54,8 @@
     };
 
     nix-podman-stacks = {
-      url = "github:Tarow/nix-podman-stacks/v0.2.0";
-      #url = "path:/home/niklas/projects/nix-stacks";
+      #url = "github:Tarow/nix-podman-stacks/v0.2.0";
+      url = "path:/home/niklas/projects/nix-stacks";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
