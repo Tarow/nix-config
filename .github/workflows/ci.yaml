@@ -43,6 +43,7 @@ jobs:
     runs-on: ${{ matrix.os-label }}
     steps:
       - name: Free diskspace
+        if: false
         uses: easimon/maximize-build-space@master
         with:
           build-mount-path: /nix
