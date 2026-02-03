@@ -112,6 +112,20 @@ in {
     defaultTz = "Europe/Berlin";
 
     stacks = {
+      adventurelog = {
+        secretKeyFile = config.sops.secrets."adventurelog/secret_key".path;
+        db.passwordFile = config.sops.secrets."adventurelog/db_password".path;
+        adminProvisioning = {
+          username = lldapUsers.niklas.id;
+          email = lldapUsers.niklas.email;
+          passwordFile = lldapUsers.niklas.password_file;
+        };
+        oidc = {
+          registerClient = true;
+          clientSecretHash.toHash = config.sops.secrets."adventurelog/authelia/client_secret".path;
+        };
+      };
+
       aiostreams = {
         secretKeyFile = config.sops.secrets."aiostreams/secret_key".path;
         extraEnv = {
@@ -924,6 +938,13 @@ in {
         settings = {
           service.enableregistration = false;
           auth.local.enabled = false;
+        };
+      };
+
+      wallos = {
+        oidc = {
+          registerClient = true;
+          clientSecretHash.toHash = config.sops.secrets."wallos/authelia/client_secret".path;
         };
       };
 

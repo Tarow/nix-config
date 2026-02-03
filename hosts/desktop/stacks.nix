@@ -94,6 +94,8 @@
       docker-socket-proxy.enable = true;
       homepage.enable = true;
       monitoring.enable = true;
+      glance.enable = true;
+      glance.containers.glance.traefik.subDomain = "glance";
       #monitoring.containers.alloy.reverseProxy.serviceName = lib.mkForce "logs";
 
       /*
@@ -108,38 +110,20 @@
       };
       */
 
-      streaming =
-        {
+      leantime = {
+        enable = true;
+        sessionPasswordFile = config.sops.secrets."leantime/session_password".path;
+        db = {
+          userPasswordFile = config.sops.secrets."leantime/db_user_password".path;
+          rootPasswordFile = config.sops.secrets."leantime/db_root_password".path;
+        };
+        oidc = {
           enable = true;
-          gluetun = {
-            vpnProvider = "airvpn";
-            wireguardPrivateKeyFile = config.sops.secrets."gluetun/wg_pk".path;
-            wireguardPresharedKeyFile = config.sops.secrets."gluetun/wg_psk".path;
-            wireguardAddressesFile = config.sops.secrets."gluetun/wg_address".path;
+          clientSecretFile = config.sops.secrets."leantime/authelia/client_secret".path;
+        };
+      };
 
-            extraEnv = {
-              FIREWALL_VPN_INPUT_PORTS.fromFile = config.sops.secrets."qbittorrent/torrenting_port".path;
-              SERVER_NAMES.fromFile = config.sops.secrets."gluetun/server_names".path;
-              HTTP_CONTROL_SERVER_LOG = "off";
-            };
-          };
-          profilarr.enable = true;
-          containers.gluetun.ports = ["8888:8888"];
-
-          qbittorrent.extraEnv = {
-            TORRENTING_PORT.fromFile = config.sops.secrets."qbittorrent/torrenting_port".path;
-          };
-          jellyfin = {
-            oidc = {
-              enable = true;
-              clientSecretFile = config.sops.secrets."jellyfin/authelia/client_secret".path;
-            };
-          };
-        }
-        // lib.genAttrs ["sonarr" "radarr" "bazarr" "prowlarr"] (name: {
-          extraEnv."${lib.toUpper name}__AUTH__APIKEY".fromFile = config.sops.secrets."servarr/api_key".path;
-        });
-
+      n8n.enable = true;
       traefik = {
         enable = true;
         domain = "testing.ntasler.de";
