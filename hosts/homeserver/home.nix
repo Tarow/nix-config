@@ -130,6 +130,7 @@
       papra.enable = true;
 
       #romm.enable = true;
+      shelfmark.enable = true;
       skatcounter = {
         enable = true;
       };
@@ -154,7 +155,8 @@
       #webtop.enable = true;
       #wg-easy.enable = true;
       #wg-portal.enable = true;
-      yopass.enable = true;
+      wallos.enable = true;
+      #yopass.enable = true;
     };
   };
 }

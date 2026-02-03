@@ -50,6 +50,7 @@
         booklore.oidc.userGroup
         streaming.qui.oidc.userGroup
         papra.oidc.userGroup
+        wallos.oidc.userGroup
       ];
     };
     selma = {
@@ -784,6 +785,11 @@ in {
           enable = true;
           package = pkgs.unstable.igir;
         };
+      };
+
+      shelfmark = {
+        enable = true;
+        downloadDirectory = "${config.nps.storageBaseDir}/booklore/bookdrop";
       };
 
       sshwifty = let
