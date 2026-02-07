@@ -788,8 +788,19 @@ in {
       };
 
       shelfmark = {
-        enable = true;
         downloadDirectory = "${config.nps.storageBaseDir}/booklore/bookdrop";
+
+        containers.shelfmark.network = ["streaming"]; # To reach prowlarr
+        extraEnv = {
+          PROWLARR_ENABLED = true;
+          PROWLARR_URL = "http://prowlarr:9696";
+          PROWLARR_API_KEY.fromFile = config.sops.secrets."servarr/api_key".path;
+
+          PROWLARR_TORRENT_CLIENT = "qbittorrent";
+          QBITTORRENT_URL = "http://gluetun:8080";
+          QBITTORRENT_CATEGORY = "ebooks";
+          QBITTORRENT_CATEGORY_AUDIOBOOK = "audiobooks";
+        };
       };
 
       sshwifty = let
