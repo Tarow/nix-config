@@ -790,7 +790,10 @@ in {
       shelfmark = {
         downloadDirectory = "${config.nps.storageBaseDir}/booklore/bookdrop";
 
-        containers.shelfmark.network = ["streaming"]; # To reach prowlarr
+        containers.shelfmark = {
+          network = ["streaming"]; # to reach prowlarr
+          volumeMap.media = config.nps.containers.qbittorrent.volumeMap.media; # to access qbit downloads
+        };
         extraEnv = {
           PROWLARR_ENABLED = true;
           PROWLARR_URL = "http://prowlarr:9696";
