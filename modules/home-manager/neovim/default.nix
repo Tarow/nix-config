@@ -34,7 +34,7 @@ in {
         };
 
         languages = {
-          enableTreesitter = true;
+          #enableTreesitter = true;
         };
 
         lsp = {

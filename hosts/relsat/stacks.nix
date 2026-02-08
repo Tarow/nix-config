@@ -47,17 +47,11 @@
         };
       };
 
-      ephemera = {
-        enable = true;
-        downloadDirectory = "${config.nps.storageBaseDir}/booklore/bookdrop";
-      };
-
       immich = {
         enable = true;
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."immich/authelia/client_secret".path;
-          clientSecretHash = "$pbkdf2-sha512$310000$l8pHo5lLbManfxNCLP3gTQ$.o9bL6ol7SUf7X4dvlCaPPsgBgEk2jelCutnUXtG9nCVK7EU2KIUe0NcyPmpVP0EBUW.A8Sj1LIq4ngJm.f0Aw";
         };
         db.passwordFile = config.sops.secrets."immich/db_password".path;
         settings = {
@@ -115,7 +109,6 @@
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."norish/authelia/client_secret".path;
-          clientSecretHash = "$pbkdf2-sha512$310000$iCUXG7YDbRaMGNrucrPjyw$ZUIAIlt6DDzFfFFf6xnU6FeS/fj9fGoTnII9bcUpMVwhnxU8gQskO01StyVIp.HHAZpN4poVkR/lFf1i7pBk2A";
         };
       };
 
@@ -130,7 +123,6 @@
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."paperless/authelia/client_secret".path;
-          clientSecretHash = "$pbkdf2-sha512$310000$Yfb9s6emwWSI1kepQSmhUQ$tZiLJlDZKByzc0tMm5wWQIWnaSLCE0b4RJ9k0bbI7s3JGjOQ4mRsHbcBlCqF2J3FibZv0GLL4RON9ALwMSAC3g";
         };
         secretKeyFile = config.sops.secrets."paperless/secret_key".path;
         extraEnv = {

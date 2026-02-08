@@ -45,8 +45,12 @@
         komga.oidc.userGroup
         tandoor.oidc.userGroup
         kitchenowl.oidc.userGroup
-        norish.oidc.userGroup
+        norish.oidc.adminGroup
         vaultwarden.oidc.userGroup
+        booklore.oidc.userGroup
+        streaming.qui.oidc.userGroup
+        papra.oidc.userGroup
+        wallos.oidc.userGroup
       ];
     };
     selma = {
@@ -62,6 +66,7 @@
         timetracker.oidc.userGroup
         tandoor.oidc.userGroup
         norish.oidc.userGroup
+        booklore.oidc.userGroup
       ];
     };
     guest = {
@@ -108,6 +113,20 @@ in {
     defaultTz = "Europe/Berlin";
 
     stacks = {
+      adventurelog = {
+        secretKeyFile = config.sops.secrets."adventurelog/secret_key".path;
+        db.passwordFile = config.sops.secrets."adventurelog/db_password".path;
+        adminProvisioning = {
+          username = lldapUsers.niklas.id;
+          email = lldapUsers.niklas.email;
+          passwordFile = lldapUsers.niklas.password_file;
+        };
+        oidc = {
+          registerClient = true;
+          clientSecretHash.toHash = config.sops.secrets."adventurelog/authelia/client_secret".path;
+        };
+      };
+
       aiostreams = {
         secretKeyFile = config.sops.secrets."aiostreams/secret_key".path;
         extraEnv = {
@@ -121,7 +140,7 @@ in {
       audiobookshelf = {
         oidc = {
           registerClient = true;
-          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$dQHFMSR+Fhdx84GamLJ5LA$jzJevY6G+J9tClLxIAqozoPOeytSduR0v1HMAFR++ko";
+          clientSecretHash.toHash = config.sops.secrets."audiobookshelf/authelia/client_secret".path;
         };
       };
       authelia = {
@@ -174,6 +193,17 @@ in {
           };
         };
       };
+
+      booklore = {
+        oidc = {
+          registerClient = true;
+        };
+        db = {
+          userPasswordFile = config.sops.secrets."booklore/db_user_password".path;
+          rootPasswordFile = config.sops.secrets."booklore/db_root_password".path;
+        };
+      };
+
       crowdsec = {
         extraEnv = {
           ENROLL_INSTANCE_NAME = "homeserver";
@@ -220,7 +250,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."donetick/authelia/client_secret".path;
-          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$elNsvcPnuBeCRSPPVdTmtg$thuONNyx0kGKQhtSJwOqwCzWVrQ5yTu899MIrgEDkIA";
         };
       };
       filebrowser-quantum = {
@@ -236,7 +265,6 @@ in {
         };
         oidc = {
           enable = true;
-          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$SKzEY6iUGM8T5jpdjBt/qg$Eipoepsk2j0Dxp/DDdoj/ZcmRbkf3FLnjgr4oP2xZ2s";
           clientSecretFile = config.sops.secrets."filebrowser-quantum/authelia/client_secret".path;
         };
         settings.auth.methods.password.enabled = false;
@@ -251,7 +279,6 @@ in {
         # See <https://freshrss.github.io/FreshRSS/en/admins/16_OpenID-Connect.html> for setup
         oidc = {
           enable = true;
-          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$W0jLoTPPDwal2PULWcmlSg$HtzE9xiR+5lHFO8eRqlI27+lqLYWPbqSybyyiaL/y8s";
           clientSecretFile = config.sops.secrets."freshrss/authelia/client_secret".path;
           cryptoKeyFile = config.sops.secrets."freshrss/authelia/crypto_key".path;
         };
@@ -265,9 +292,10 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."gatus/authelia_client_secret".path;
-          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$4wovJBwfMgWMqeV9S4HZyg$HcnArT/vCP2e4N6tgNYWXwYj73cointfSM4ITOXKmzQ";
         };
 
+        # Needs Traefik for startup due to initial OIDC setup
+        containers.gatus.wantsContainer = ["traefik"];
         containers.gatus.extraEnv = {
           NTFY_ACCESS_TOKEN.fromFile = config.sops.secrets."users/monitoring/ntfy_access_token".path;
           EXTERNAL_ENDPOINT_PUSH_TOKEN.fromFile = config.sops.secrets."gatus/external_endpoint_token".path;
@@ -309,6 +337,12 @@ in {
                 conditions = [
                   "[CONNECTED] == true"
                 ];
+              }
+              {
+                name = "Relsat Server";
+                url = "https://relsat.de";
+                client.dns-resolver = "tcp://1.1.1.1:53";
+                group = "ext_availability";
               }
             ];
 
@@ -473,6 +507,7 @@ in {
       hortusfox = {
         adminEmail = lldapUsers.niklas.email;
         containers.hortusfox.forwardAuth.enable = true;
+
         extraEnv = {
           PROXY_OVERWRITE_VALUES = true;
           PROXY_ENABLE = true;
@@ -492,7 +527,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."immich/authelia/client_secret".path;
-          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$18FxDTnTEcrx4PFl8fHjhQ$Iv09KL9IJAMfHWIhPDr1f3kVf/D/BUyoPPQTEhGBPNM";
         };
         db.passwordFile = config.sops.secrets."immich/db_password".path;
         settings = {
@@ -504,13 +538,11 @@ in {
       jotty.oidc = {
         enable = true;
         clientSecretFile = config.sops.secrets."jotty/authelia/client_secret".path;
-        clientSecretHash = "$pbkdf2-sha512$310000$0j5MB8kcaIkFOFaI8iFoyA$cQ4WPcKzQfTBNSDS4wL3htx9WtLVhSiNl7Dq0iuB5dMYGw4.KlhACDEtFimgORt3YsXbKhj7ZkqQZ6eO1u30fQ";
       };
 
       karakeep = {
         oidc = {
           enable = true;
-          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$j1iaujV4SedP9TISGPon4w$EY+mQ3fH8C74+PrGw3TrGQRvKzCCjthYV43Hqrs31tk";
           clientSecretFile = config.sops.secrets."karakeep/authelia/client_secret".path;
         };
         nextauthSecretFile = config.sops.secrets."karakeep/nextauth_secret".path;
@@ -536,7 +568,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."kitchenowl/authelia/client_secret".path;
-          clientSecretHash = "$pbkdf2-sha512$310000$5ZQnccLzdHqeP4E4PXqwcw$Gn4fk603AFjiRTKjwx1Wi5VB49dP12nDTV4W2cV0ECl9s4mGuIceEyZErslCqZqF.YTgyws1UTsP6Rr5d7iOow";
         };
       };
 
@@ -544,7 +575,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."komga/authelia/client_secret".path;
-          clientSecretHash = "$pbkdf2-sha512$310000$hpnCEXSjuNUt7j8PnuChUQ$GBRaBPzMpQ7zXqhFZiwMVD.8/miZcFHjf9r/cTOT9Hm1u3Dj/V8PiEjfZd8ZnmUp7S6Si4lpb9LP1I.tn9LOlg";
         };
       };
       lldap = {
@@ -561,7 +591,6 @@ in {
       mealie = {
         oidc = {
           enable = true;
-          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$i7b124sTgqymSkCBnsZ0Qw$tDCVnQC1Kn191ygs2Rao7pCne3RNDnEYf7c1d11uBx0";
           clientSecretFile = config.sops.secrets."mealie/authelia/client_secret".path;
         };
       };
@@ -569,7 +598,7 @@ in {
       memos = {
         oidc = {
           registerClient = true;
-          clientSecretHash = "$pbkdf2-sha512$310000$03AyfuIXuhkOzRYW7DBqTQ$kZbrRphuyXmrkVeUteyxmlbHdZMPDrO4f7QSYFK.b8hOGUuRQ32lz5zeAXlM161A8nDfuts8ToSY2x.LHcFZrg";
+          clientSecretHash.toHash = config.sops.secrets."memos/authelia/client_secret".path;
         };
         db = {
           passwordFile = config.sops.secrets."memos/db_password".path;
@@ -589,7 +618,6 @@ in {
         grafana = {
           oidc = {
             enable = true;
-            clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$7/u7j+Jk0uexxJ4CaylQWw$t2EQJPYklJFqr6+MqJg7uCgmZaYaH+KgEtOpEGdQta8";
             clientSecretFile = config.sops.secrets."grafana/authelia/client_secret".path;
           };
         };
@@ -667,7 +695,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."norish/authelia/client_secret".path;
-          clientSecretHash = "$pbkdf2-sha512$310000$zGCwkBJkaLwul.Qj9rimjw$LpAl0eLMQVFLnzl1Gbm/1VZvXE1wg0CorWDbZp13m1NHzkq51UcfxTjD2XkzCCoxw8Vx23LJq.IHWEAkMtL93A";
         };
       };
 
@@ -702,7 +729,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."outline/authelia/client_secret".path;
-          clientSecretHash = "$pbkdf2-sha512$310000$NZWRZbYxrmbsOG12AGE2eA$3ZZoqHOxpWciUaB3U0Zc14lMigmXFtkEH5r2yRMWuHlRqM2Go3Z7C0grzbQD6Gy9RtnpctNJrcb1fWuQ4uMOHA";
         };
       };
       paperless = {
@@ -715,7 +741,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."paperless/authelia_client_secret".path;
-          clientSecretHash = "$pbkdf2-sha512$310000$0IgF7vx.fWICGnbGGMQosw$v73kGV4a5sBX2Zc39aS.vLj..IepDX02NK.xsAYpUaAvXdIr65BYU6TnAmPiusjyaa.sCiF6vrmoEgWyWpr/SQ";
         };
         secretKeyFile = config.sops.secrets."paperless/secret_key".path;
         extraEnv = {
@@ -733,18 +758,14 @@ in {
         };
       };
 
-      pocketid = {
-        traefikIntegration = {
+      papra = {
+        authSecretFile = config.sops.secrets."papra/auth_secret".path;
+        oidc = {
           enable = true;
-          clientId = "8c55dd45-1c75-4e01-bdd1-300af3eadcc7";
-          clientSecretFile = config.sops.secrets."pocketid/traefik/clientSecret".path;
-          encryptionSecretFile = config.sops.secrets."pocketid/traefik/middlewareSecret".path;
-        };
-        ldap = {
-          username = lldapUsers.readonly.id;
-          passwordFile = lldapUsers.readonly.password_file;
+          clientSecretFile = config.sops.secrets."papra/authelia/client_secret".path;
         };
       };
+
       romm = {
         authSecretKeyFile = config.sops.secrets."romm/auth_secret_key".path;
         romLibraryPath = "${config.nps.externalStorageBaseDir}/romm/library";
@@ -755,7 +776,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."romm/authelia/client_secret".path;
-          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$pki2TtHTQZnqLA+j+yPuzg$7KOitH9Co3DLmb4bVNoepg2PHARG2VNCAywieLwt9SE";
         };
         db = {
           userPasswordFile = config.sops.secrets."romm/db/user_password".path;
@@ -764,6 +784,25 @@ in {
         igir = {
           enable = true;
           package = pkgs.unstable.igir;
+        };
+      };
+
+      shelfmark = {
+        downloadDirectory = "${config.nps.storageBaseDir}/booklore/bookdrop";
+
+        containers.shelfmark = {
+          network = ["streaming"]; # to reach prowlarr
+          volumeMap.media = config.nps.containers.qbittorrent.volumeMap.media; # to access qbit downloads
+        };
+        extraEnv = {
+          PROWLARR_ENABLED = true;
+          PROWLARR_URL = "http://prowlarr:9696";
+          PROWLARR_API_KEY.fromFile = config.sops.secrets."servarr/api_key".path;
+
+          PROWLARR_TORRENT_CLIENT = "qbittorrent";
+          QBITTORRENT_URL = "http://gluetun:8080";
+          QBITTORRENT_CATEGORY = "ebooks";
+          QBITTORRENT_CATEGORY_AUDIOBOOK = "audiobooks";
         };
       };
 
@@ -804,7 +843,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."storyteller/authelia/client_secret".path;
-          clientSecretHash = "$pbkdf2-sha512$310000$lRGcfTq0UOnzsyWOf4WCYw$R1jpZLd0sUh.SRVnLuFJDDURwyCXGnomxioKc8xSXkkFO3IvFpiT5xIE25wRyKdQlqGKSxfNqPG.nJWWNtJPsw";
         };
         containers.storyteller = {
           devices = ["/dev/dri:/dev/dri"];
@@ -838,6 +876,7 @@ in {
               HTTP_CONTROL_SERVER_LOG = "off";
             };
           };
+          containers.gluetun.ports = ["8888:8888"];
           qbittorrent.extraEnv = {
             TORRENTING_PORT.fromFile = config.sops.secrets."qbittorrent/torrenting_port".path;
           };
@@ -845,7 +884,13 @@ in {
             oidc = {
               enable = true;
               clientSecretFile = config.sops.secrets."jellyfin/authelia/client_secret".path;
-              clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$bvFrDVncsSd6rRIsqwXTRA$epymT2YwTSB5PDByAp7mXGdrQ/N+aEEMOzXaWvQ5xUM";
+            };
+          };
+          qui = {
+            enable = true;
+            oidc = {
+              enable = true;
+              clientSecretFile = config.sops.secrets."qui/authelia/client_secret".path;
             };
           };
         }
@@ -859,7 +904,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."tandoor/authelia/client_secret".path;
-          clientSecretHash = "$pbkdf2-sha512$310000$Q6QZjjNRyjk9qA9WDro9mw$CNS90obOUuJk/OLNZOSBUCCR7deIZnaWFb0QF4j6gaiOB3SkEAOpLyJd88AHb3uCP3f6enaed3jyP5Got2RfLA";
         };
         containers.tandoor.extraEnv = {
           # https://docs.tandoor.dev/system/configuration/#default-permissions
@@ -873,7 +917,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."timetracker/authelia/client_secret".path;
-          clientSecretHash = "$pbkdf2-sha512$310000$k3oAaquy0xlAiE.coG.Uqg$rsXtFxuVOSuXFH6E3kEEpmDIoce1kKxW3sXZxaS.rdVKIxjbNPZEagb5UJdgOlJB/C4/VIbV8yRwIqPJ9UQMJA";
         };
         db.passwordFile = config.sops.secrets."timetracker/db_password".path;
         containers.timetracker.extraEnv = {
@@ -890,6 +933,18 @@ in {
         enableGrafanaMetricsDashboard = true;
         enableGrafanaAccessLogDashboard = true;
         crowdsec.middleware.bouncerKeyFile = config.sops.secrets."crowdsec/traefik_bouncer_key".path;
+        containers.traefik.extraConfig.Container.DNS = "1.1.1.1";
+      };
+
+      vaultwarden = {
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."vaultwarden/authelia/client_secret".path;
+        };
+        extraEnv = {
+          SIGNUPS_ALLOWED = false;
+          SSO_ONLY = true;
+        };
       };
 
       vikunja = {
@@ -899,11 +954,17 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."vikunja/authelia/client_secret".path;
-          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$5yan15Eue1VX6WsFW5LygA$//p0a4BWfLJKt4BMmagCF9HgokO5bIO6se99XmFHhA8";
         };
         settings = {
           service.enableregistration = false;
           auth.local.enabled = false;
+        };
+      };
+
+      wallos = {
+        oidc = {
+          registerClient = true;
+          clientSecretHash.toHash = config.sops.secrets."wallos/authelia/client_secret".path;
         };
       };
 
@@ -931,7 +992,6 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."wg-portal/authelia/client_secret".path;
-          clientSecretHash = "$argon2id$v=19$m=65536,t=3,p=4$OMvEmtEjIUjfRqW2FkZiQg$GAKvd0HJ8f8AE3F6LpBptew/PFcEchXfERhhf73IgnI";
         };
       };
     };

@@ -33,6 +33,4 @@
     facts.ip4Address = "192.168.178.2";
     sops.extraSopsFiles = [../../secrets/relsat/secrets.yaml];
   };
-
- 
 }
