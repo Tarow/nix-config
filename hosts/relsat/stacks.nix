@@ -113,7 +113,7 @@
       };
 
       paperless = {
-        enable = true;
+        #enable = true;
         enableTika = true;
         adminProvisioning = {
           username = "niklas";
