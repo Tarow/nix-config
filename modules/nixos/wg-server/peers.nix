@@ -31,4 +31,10 @@ config: {
     presharedKeyFile = config.sops.secrets."wireguard/psk_hermann_phone".path;
     allowedIPs = ["10.3.3.2"];
   };
+  hermann-laptop = {
+    name = "hermann-laptop";
+    publicKey = "2nuOAfk4fjb0fOcvxgn5lhhEQhkrGYNqrJvQm5lKJnU=";
+    presharedKeyFile = config.sops.secrets."wireguard/psk_hermann_laptop".path;
+    allowedIPs = ["10.3.3.3"];
+  };
 }

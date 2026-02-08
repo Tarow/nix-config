@@ -37,6 +37,7 @@
       in [
         peers.homeserver
         peers.hermann-phone
+        peers.hermann-laptop
       ];
     };
 
