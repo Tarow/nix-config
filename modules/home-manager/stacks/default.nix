@@ -51,6 +51,7 @@
         streaming.qui.oidc.userGroup
         papra.oidc.userGroup
         wallos.oidc.userGroup
+        kaneo.oidc.userGroup
       ];
     };
     selma = {
@@ -369,6 +370,7 @@ in {
                 group = "backups";
                 token = "\${EXTERNAL_ENDPOINT_PUSH_TOKEN}";
                 heartbeat.interval = "25h";
+                conditions = ["STATUS==any(200,403)"];
               });
           in
             backups
@@ -538,6 +540,15 @@ in {
       jotty.oidc = {
         enable = true;
         clientSecretFile = config.sops.secrets."jotty/authelia/client_secret".path;
+      };
+
+      kaneo = {
+        authSecretFile = config.sops.secrets."kaneo/auth_secret".path;
+        db.passwordFile = config.sops.secrets."kaneo/db_password".path;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."kaneo/authelia/client_secret".path;
+        };
       };
 
       karakeep = {

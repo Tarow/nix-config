@@ -24,6 +24,6 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    home.shellAliases.uh = lib.mkIf (cfg.flakeLocation != null && cfg.flakeConfigKey != null) (lib.mkDefault "home-manager switch -b bak --flake ${cfg.flakeLocation}#${cfg.flakeConfigKey}");
+    home.shellAliases.uh2 = lib.mkIf (cfg.flakeLocation != null && cfg.flakeConfigKey != null) "home-manager switch -b bak --flake ${cfg.flakeLocation}#${cfg.flakeConfigKey}";
   };
 }

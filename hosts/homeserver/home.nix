@@ -94,6 +94,7 @@
       it-tools.enable = true;
       #jotty.enable = true;
 
+      kaneo.enable = true;
       karakeep.enable = true;
       #kimai.enable = true;
 
@@ -120,6 +121,9 @@
       };
       #n8n.enable = true;
       #networking-toolbox.enable = true;
+
+      #nextcloud.enable = true; #npsSettings.enable = true; #npsSettings.containers.npsSettings.extraEnv.NPSSETTINGS_LOG_LEVEL = "DEBUG";
+      #readmeabook.enable = true;
 
       norish.enable = true;
       ntfy.enable = true;
