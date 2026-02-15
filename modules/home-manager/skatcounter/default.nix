@@ -23,6 +23,7 @@ in {
       forwardAuth = {
         enable = true;
         middlewareOrder = 1100;
+        rules = [{policy = "one_factor";}];
       };
     };
   };

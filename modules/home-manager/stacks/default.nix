@@ -300,6 +300,7 @@ in {
         containers.gatus.extraEnv = {
           NTFY_ACCESS_TOKEN.fromFile = config.sops.secrets."users/monitoring/ntfy_access_token".path;
           EXTERNAL_ENDPOINT_PUSH_TOKEN.fromFile = config.sops.secrets."gatus/external_endpoint_token".path;
+          GATUS_LOG_LEVEL = "DEBUG";
         };
         settings = let
           mkAlert = {
@@ -357,6 +358,13 @@ in {
                 client.dns-resolver = "tcp://1.1.1.1:53";
                 group = "ext_availability";
                 headers.Accept = "text/html";
+                conditions = [
+                  "[STATUS] == ${
+                    if c.forwardAuth.enable
+                    then "403"
+                    else "200"
+                  }"
+                ];
               })
               |> lib.attrValues;
           in
@@ -370,7 +378,6 @@ in {
                 group = "backups";
                 token = "\${EXTERNAL_ENDPOINT_PUSH_TOKEN}";
                 heartbeat.interval = "25h";
-                conditions = ["STATUS==any(200,403)"];
               });
           in
             backups
