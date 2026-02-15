@@ -34,6 +34,7 @@
         "vscode"
         "zen-browser"
         "podman"
+        "opencode"
       ];
     }
   ];

@@ -11,7 +11,8 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [unstable.nodePackages."@angular/cli"];
+    # "@angular/cli was removed because it was unmaintainable in nixpkgs"
+    #home.packages = with pkgs; [unstable.nodePackages."@angular/cli"];
     programs.vscode.profiles.default = {
       extensions = with pkgs.vscode-marketplace;
       with pkgs.vscode-marketplace-release; [
