@@ -75,6 +75,14 @@
       password_file = config.sops.secrets."users/guest/password".path;
       displayName = "Guest";
     };
+    relsat = {
+      email = "relsat@${domain}";
+      password_file = config.sops.secrets."users/relsat/password".path;
+      displayName = "Relsat";
+      groups = [
+        booklore.oidc.userGroup
+      ];
+    };
     test = {
       email = "test@${domain}";
       password_file = config.sops.secrets."users/test/password".path;
