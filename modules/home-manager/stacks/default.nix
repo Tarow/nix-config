@@ -286,7 +286,7 @@ in {
         secretKeyFile = config.sops.secrets."forgejo/secret_key".path;
         internalTokenFile = config.sops.secrets."forgejo/internal_token".path;
         jwtSecretFile = config.sops.secrets."forgejo/jwt_secret".path;
-        ssh.proxied = false;
+        ssh.proxied = true;
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."forgejo/authelia/client_secret".path;
@@ -379,9 +379,13 @@ in {
                 name = "${name} External";
                 client.dns-resolver = "tcp://1.1.1.1:53";
                 group = "ext_availability";
-                headers.Accept = "text/html";
+                headers.Accept = "application/json";
                 conditions = [
-                  "[STATUS] == 200"
+                  "[STATUS] == ${
+                    if c.forwardAuth.enable
+                    then "401"
+                    else "200"
+                  }"
                 ];
               })
               |> lib.attrValues;
