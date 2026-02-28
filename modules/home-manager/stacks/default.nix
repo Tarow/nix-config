@@ -173,6 +173,7 @@ in {
           };
         };
         settings.log.level = "debug";
+        settings.access_control.default_policy = "deny";
         sessionProvider = "redis";
 
         containers.authelia = {
@@ -277,6 +278,19 @@ in {
           clientSecretFile = config.sops.secrets."filebrowser-quantum/authelia/client_secret".path;
         };
         settings.auth.methods.password.enabled = false;
+      };
+
+      forgejo = {
+        adminProvisioning.enable = false;
+        lfsJwtSecretFile = config.sops.secrets."forgejo/lfs_jwt_secret".path;
+        secretKeyFile = config.sops.secrets."forgejo/secret_key".path;
+        internalTokenFile = config.sops.secrets."forgejo/internal_token".path;
+        jwtSecretFile = config.sops.secrets."forgejo/jwt_secret".path;
+        ssh.proxied = false;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."forgejo/authelia/client_secret".path;
+        };
       };
 
       free-games-claimer = {
@@ -791,6 +805,17 @@ in {
           clientSecretFile = config.sops.secrets."papra/authelia/client_secret".path;
         };
       };
+
+      /*
+        reactive-resume = {
+        authSecretFile = config.sops.secrets."reactive_resume/auth_secret".path;
+        db.passwordFile = config.sops.secrets."reactive_resume/db_password".path;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."reactive_resume/authelia/client_secret".path;
+        };
+      };
+      */
 
       romm = {
         authSecretKeyFile = config.sops.secrets."romm/auth_secret_key".path;
