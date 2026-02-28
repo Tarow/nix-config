@@ -381,11 +381,7 @@ in {
                 group = "ext_availability";
                 headers.Accept = "text/html";
                 conditions = [
-                  "[STATUS] == ${
-                    if c.forwardAuth.enable
-                    then "403"
-                    else "200"
-                  }"
+                  "[STATUS] == 200"
                 ];
               })
               |> lib.attrValues;
