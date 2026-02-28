@@ -20,6 +20,7 @@
       enable = true;
       extraSopsFiles = [../../secrets/homeserver/secrets.yaml];
     };
+    oomd.enable = true;
 
     wg-server = {
       enable = true;

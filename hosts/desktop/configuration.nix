@@ -29,6 +29,7 @@
       "shells"
       "sops"
       "stylix"
+      "oomd"
     ])
     {facts.ip4Address = "10.1.1.210";}
 

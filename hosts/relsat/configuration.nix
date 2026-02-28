@@ -19,6 +19,7 @@
       enable = true;
       extraSopsFiles = [../../secrets/relsat/secrets.yaml];
     };
+    oomd.enable = true;
 
     wg-server = {
       enable = true;
