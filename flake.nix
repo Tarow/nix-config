@@ -28,11 +28,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    inputs.deploy-rs = {
-      url = "github:serokell/deploy-rs";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-
     stylix = {
       url = "github:danth/stylix/release-25.11";
       #url = "github:danth/stylix/master";
