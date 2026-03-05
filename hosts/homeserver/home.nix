@@ -76,6 +76,7 @@
 
       #filebrowser.enable = true;
       #filebrowser-quantum.enable = true;
+      #sparky-fitness.enable = true;
       #freshrss.enable = true;
       # forgejo.enable = true;
       #free-games-claimer.enable = true;
@@ -135,6 +136,7 @@
 
       #romm.enable = true;
       shelfmark.enable = true;
+
       skatcounter = {
         enable = true;
       };
