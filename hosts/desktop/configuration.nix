@@ -47,6 +47,9 @@
     enable = true;
   };
 
+  # Windows is annoying ... (Dual-Boot)
+  time.hardwareClockInLocalTime = true;
+
   services.xserver.videoDrivers = ["nvidia"];
 
   hardware.nvidia = {
