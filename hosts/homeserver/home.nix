@@ -76,6 +76,7 @@
 
       #filebrowser.enable = true;
       #filebrowser-quantum.enable = true;
+      #sparky-fitness.enable = true;
       #freshrss.enable = true;
       # forgejo.enable = true;
       #free-games-claimer.enable = true;
@@ -135,6 +136,11 @@
 
       #romm.enable = true;
       shelfmark.enable = true;
+      shelfmark.extraEnv = {
+        OIDC_DISCOVERY_URL = config.nps.containers.authelia.traefik.serviceUrl + "/.well-known/openid-configuration";
+        OIDC_CLIENT_ID = "shelfmark";
+        OIDC_CLIENT_SECRET = "64c265b00483b4c62cbab62dba6cfd59ef923de5c5c9d46c7da5d7bcda9f59c8";
+      };
       skatcounter = {
         enable = true;
       };
