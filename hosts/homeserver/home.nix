@@ -121,6 +121,18 @@
         ];
       };
       #n8n.enable = true;
+      /*
+        netbird = {
+        enable = true;
+        authSecretFile = config.sops.secrets."netbird/auth_secret".path;
+        storeEncryptionKeyFile = config.sops.secrets."netbird/encryption_key".path;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."netbird/authelia/client_secret".path;
+        };
+      };
+      */
+
       #networking-toolbox.enable = true;
 
       #nextcloud.enable = true; #npsSettings.enable = true; #npsSettings.containers.npsSettings.extraEnv.NPSSETTINGS_LOG_LEVEL = "DEBUG";
@@ -136,7 +148,6 @@
 
       #romm.enable = true;
       shelfmark.enable = true;
-
       skatcounter = {
         enable = true;
       };
