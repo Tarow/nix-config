@@ -75,6 +75,20 @@
 
       blocky.enable = true;
 
+      ddns-updater = {
+        enable = true;
+        settings = [
+          {
+            provider = "cloudflare";
+            zone_identifier = "75236b0b9d34097b92297482d84b998b";
+            domain = "vpn.relsat.de";
+            token = "{{ file.Read `${config.sops.secrets."CLOUDFLARE_API_KEY".path}`}}";
+            ttl = 600;
+            ip_version = "ipv4";
+          }
+        ];
+      };
+
       dockdns = {
         enable = true;
         extraEnv.RELSAT_DE_API_TOKEN.fromFile = config.sops.secrets."CLOUDFLARE_API_KEY".path;
