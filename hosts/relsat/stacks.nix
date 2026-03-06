@@ -90,7 +90,7 @@
       };
 
       dockdns = {
-        enable = true;
+        #enable = true;
         extraEnv.RELSAT_DE_API_TOKEN.fromFile = config.sops.secrets."CLOUDFLARE_API_KEY".path;
         settings.dns.purgeUnknown = true;
         settings.log.level = "debug";
