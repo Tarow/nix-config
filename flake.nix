@@ -114,6 +114,8 @@
             {
               home-manager.sharedModules = [
                 ./modules/home-manager
+                ./modules/shared
+                ./hosts/shared/shared.nix
                 ./hosts/shared/home.nix
               ];
               home-manager.useGlobalPkgs = true;
@@ -143,6 +145,7 @@
         ];
       };
 
+    sharedCfg = import ./hosts/shared/shared.nix;
     hosts = ["wsl2" "thinkpad" "desktop" "homeserver" "relsat"];
     homes = hosts;
   in {
@@ -152,6 +155,7 @@
       mkSystem {
         inherit name;
         systemConfig = ./hosts/${name}/configuration.nix;
+        userConfigs.${sharedCfg.tarow.facts.username} = ./hosts/${name}/home.nix;
       });
 
     homeConfigurations = nixpkgs.lib.genAttrs homes (name:
