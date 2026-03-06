@@ -5,7 +5,7 @@ config: {
     publicKey = "hh/YZ5sBzDH9ow10JkH0VUhpl5yGzcNteCtaWF2q9TA=";
     presharedKeyFile = config.sops.secrets."wireguard/psk_homeserver".path;
     allowedIPs = ["10.1.1.0/24" "10.2.2.0/24"];
-    persistentKeepalive = 30;
+    persistentKeepalive = 25;
   };
   relsat-server = {
     name = "relsat";
@@ -13,7 +13,7 @@ config: {
     publicKey = "dciLvDLmbdg2u54WdS0JG8NF0vp25zDP3DrdOLiRq2g=";
     presharedKeyFile = config.sops.secrets."wireguard/psk_relsat".path;
     allowedIPs = ["192.168.178.0/24" "10.3.3.0/24"];
-    persistentKeepalive = 30;
+    persistentKeepalive = 25;
   };
   niklas-phone = {
     name = "niklas-phone";
