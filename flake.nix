@@ -117,6 +117,7 @@
                 ./modules/shared
                 ./hosts/shared/shared.nix
                 ./hosts/shared/home.nix
+                {tarow.core.flakeConfigKey = name;}
               ];
               home-manager.backupFileExtension = ".bak";
               home-manager.useGlobalPkgs = true;

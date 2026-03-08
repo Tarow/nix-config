@@ -3,9 +3,11 @@
   lib,
   config,
   inputs,
+  osConfig ? {},
   ...
 }: let
   cfg = config.tarow.core;
+  isStandalone = !config.submoduleSupport.enable;
 in {
   options.tarow.core = {
     enable = lib.options.mkEnableOption "Core Programs and Configs";
@@ -24,6 +26,6 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    home.shellAliases.uh2 = lib.mkIf (cfg.flakeLocation != null && cfg.flakeConfigKey != null) "home-manager switch -b bak --flake ${cfg.flakeLocation}#${cfg.flakeConfigKey}";
+    home.shellAliases.uh2 = lib.mkIf (isStandalone && cfg.flakeLocation != null && cfg.flakeConfigKey != null) "home-manager switch -b bak --flake ${cfg.flakeLocation}#${cfg.flakeConfigKey}";
   };
 }
