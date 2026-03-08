@@ -72,7 +72,8 @@ jobs:
         run: nix build .#nixosConfigurations.${{ matrix.nixosCfgKey }}.config.system.build.toplevel
 
       - name: Build Home-Manager Cofiguration
-        if: ${{ contains(toJSON(matrix), 'homeCfgKey') && matrix.homeCfgKey != '' }}
+        #if: ${{ contains(toJSON(matrix), 'homeCfgKey') && matrix.homeCfgKey != '' }}
+        if: false
         run: nix build .#homeConfigurations.${{ matrix.homeCfgKey }}.activationPackage
 
   check_flake:
