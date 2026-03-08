@@ -1,7 +1,16 @@
 {
-  tarow.facts.person = {
-    email = "niklastasler@gmail.com";
-    name = "Niklas Tasler";
+  tarow = {
+    cachix.enable = true;
+    core.enable = true;
+    housekeeping.enable = true;
+    shells.enable = true;
+    starship.enable = true;
+    stylix.enable = true;
+
+    facts.person = {
+      email = "niklastasler@gmail.com";
+      name = "Niklas Tasler";
+    };
   };
 
   home.sessionVariables = {
