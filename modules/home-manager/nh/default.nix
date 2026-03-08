@@ -11,10 +11,6 @@ in {
     enable = lib.options.mkEnableOption "nh";
   };
   config = lib.mkIf cfg.enable {
-    home.file."isStandalone".text =
-      if isStandalone
-      then "true"
-      else "false";
     programs.nh = {
       enable = true;
       flake = coreCfg.flakeLocation;
