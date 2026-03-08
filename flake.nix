@@ -116,6 +116,7 @@
                 ./modules/home-manager
                 ./hosts/shared/home.nix
               ];
+              home-manager.backupFileExtension = ".bak";
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.extraSpecialArgs = {inherit inputs outputs lib;};
