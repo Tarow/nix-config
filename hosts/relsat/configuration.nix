@@ -148,8 +148,10 @@
       success=$([ "''${2}" -eq 0 ] && echo true || echo false)
       duration="$(( $(date +%s) - "''${START_TIME}" ))s"
       token="$(< ${config.sops.secrets."gatus/external_endpoint_token".path})"
-      ${lib.getExe pkgs.curl} --retry 3 --retry-max-time 30 \
-        -H "Authorization: Bearer ''${token}" -X POST "https://gatus.ntasler.de/api/v1/endpoints/backups_$1/external?success=$success&duration=$duration"
+      if ! ${lib.getExe pkgs.curl} -v --retry 3 --retry-max-time 30 \
+          -H "Authorization: Bearer ''${token}" -X POST "https://gatus.ntasler.de/api/v1/endpoints/backups_$1/external?success=$success&duration=$duration"; then
+        echo "Failed to notify gatus for backup job $1" >&2
+      fi
     '');
     base = {
       paths = [
