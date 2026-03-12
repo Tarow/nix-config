@@ -84,8 +84,7 @@
       gatus.enable = true;
       #gatus.containers.gatus.extraEnv.GATUS_LOG_LEVEL = "DEBUG";
       guacamole.enable = true;
-      guacamole.db.passwordFile = config.sops.secrets."guacamole/db_password".path;
-      guacamole.oidc.enable = true;
+
       #healthchecks.enable = true;
 
       #homeassistant.enable = true;
