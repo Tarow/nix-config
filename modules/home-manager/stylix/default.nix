@@ -6,6 +6,7 @@
   ...
 }: let
   cfg = config.tarow.stylix;
+  isStandalone = !config.submoduleSupport.enable;
 in {
   options.tarow.stylix = {
     enable = lib.options.mkEnableOption "Stylix";
@@ -16,6 +17,8 @@ in {
   config = lib.mkIf cfg.enable {
     stylix = {
       enable = true;
+      overlays.enable = isStandalone;
+
       #image = pkgs.nixos-artwork.wallpapers.simple-dark-gray.gnomeFilePath;
       image = ./wallpaper.png;
       base16Scheme = "${pkgs.base16-schemes}/share/themes/ayu-dark.yaml";
