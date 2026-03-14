@@ -1,6 +1,5 @@
 {
   tarow = {
-    cachix.enable = true;
     core.enable = true;
     housekeeping.enable = true;
     shells.enable = true;
