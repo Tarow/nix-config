@@ -1,8 +1,6 @@
 {
-  pkgs,
   lib,
   config,
-  inputs,
   ...
 }: let
   cfg = config.tarow.bootLoader;
@@ -12,7 +10,10 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    boot.loader.systemd-boot.enable = true;
+    boot.loader.systemd-boot = {
+      enable = true;
+      configurationLimit = 5;
+    };
     boot.loader.efi.canTouchEfiVariables = true;
   };
 }
