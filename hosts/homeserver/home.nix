@@ -142,7 +142,7 @@
       norish.enable = true;
       ntfy.enable = true;
 
-      #outline.enable = true;
+      outline.enable = true;
 
       paperless.enable = true;
       papra.enable = true;

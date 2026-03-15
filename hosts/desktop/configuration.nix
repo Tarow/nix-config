@@ -41,8 +41,6 @@
 
   networking.hostName = "nixos";
 
-  nix.settings.trusted-users = ["@wheel"];
-
   hardware.graphics = {
     enable = true;
   };
