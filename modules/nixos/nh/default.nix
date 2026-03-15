@@ -14,6 +14,10 @@ in {
       enable = true;
       flake = coreCfg.flakeLocation;
     };
-    environment.shellAliases.us = lib.mkIf (coreCfg.flakeLocation != null && coreCfg.flakeConfigKey != null) "nh os switch ${coreCfg.flakeLocation} -H ${coreCfg.flakeConfigKey}";
+    environment.shellAliases = lib.mkIf (coreCfg.flakeLocation != null) {
+      us = lib.mkIf (coreCfg.flakeConfigKey != null) "nh os switch ${coreCfg.flakeLocation} -H ${coreCfg.flakeConfigKey}";
+      update-relsat = lib.mkIf (coreCfg.flakeConfigKey != null) "nh os switch ${coreCfg.flakeLocation} -H relsat --target-host relsat.de --build-host relsat.de";
+      update-homeserver = lib.mkIf (coreCfg.flakeConfigKey != null) "nh os switch ${coreCfg.flakeLocation} -H homeserver --target-host ntasler.de --build-host ntasler.de";
+    };
   };
 }

@@ -24,6 +24,10 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    environment.shellAliases.us = lib.mkIf (cfg.flakeLocation != null && cfg.flakeConfigKey != null) (lib.mkDefault "nixos-rebuild switch --flake ${cfg.flakeLocation}#${cfg.flakeConfigKey} --use-remote-sudo");
+    environment.shellAliases = lib.mkIf (cfg.flakeLocation != null) {
+      us = lib.mkIf (cfg.flakeConfigKey != null) (lib.mkDefault "nixos-rebuild switch --flake ${cfg.flakeLocation}#${cfg.flakeConfigKey} --sudo");
+      update-relsat = lib.mkIf (cfg.flakeConfigKey != null) (lib.mkDefault "nixos-rebuild switch --flake ${cfg.flakeLocation}#relsat --sudo --target-host relsat.de --build-host relsat.de");
+      update-homeserver = lib.mkIf (cfg.flakeConfigKey != null) (lib.mkDefault "nixos-rebuild switch --flake ${cfg.flakeLocation}#homeserver --sudo --target-host ntasler.de --build-host ntasler.de");
+    };
   };
 }
