@@ -68,6 +68,7 @@
         tandoor.oidc.userGroup
         norish.oidc.userGroup
         booklore.oidc.userGroup
+        outline.oidc.userGroup
       ];
     };
     guest = {
@@ -858,7 +859,7 @@ in {
       };
 
       /*
-        sparky-fitness = {
+      sparky-fitness = {
         betterAuthSecretFile = config.sops.secrets."sparkyfitness/better_auth_secret".path;
         apiEncryptionKeyFile = config.sops.secrets."sparkyfitness/api_encryption_key".path;
         db.passwordFile = config.sops.secrets."sparkyfitness/db_password".path;

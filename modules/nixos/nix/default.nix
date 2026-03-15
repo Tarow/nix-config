@@ -1,6 +1,4 @@
 {
-  lib,
-  config,
   pkgs,
   inputs,
   outputs,
@@ -8,6 +6,7 @@
 }: {
   nix = {
     settings = {
+      trusted-users = ["@wheel"];
       extra-experimental-features = [
         "nix-command"
         "flakes"
