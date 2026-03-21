@@ -22,6 +22,9 @@ in {
 
         "terminal.integrated.defaultProfile.linux" = "fish";
 
+        # https://github.com/QwenLM/qwen-code/issues/2401
+        "terminal.integrated.enableKittyKeyboardProtocol" = false;
+
         "terminal.integrated.commandsToSkipShell" = [
           "-workbench.action.terminal.focusFind"
         ];
