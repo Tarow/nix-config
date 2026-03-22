@@ -36,17 +36,6 @@
         sessionProvider = "redis";
       };
 
-      booklore = {
-        enable = true;
-        oidc = {
-          registerClient = true;
-        };
-        db = {
-          userPasswordFile = config.sops.secrets."booklore/db_user_password".path;
-          rootPasswordFile = config.sops.secrets."booklore/db_root_password".path;
-        };
-      };
-
       immich = {
         enable = true;
         oidc = {
@@ -112,6 +101,18 @@
       };
 
       docker-socket-proxy.enable = true;
+
+      grimmory = {
+        enable = true;
+        oidc = {
+          registerClient = true;
+        };
+        db = {
+          userPasswordFile = config.sops.secrets."grimmory/db_user_password".path;
+          rootPasswordFile = config.sops.secrets."grimmory/db_root_password".path;
+        };
+      };
+
       homepage.enable = true;
       mazanoke.enable = true;
       monitoring.enable = true;
