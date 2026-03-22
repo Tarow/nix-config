@@ -47,7 +47,7 @@
         kitchenowl.oidc.userGroup
         norish.oidc.adminGroup
         vaultwarden.oidc.userGroup
-        booklore.oidc.userGroup
+        grimmory.oidc.userGroup
         streaming.qui.oidc.userGroup
         papra.oidc.userGroup
         wallos.oidc.userGroup
@@ -67,7 +67,7 @@
         timetracker.oidc.userGroup
         tandoor.oidc.userGroup
         norish.oidc.userGroup
-        booklore.oidc.userGroup
+        grimmory.oidc.userGroup
         outline.oidc.userGroup
       ];
     };
@@ -81,7 +81,7 @@
       password_file = config.sops.secrets."users/relsat/password".path;
       displayName = "Relsat";
       groups = [
-        booklore.oidc.userGroup
+        grimmory.oidc.userGroup
       ];
     };
     test = {
@@ -202,16 +202,6 @@ in {
               ];
             };
           };
-        };
-      };
-
-      booklore = {
-        oidc = {
-          registerClient = true;
-        };
-        db = {
-          userPasswordFile = config.sops.secrets."booklore/db_user_password".path;
-          rootPasswordFile = config.sops.secrets."booklore/db_root_password".path;
         };
       };
 
@@ -467,6 +457,16 @@ in {
               }
             ];
           };
+        };
+      };
+
+      grimmory = {
+        oidc = {
+          registerClient = true;
+        };
+        db = {
+          userPasswordFile = config.sops.secrets."grimmory/db_user_password".path;
+          rootPasswordFile = config.sops.secrets."grimmory/db_root_password".path;
         };
       };
 
@@ -840,7 +840,7 @@ in {
       };
 
       shelfmark = {
-        downloadDirectory = "${config.nps.storageBaseDir}/booklore/bookdrop";
+        downloadDirectory = "${config.nps.storageBaseDir}/grimmory/bookdrop";
 
         containers.shelfmark = {
           network = ["streaming"]; # to reach prowlarr

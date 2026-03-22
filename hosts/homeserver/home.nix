@@ -60,7 +60,6 @@
       bentopdf.enable = true;
       #beszel.enable = true;
       blocky.enable = true;
-      booklore.enable = true;
 
       #bytestash.enable = true;
       #calibre.enable = true;
@@ -83,6 +82,9 @@
 
       gatus.enable = true;
       #gatus.containers.gatus.extraEnv.GATUS_LOG_LEVEL = "DEBUG";
+
+      grimmory.enable = true;
+
       guacamole.enable = true;
 
       #healthchecks.enable = true;
