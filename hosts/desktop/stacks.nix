@@ -44,13 +44,13 @@
         };
       };
 
-      booklore = {
+      grimmory = {
         oidc = {
           registerClient = true;
         };
         db = {
-          userPasswordFile = config.sops.secrets."booklore/db_user_password".path;
-          rootPasswordFile = config.sops.secrets."booklore/db_root_password".path;
+          userPasswordFile = config.sops.secrets."grimmory/db_user_password".path;
+          rootPasswordFile = config.sops.secrets."grimmory/db_root_password".path;
         };
       };
 
