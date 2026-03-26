@@ -508,6 +508,9 @@ in {
                 resources = ["^/ping/.*$"];
                 policy = "bypass";
               }
+              {
+                policy = "one_factor";
+              }
             ];
           };
           extraEnv = {

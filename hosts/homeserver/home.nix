@@ -77,7 +77,7 @@
       #filebrowser-quantum.enable = true;
       #sparky-fitness.enable = true;
       #freshrss.enable = true;
-      # forgejo.enable = true;
+      #forgejo.enable = true;
       #free-games-claimer.enable = true;
 
       gatus.enable = true;
@@ -87,7 +87,7 @@
 
       guacamole.enable = true;
 
-      #healthchecks.enable = true;
+      healthchecks.enable = true;
 
       #homeassistant.enable = true;
       homepage.enable = true;
