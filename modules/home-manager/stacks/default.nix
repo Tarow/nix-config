@@ -52,6 +52,7 @@
         papra.oidc.userGroup
         wallos.oidc.userGroup
         kaneo.oidc.userGroup
+        trek.oidc.userGroup
       ];
     };
     selma = {
@@ -69,6 +70,7 @@
         norish.oidc.userGroup
         grimmory.oidc.userGroup
         outline.oidc.userGroup
+        trek.oidc.userGroup
       ];
     };
     guest = {
@@ -1001,6 +1003,13 @@ in {
         enableGrafanaAccessLogDashboard = true;
         crowdsec.middleware.bouncerKeyFile = config.sops.secrets."crowdsec/traefik_bouncer_key".path;
         containers.traefik.extraConfig.Container.DNS = "1.1.1.1";
+      };
+
+      trek = {
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."trek/authelia/client_secret".path;
+        };
       };
 
       vaultwarden = {

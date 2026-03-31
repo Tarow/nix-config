@@ -168,6 +168,7 @@
       #tandoor.enable = true;
       # timetracker.enable = true;
       traefik.enable = true;
+      trek.enable = true;
 
       #uptime-kuma.enable = true;
       #vikunja.enable = true;

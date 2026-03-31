@@ -44,6 +44,14 @@
         };
       };
 
+      trek = {
+        enable = true;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."trek/authelia/client_secret".path;
+        };
+      };
+
       grimmory = {
         oidc = {
           registerClient = true;
@@ -87,6 +95,16 @@
           package = pkgs.unstable.igir;
         };
         containers.romm.volumeMap.assets = lib.mkForce "${config.home.homeDirectory}/tmp/romm/testassets:/romm/assets";
+      };
+
+      streaming = {
+        enable = true;
+        gluetun = {
+          vpnProvider = "airvpn";
+          wireguardPrivateKeyFile = config.sops.secrets."gluetun/wg_pk".path;
+          wireguardPresharedKeyFile = config.sops.secrets."gluetun/wg_psk".path;
+          wireguardAddressesFile = config.sops.secrets."gluetun/wg_address".path;
+        };
       };
 
       blocky.enable = true;
