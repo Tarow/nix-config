@@ -1,5 +1,6 @@
 {
   lib,
+  config,
   pkgs,
   ...
 }: {
@@ -10,7 +11,6 @@
 
   tarow = lib.mkMerge [
     (lib.tarow.enableModules [
-      "aichat"
       "core"
       "git"
       "nh"
@@ -21,14 +21,21 @@
       "sshClient"
       "starship"
       "stylix"
-      # "sops"
+      "sops"
       "vscode"
       "firefox"
+      "opencode"
     ])
     {
       git-clone.repos.pkm = {
         uri = "git@github.com:Tarow/pkm.git";
         location = "~";
+      };
+    }
+    {
+      sops = {
+        keyFile = null;
+        sshKeyFile = "${config.home.homeDirectory}/.ssh/id_ed25519";
       };
     }
   ];

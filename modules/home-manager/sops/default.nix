@@ -51,9 +51,14 @@ in {
       description = "Path to extra sops files containing encrypted secrets";
     };
     keyFile = lib.options.mkOption {
-      type = lib.types.str;
+      type = lib.types.nullOr lib.types.str;
       description = "Path to the key file used to decrypt secrets";
       default = "${config.xdg.configHome}/sops/age/keys.txt";
+    };
+    sshKeyFile = lib.options.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      description = "Path to ssh keys added as age keys during sops decryption.";
+      default = null;
     };
   };
 
@@ -64,7 +69,10 @@ in {
     sops = {
       defaultSopsFile = ../../../secrets/secrets.yaml;
       defaultSopsFormat = "yaml";
-      age.keyFile = cfg.keyFile;
+      age = {
+        keyFile = lib.mkIf (cfg.keyFile != null) cfg.keyFile;
+        sshKeyPaths = lib.optional (cfg.sshKeyFile != null) cfg.sshKeyFile;
+      };
 
       secrets = fullCfg;
     };
