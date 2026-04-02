@@ -30,6 +30,7 @@
         "podman"
         "scrutiny"
         "npsSettings"
+        "opencode"
       ];
     }
   ];
