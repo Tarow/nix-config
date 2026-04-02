@@ -2,6 +2,7 @@ keys:
   - &desktop age1p4e0revwefgws4dl5tuwharh5wylv2sy2xxszevng8ej7du9sp5q84t4zg
   - &homeserver age194ynt5xm3jhqztzpn8h8jtjnxr8gq7y475nwpe3ugukxnr270ulsmuke9p
   - &relsat age18xhqlpqn4thwmvswtnrrde458w2dg2srr8wwr2sfe3fra3r3dgksaq3967
+  - &thinkpad age16frn80qln7n7hgjq3fykwn6s5kf66xuunq2f3ceu48pw5t8nv9dqxpqyk6
 creation_rules:
   - path_regex: secrets/secrets.yaml$
     key_groups:
@@ -9,6 +10,7 @@ creation_rules:
           - *desktop
           - *homeserver
           - *relsat
+          - *thinkpad
 
   - path_regex: secrets/desktop/[^/]+\.(yaml|json|env|ini)$
     key_groups:
