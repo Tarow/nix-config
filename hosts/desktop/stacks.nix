@@ -11,16 +11,6 @@
     externalStorageBaseDir = "/mnt/hdd1";
 
     stacks = {
-      dawarich = {
-        enable = true;
-        secretKeyFile = config.sops.secrets."dawarich/secret_key".path;
-        db.passwordFile = config.sops.secrets."dawarich/db_password".path;
-        oidc = {
-          enable = true;
-          clientSecretFile = config.sops.secrets."dawarich/authelia/client_secret".path;
-        };
-      };
-
       authelia = {
         enable = true;
         jwtSecretFile = config.sops.secrets."authelia/jwt_secret".path;
