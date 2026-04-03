@@ -5,6 +5,11 @@
   ...
 }: let
   cfg = config.tarow.opencode;
+  opencodePkg = pkgs.unstable.opencode;
+  wrapper = pkgs.writeShellScriptBin "opencode" ''
+    export NVIDIA_API_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."NVIDIA_API_KEY".path})
+    ${lib.getExe opencodePkg} $@
+  '';
 in {
   options.tarow.opencode = {
     enable = lib.mkEnableOption "OpenCode";
@@ -13,7 +18,7 @@ in {
   config = lib.mkIf cfg.enable {
     programs.opencode = {
       enable = true;
-      package = pkgs.unstable.opencode;
+      package = wrapper;
       agents = {
         debug = ./agents/debug.md;
         docs = ./agents/docs.md;
@@ -37,6 +42,16 @@ in {
         compaction = {
           auto = false;
           prune = true;
+        };
+        provider = {
+          nvidia = {
+            npm = "@ai-sdk/openai-compatible";
+            name = "NVIDIA NIM";
+            options = {
+              baseURL = "https://integrate.api.nvidia.com/v1";
+              apiKey = "{env:NVIDIA_API_KEY}";
+            };
+          };
         };
         agent = {
           explore = {
