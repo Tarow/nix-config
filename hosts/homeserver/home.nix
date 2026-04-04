@@ -28,7 +28,7 @@
         "neovim"
         "golang"
         "podman"
-        #"scrutiny"
+        "scrutiny"
         "npsSettings"
         "opencode"
       ];
