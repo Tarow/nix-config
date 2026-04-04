@@ -69,6 +69,7 @@
       glance.containers.glance.traefik.subDomain = "glance";
       crowdsec.enable = true;
       davis.enable = true;
+      dawarich.enable = true;
       dockdns.enable = true;
       docker-socket-proxy.enable = true;
       #donetick.enable = true;

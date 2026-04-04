@@ -53,6 +53,7 @@
         wallos.oidc.userGroup
         kaneo.oidc.userGroup
         trek.oidc.userGroup
+        dawarich.oidc.userGroup
       ];
     };
     selma = {
@@ -71,6 +72,7 @@
         grimmory.oidc.userGroup
         outline.oidc.userGroup
         trek.oidc.userGroup
+        dawarich.oidc.userGroup
       ];
     };
     guest = {
@@ -215,6 +217,7 @@ in {
         enableGrafanaDashboard = true;
         enablePrometheusExport = true;
       };
+
       davis = {
         adminPasswordFile = config.sops.secrets."davis/admin_password".path;
         db = {
@@ -227,6 +230,17 @@ in {
           expose = true;
         };
       };
+
+      dawarich = {
+        secretKeyFile = config.sops.secrets."dawarich/secret_key".path;
+        db.passwordFile = config.sops.secrets."dawarich/db_password".path;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."dawarich/authelia/client_secret".path;
+        };
+        containers.dawarich.expose = true;
+      };
+
       dockdns = {
         extraEnv.NTASLER_DE_API_TOKEN.fromFile = config.sops.secrets."CLOUDFLARE_API_KEY".path;
         settings.dns.purgeUnknown = true;
