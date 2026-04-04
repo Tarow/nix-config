@@ -28,7 +28,7 @@
         "neovim"
         "golang"
         "podman"
-        "scrutiny"
+        #"scrutiny"
         "npsSettings"
         "opencode"
       ];
@@ -52,7 +52,7 @@
       # General onfiguration for stacks provided in modules/home-manager/stacks/default.nix if necessary
       # Just enable them here or provide host-specific settings
 
-      #dguard.enable = true;
+      #adguard.enable = true;
       aiostreams.enable = true;
       audiobookshelf.enable = true;
       authelia.enable = true;
@@ -88,7 +88,7 @@
 
       guacamole.enable = true;
 
-      healthchecks.enable = true;
+      #healthchecks.enable = true;
 
       #homeassistant.enable = true;
       homepage.enable = true;
@@ -106,7 +106,7 @@
       #kitchenowl.enable = true;
       lldap.enable = true;
       #komga.enable = true;
-      mazanoke.enable = true;
+      #mazanoke.enable = true;
       #mealie.enable = true;
       #memos.enable = true;
       #microbin.enable = true;
@@ -139,16 +139,13 @@
 
       #networking-toolbox.enable = true;
 
-      #nextcloud.enable = true; #npsSettings.enable = true; #npsSettings.containers.npsSettings.extraEnv.NPSSETTINGS_LOG_LEVEL = "DEBUG";
-      #readmeabook.enable = true;
-
       norish.enable = true;
       ntfy.enable = true;
 
-      outline.enable = true;
+      #outline.enable = true;
 
       paperless.enable = true;
-      papra.enable = true;
+      #papra.enable = true;
 
       #romm.enable = true;
       shelfmark.enable = true;

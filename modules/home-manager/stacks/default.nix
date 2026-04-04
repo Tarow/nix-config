@@ -846,7 +846,10 @@ in {
 
       shelfmark = {
         downloadDirectory = "${config.nps.storageBaseDir}/grimmory/bookdrop";
-
+        oidc = {
+          #enable = true;
+          clientSecretFile = config.sops.secrets."shelfmark/authelia/client_secret".path;
+        };
         containers.shelfmark = {
           network = ["streaming"]; # to reach prowlarr
           volumeMap.media = config.nps.containers.qbittorrent.volumeMap.media; # to access qbit downloads
