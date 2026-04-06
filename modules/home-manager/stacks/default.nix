@@ -386,7 +386,7 @@ in {
                 name = "${name} External";
                 client.dns-resolver = "tcp://1.1.1.1:53";
                 group = "ext_availability";
-                headers.Accept = "application/json";
+                headers.Accept = lib.mkIf c.forwardAuth.enable "application/json"; # To avoid Authelia returning RC 200 and login screen
                 conditions = [
                   "[STATUS] == ${
                     if c.forwardAuth.enable
