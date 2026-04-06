@@ -115,10 +115,10 @@
 
       homepage.enable = true;
       mazanoke.enable = true;
-      monitoring.enable = true;
+      #monitoring.enable = true;
 
       norish = {
-        enable = true;
+        #enable = true;
         masterKeyFile = config.sops.secrets."norish/master_key".path;
         db.passwordFile = config.sops.secrets."norish/db_password".path;
         oidc = {
@@ -166,6 +166,14 @@
         enableGrafanaAccessLogDashboard = true;
 
         extraEnv.CF_DNS_API_TOKEN.fromFile = config.sops.secrets."CLOUDFLARE_API_KEY".path;
+      };
+
+      trek = {
+        enable = true;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."trek/authelia/client_secret".path;
+        };
       };
     };
   };
