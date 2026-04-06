@@ -52,7 +52,7 @@
         papra.oidc.userGroup
         wallos.oidc.userGroup
         kaneo.oidc.userGroup
-        trek.oidc.userGroup
+        trek.oidc.adminGroup
         dawarich.oidc.userGroup
       ];
     };
