@@ -27,6 +27,12 @@ config: {
     presharedKeyFile = config.sops.secrets."wireguard/psk_tablet".path;
     allowedIPs = ["10.2.2.3"];
   };
+  selma-phone = {
+    name = "selma-phone";
+    publicKey = "kFN0wYimn14PK80TbHq2ZODo/rdWcg4apphXeqUsVho=";
+    presharedKeyFile = config.sops.secrets."wireguard/psk_selma".path;
+    allowedIPs = ["10.2.2.4"];
+  };
   hermann-phone = {
     name = "hermann-phone";
     publicKey = "uLcPj6s3vTjoekzxCgKqd57IM2Ozl+IrWMY8p1waQy8=";

@@ -65,7 +65,7 @@ in {
         ./genClientConfig.nix
         {
           serverPubKey = (import ./peers.nix config).homeserver.publicKey;
-          serverEndpoint = "${cfg.endpoint}:${toString cfg.port}";
+          serverEndpoint = cfg.endpoint;
         })
     ];
   };

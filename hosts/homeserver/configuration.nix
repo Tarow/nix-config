@@ -30,6 +30,7 @@
         peers.relsat-server
         peers.niklas-phone
         peers.niklas-tablet
+        peers.selma-phone
       ];
     };
     samba = {
