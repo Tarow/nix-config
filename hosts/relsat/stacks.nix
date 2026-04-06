@@ -174,6 +174,7 @@
           enable = true;
           clientSecretFile = config.sops.secrets."trek/authelia/client_secret".path;
         };
+        containers.trek.extraEnv.ALLOW_INTERNAL_NETWORK = true;
       };
     };
   };
