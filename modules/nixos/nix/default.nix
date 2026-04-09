@@ -5,8 +5,10 @@
   ...
 }: {
   nix = {
+    package = pkgs.unstable.nix;
     settings = {
       trusted-users = ["@wheel"];
+      allowed-users = ["@wheel"];
       extra-experimental-features = [
         "nix-command"
         "flakes"

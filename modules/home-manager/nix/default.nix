@@ -19,7 +19,7 @@ in {
   ];
 
   nix = {
-    package = lib.mkIf isStandalone pkgs.nix;
+    package = lib.mkIf isStandalone pkgs.unstable.nix;
     # Run garbage collection every day at 12:30
     gc = {
       automatic = true;
