@@ -826,8 +826,7 @@ in {
         };
       };
 
-      /*
-        reactive-resume = {
+      reactive-resume = {
         authSecretFile = config.sops.secrets."reactive_resume/auth_secret".path;
         db.passwordFile = config.sops.secrets."reactive_resume/db_password".path;
         oidc = {
@@ -835,7 +834,6 @@ in {
           clientSecretFile = config.sops.secrets."reactive_resume/authelia/client_secret".path;
         };
       };
-      */
 
       romm = {
         authSecretKeyFile = config.sops.secrets."romm/auth_secret_key".path;
