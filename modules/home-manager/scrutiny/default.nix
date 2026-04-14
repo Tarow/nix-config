@@ -10,20 +10,18 @@ in {
 
   config = lib.mkIf cfg.enable {
     nps.stacks = {
-      traefik = {
-        enable = true;
-        dynamicConfig.http = {
-          routers.scrutiny = {
-            entryPoints = ["websecure" "websecure-internal"];
-            service = "scrutiny";
-            middlewares = ["private"];
-            rule = "Host(`scrutiny.${config.nps.stacks.traefik.domain}`)";
-          };
-          services.scrutiny = {
-            loadBalancer.servers = [{url = "http://host.containers.internal:8080";}];
-          };
+      traefik.dynamicConfig.http = {
+        routers.scrutiny = {
+          entryPoints = ["websecure" "websecure-internal"];
+          service = "scrutiny";
+          middlewares = ["private"];
+          rule = "Host(`scrutiny.${config.nps.stacks.traefik.domain}`)";
+        };
+        services.scrutiny = {
+          loadBalancer.servers = [{url = "http://host.containers.internal:8080";}];
         };
       };
+
       homepage.services = {
         "Monitoring" = {
           "Scrutiny" = {

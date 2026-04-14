@@ -7,6 +7,7 @@
   cfg = config.tarow.opencode;
   opencodePkg = pkgs.unstable.opencode;
   wrapper = pkgs.writeShellScriptBin "opencode" ''
+    export OPENCODE_SERVER_PASSWORD=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."OPENCODE_SERVER_PASSWORD".path})
     export NVIDIA_API_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."NVIDIA_API_KEY".path})
     ${lib.getExe opencodePkg} $@
   '';
@@ -94,5 +95,38 @@ in {
     };
 
     home.file.".config/opencode/skills".source = ./skills;
+
+    systemd.user.services.opencode-web = {
+      Unit = {
+        Description = "OpenCode Web Server";
+        After = ["network.target"];
+      };
+      Service = {
+        Type = "simple";
+        ExecStart = "${lib.getExe wrapper} web --port 4096 --hostname 0.0.0.0";
+        Restart = "on-failure";
+      };
+      Install.WantedBy = ["default.target"];
+    };
+
+    nps.stacks = {
+      traefik.dynamicConfig.http = {
+        routers.opencode = {
+          entryPoints = ["websecure" "websecure-internal"];
+          service = "opencode";
+          middlewares = ["private"];
+          rule = "Host(`opencode.${config.nps.stacks.traefik.domain}`)";
+        };
+        services.opencode = {
+          loadBalancer.servers = [{url = "http://host.containers.internal:4096";}];
+        };
+      };
+      homepage.services."General"."OpenCode" = {
+        description = "AI Coding Agent";
+        href = "https://opencode.${config.nps.stacks.traefik.domain}";
+        siteMonitor = "http://host.containers.internal:4096";
+        icon = "opencode";
+      };
+    };
   };
 }

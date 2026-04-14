@@ -98,6 +98,8 @@
 
       immich.enable = true;
       it-tools.enable = true;
+
+      #job-ops.enable = true;
       #jotty.enable = true;
 
       kaneo.enable = true;
