@@ -7,7 +7,6 @@
   cfg = config.tarow.opencode;
   opencodePkg = pkgs.unstable.opencode;
   wrapper = pkgs.writeShellScriptBin "opencode" ''
-    export OPENCODE_SERVER_PASSWORD=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."OPENCODE_SERVER_PASSWORD".path})
     export NVIDIA_API_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."NVIDIA_API_KEY".path})
     ${lib.getExe opencodePkg} $@
   '';
@@ -109,21 +108,29 @@ in {
       Install.WantedBy = ["default.target"];
     };
 
-    nps.stacks = {
+    nps.stacks = let
+      domain = "opencode.${config.nps.stacks.traefik.domain}";
+    in {
       traefik.dynamicConfig.http = {
         routers.opencode = {
           entryPoints = ["websecure" "websecure-internal"];
           service = "opencode";
-          middlewares = ["private"];
-          rule = "Host(`opencode.${config.nps.stacks.traefik.domain}`)";
+          middlewares = ["private@file" "authelia@file"];
+          rule = "Host(`${domain}`)";
         };
         services.opencode = {
           loadBalancer.servers = [{url = "http://host.containers.internal:4096";}];
         };
       };
+      authelia.settings.access_control.rules = [
+        {
+          domain = "${domain}";
+          policy = "one_factor";
+        }
+      ];
       homepage.services."General"."OpenCode" = {
         description = "AI Coding Agent";
-        href = "https://opencode.${config.nps.stacks.traefik.domain}";
+        href = "https://${domain}";
         siteMonitor = "http://host.containers.internal:4096";
         icon = "opencode";
       };
