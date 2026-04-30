@@ -21,9 +21,6 @@ in {
             right = 5;
           };
         };
-        general = {
-          multithreading = true;
-        };
         display = {
           separator = "➜   ";
         };

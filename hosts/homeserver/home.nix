@@ -111,7 +111,7 @@
       #komga.enable = true;
       #mazanoke.enable = true;
       #mealie.enable = true;
-      #memos.enable = true;
+      # memos.enable = true;
       #microbin.enable = true;
       monitoring = {
         enable = true;
