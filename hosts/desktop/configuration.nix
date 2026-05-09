@@ -139,4 +139,15 @@
       startAt = "daily";
     };
   };
+
+  services.k3s = {
+    enable = true;
+    role = "server";
+    clusterInit = true;
+    tokenFile = config.sops.secrets."k3s/token".path;
+    extraFlags = [
+      "--write-kubeconfig-group ${toString config.tarow.facts.gid}"
+      "--write-kubeconfig-mode 0660"
+    ];
+  };
 }

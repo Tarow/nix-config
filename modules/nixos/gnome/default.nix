@@ -12,7 +12,7 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    services.xserver = {
+    services = {
       #      enable = true;
       displayManager.gdm.enable = true;
       #   displayManager.gdm.wayland = false;
