@@ -148,6 +148,7 @@ in {
           TMDB_ACCESS_TOKEN.fromFile = config.sops.secrets."aiostreams/tmdb_access_token".path;
           TMDB_API_KEY.fromFile = config.sops.secrets."aiostreams/tmdb_api_key".path;
           FORCED_REALDEBRID_API_KEY.fromFile = config.sops.secrets."aiostreams/rd_api_key".path;
+          FORCED_TORBOX_API_KEY.fromFile = config.sops.secrets."aiostreams/torbox_api_key".path;
           ALLOWED_REGEX_PATTERNS_URLS = ''[\"https://raw.githubusercontent.com/Vidhin05/Releases-Regex/main/merged-anime-regexes.json\",\"https://raw.githubusercontent.com/Vidhin05/Releases-Regex/main/merged-regexes.json\"]'';
         };
       };
