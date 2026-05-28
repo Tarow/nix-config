@@ -102,7 +102,7 @@ in {
       };
       Service = {
         Type = "simple";
-        ExecStart = "${lib.getExe wrapper} web --port 4096 --hostname 0.0.0.0";
+        ExecStart = "${lib.getExe wrapper} serve --port 4096 --hostname 0.0.0.0";
         Restart = "on-failure";
       };
       Install.WantedBy = ["default.target"];
