@@ -92,6 +92,7 @@
       #healthchecks.enable = true;
 
       #homeassistant.enable = true;
+      #homebox.enable = true;
       homepage.enable = true;
 
       #hortusfox.enable = true;

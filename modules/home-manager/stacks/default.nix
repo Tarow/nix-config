@@ -535,6 +535,15 @@ in {
           };
         };
       };
+
+      homebox = {
+        apiKeyPepperFile = config.sops.secrets."homebox/api_key_pepper".path;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."homebox/authelia/client_secret".path;
+        };
+      };
+
       homepage = {
         bookmarks = import ./homepage-bookmarks.nix;
         containers.homepage.volumes = [
