@@ -151,6 +151,7 @@
       paperless.enable = true;
       reactive-resume.enable = true;
       #papra.enable = true;
+      #pinepods.enable = true;
 
       #romm.enable = true;
       shelfmark.enable = true;

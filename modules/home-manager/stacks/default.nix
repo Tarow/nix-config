@@ -836,6 +836,14 @@ in {
         };
       };
 
+      pinepods = {
+        db.passwordFile = config.sops.secrets."pinepods/db_password".path;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."pinepods/authelia/client_secret".path;
+        };
+      };
+
       reactive-resume = {
         authSecretFile = config.sops.secrets."reactive_resume/auth_secret".path;
         db.passwordFile = config.sops.secrets."reactive_resume/db_password".path;
