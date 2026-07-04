@@ -65,7 +65,7 @@
     obsidian
     telegram-desktop
     unstable.teams-for-linux
-    unstable.bitwarden-desktop
+    #unstable.bitwarden-desktop
 
     pinta
     glow
