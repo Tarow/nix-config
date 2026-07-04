@@ -386,11 +386,11 @@
         "sops-nix": "sops-nix"
       },
       "locked": {
-        "lastModified": 1783112119,
-        "narHash": "sha256-cFyDQ+envZ+sOZ5hEOnVmLbYOGDy1IY4r2m87EHDP2o=",
+        "lastModified": 1783150195,
+        "narHash": "sha256-mZGTRlAo+JK0o+E9828EsnR2fMks7BcVUF8Cptgs7NI=",
         "owner": "Tarow",
         "repo": "nix-podman-stacks",
-        "rev": "9954d2641677c934487d2aadf306885925bed918",
+        "rev": "e1ecd8e7cdf334ff8e8ff20f47b3be65468598ef",
         "type": "github"
       },
       "original": {
@@ -557,11 +557,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1783065377,
-        "narHash": "sha256-TR9M4Gl/ibvrpLsheOlaNQRam6fzfNq9Mthw/j6ZniU=",
+        "lastModified": 1783151161,
+        "narHash": "sha256-nKByKGAzCOMk+VpgEvUzJZeJnXpmpmKMKXAOZrBYg+U=",
         "owner": "notashelf",
         "repo": "nvf",
-        "rev": "11985bb991c885e4e47df6bea8fa8d03fc6ba2ab",
+        "rev": "6cfbe11bbafc0002511e07a3e9a358496cce6672",
         "type": "github"
       },
       "original": {
@@ -801,11 +801,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1783063269,
-        "narHash": "sha256-XVOopPVgoWPlhuJajUYNTK/M9j/L/llD6vdH5JE9EKs=",
+        "lastModified": 1783146259,
+        "narHash": "sha256-wWlTBOy/Q6mfqamF+Z/KE1NRwoGwX+iKHusxdc2qNs8=",
         "owner": "0xc000022070",
         "repo": "zen-browser-flake",
-        "rev": "b86380c97016a1c79f535f286a34c0f5b4270a1b",
+        "rev": "45617befee3b74b806f7a4f0e1f48e3b2abc91f3",
         "type": "github"
       },
       "original": {
