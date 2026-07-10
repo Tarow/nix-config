@@ -77,7 +77,7 @@
 
       #filebrowser.enable = true;
       #filebrowser-quantum.enable = true;
-      #sparky-fitness.enable = true;
+      sparky-fitness.enable = true;
       #freshrss.enable = true;
       #forgejo.enable = true;
       #free-games-claimer.enable = true;
@@ -146,7 +146,7 @@
       norish.enable = true;
       ntfy.enable = true;
 
-      outline.enable = true;
+      #outline.enable = true;
 
       paperless.enable = true;
       reactive-resume.enable = true;
