@@ -53,7 +53,7 @@
         wallos.oidc.userGroup
         kaneo.oidc.userGroup
         trek.oidc.adminGroup
-        dawarich.oidc.userGroup
+        sparky-fitness.oidc.adminGroup
       ];
     };
     selma = {
@@ -72,7 +72,7 @@
         grimmory.oidc.userGroup
         outline.oidc.userGroup
         trek.oidc.userGroup
-        dawarich.oidc.userGroup
+        sparky-fitness.oidc.userGroup
       ];
     };
     guest = {
@@ -1070,8 +1070,8 @@ in {
 
       wallos = {
         oidc = {
-          registerClient = true;
-          clientSecretHash.toHash = config.sops.secrets."wallos/authelia/client_secret".path;
+          enable = true;
+          clientSecretFile = config.sops.secrets."wallos/authelia/client_secret".path;
         };
       };
 

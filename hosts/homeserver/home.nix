@@ -143,7 +143,7 @@
 
       #networking-toolbox.enable = true;
 
-      norish.enable = true;
+      #norish.enable = true;
       ntfy.enable = true;
 
       #outline.enable = true;
