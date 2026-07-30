@@ -74,6 +74,11 @@
     };
   };
 
+  services.fwupd = {
+    enable = true;
+    package = pkgs.unstable.fwupd;
+  };
+
   services.openssh = {
     enable = true;
     settings = {
