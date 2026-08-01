@@ -188,6 +188,16 @@ in {
         };
       };
 
+      beszel = {
+        ed25519PrivateKeyFile = config.sops.secrets."beszel/ssh_key".path;
+        ed25519PublicKeyFile = config.sops.secrets."beszel/ssh_pub_key".path;
+        adminProvisioning = {
+          email = lldapUsers.niklas.email;
+          passwordFile = lldapUsers.niklas.password_file;
+        };
+        tokenFile = config.sops.secrets."beszel/token".path;
+      };
+
       blocky = {
         enableGrafanaDashboard = true;
         enablePrometheusExport = true;

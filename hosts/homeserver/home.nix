@@ -59,7 +59,8 @@
       #baikal.enable = true;
 
       bentopdf.enable = true;
-      #beszel.enable = true;
+
+      beszel.enable = true;
       blocky.enable = true;
 
       #bytestash.enable = true;
@@ -71,7 +72,7 @@
       davis.enable = true;
       # dawarich.enable = true;
       dockdns.enable = true;
-      docker-socket-proxy.enable = true;
+      # docker-socket-proxy.enable = true;
       #donetick.enable = true;
       dozzle.enable = true;
 
