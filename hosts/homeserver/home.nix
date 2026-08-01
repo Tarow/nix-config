@@ -94,6 +94,7 @@
 
       #homeassistant.enable = true;
       #homebox.enable = true;
+      #homelable.enable = true;
       homepage.enable = true;
 
       #hortusfox.enable = true;

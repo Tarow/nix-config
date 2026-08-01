@@ -188,6 +188,14 @@ in {
         };
       };
 
+      homelable = {
+        secretKeyFile = config.sops.secrets."homelable/secret_key".path;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."homelable/authelia/client_secret".path;
+        };
+      };
+
       beszel = {
         ed25519PrivateKeyFile = config.sops.secrets."beszel/ssh_key".path;
         ed25519PublicKeyFile = config.sops.secrets."beszel/ssh_pub_key".path;

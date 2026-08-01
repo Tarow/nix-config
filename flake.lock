@@ -365,11 +365,11 @@
         "sops-nix": "sops-nix"
       },
       "locked": {
-        "lastModified": 1785434855,
-        "narHash": "sha256-Wsz7QOZ1FGlmLFHk41brrKLq4KmzjUpCIsovhLJv3pY=",
+        "lastModified": 1785577849,
+        "narHash": "sha256-afHQzO5V2hOHy8N9RDIe8U0rEll+Fkeeq3EWTaHaSM4=",
         "owner": "Tarow",
         "repo": "nix-podman-stacks",
-        "rev": "86ecdedaaf1acbbb4d5aaaec8abb8281061f87a2",
+        "rev": "8dfbc94a40cc6e015794f97cbfc28621e872f7a9",
         "type": "github"
       },
       "original": {
