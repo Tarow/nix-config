@@ -892,6 +892,18 @@ in {
         };
       };
 
+      /*
+        scanopy = {
+        enable = false;
+        db.passwordFile = config.sops.secrets."scanopy/db_password".path;
+
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."scanopy/authelia/client_secret".path;
+        };
+      };
+      */
+
       shelfmark = {
         downloadDirectory = "${config.nps.storageBaseDir}/grimmory/bookdrop";
         oidc = {
