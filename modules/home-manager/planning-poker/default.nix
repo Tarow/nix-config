@@ -19,22 +19,20 @@ in {
 
   config = lib.mkIf cfg.enable {
     services.podman = {
-      builds.scrumpoker = {
+      builds.${name} = {
         file = "${src}/Dockerfile";
         tags = [tag];
       };
       containers = {
         ${name} = {
-          image = tag;
+          image = "${name}.build";
           volumes = [
             "${storage}/db:/var/lib/database"
           ];
           port = 8080;
-
+          autoUpdate = null;
           traefik.name = "poker";
           expose = true;
-
-          dependsOn = ["podman-scrumpoker-build.service"];
         };
       };
     };
