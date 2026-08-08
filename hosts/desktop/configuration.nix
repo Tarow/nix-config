@@ -31,7 +31,7 @@
       "stylix"
       "oomd"
     ])
-    {facts.ip4Address = "10.1.1.210";}
+    {facts.ip4Address = "10.1.1.148";}
 
     {monitors.configuration = ./monitors.xml;}
     {
