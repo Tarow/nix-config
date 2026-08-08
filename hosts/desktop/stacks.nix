@@ -5,7 +5,7 @@
   ...
 }: {
   nps = {
-    hostIP4Address = "10.1.1.148";
+    hostIP4Address = config.tarow.facts.ip4Address;
     hostUid = 1000;
     storageBaseDir = "${config.home.homeDirectory}/stacks";
     externalStorageBaseDir = "/mnt/hdd1";
@@ -109,6 +109,7 @@
 
       blocky.enable = true;
       dozzle.enable = true;
+      dozzle.containers.dozzle.ports = ["8080:8080"];
       docker-socket-proxy.enable = true;
       homepage.enable = true;
       monitoring.enable = true;
@@ -141,7 +142,6 @@
         };
       };
 
-      n8n.enable = true;
       traefik = {
         enable = true;
         domain = "testing.ntasler.de";
@@ -151,19 +151,6 @@
         enableGrafanaAccessLogDashboard = true;
 
         extraEnv.CF_DNS_API_TOKEN.fromFile = config.sops.secrets."CLOUDFLARE_API_KEY".path;
-
-        dynamicConfig = {
-          http.middlewares = {
-            ipwhitelist-internal = {
-              ipAllowList.sourceRange = [
-                "10.0.0.0/8"
-                "172.16.0.0/12"
-                "192.168.0.0/16"
-                "100.64.0.0/10" # Tailscale CGNAT range
-              ];
-            };
-          };
-        };
       };
     };
   };

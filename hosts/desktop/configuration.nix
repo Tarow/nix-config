@@ -31,15 +31,19 @@
       "stylix"
       "oomd"
     ])
-    {facts.ip4Address = "10.1.1.148";}
-
+    {facts.ip4Address = "10.1.1.97";}
     {monitors.configuration = ./monitors.xml;}
     {
       sops.extraSopsFiles = [../../secrets/desktop/secrets.yaml];
     }
   ];
 
-  networking.hostName = "nixos";
+  boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = lib.mkForce 0;
+  networking = {
+    firewall.allowedUDPPorts = [80 443 51820];
+    firewall.allowedTCPPorts = [80 443];
+    hostName = "desktop";
+  };
 
   hardware.graphics = {
     enable = true;
@@ -120,10 +124,6 @@
   # Necessary for file browsers to browse samba shares
   services.gvfs.enable = true;
 
-  boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = lib.mkForce 0;
-  networking.firewall.allowedUDPPorts = [80 443 51820];
-  networking.firewall.allowedTCPPorts = [80 443];
-
   services.borgbackup.jobs = {
     remote = {
       paths = [
@@ -137,11 +137,13 @@
       };
       compression = "auto,lzma";
       startAt = "daily";
+      extraArgs = "-v --debug --show-rc";
+      extraCreateArgs = "--stats --progress";
     };
   };
 
   services.k3s = {
-    enable = true;
+    enable = false;
     role = "server";
     clusterInit = true;
     tokenFile = config.sops.secrets."k3s/token".path;

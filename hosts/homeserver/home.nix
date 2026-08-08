@@ -42,6 +42,7 @@
   tarow = {
     facts.ip4Address = "10.1.1.99";
     sops.extraSopsFiles = [../../secrets/homeserver/secrets.yaml];
+    opencode.openchamber.enable = true;
   };
 
   nps = {

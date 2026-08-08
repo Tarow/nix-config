@@ -6,6 +6,7 @@
 }: let
   cfg = config.tarow.opencode;
   opencodePkg = pkgs.unstable.opencode;
+  openchamberPkg = pkgs.callPackage ./openchamber.nix {};
   wrapper = pkgs.writeShellScriptBin "opencode" ''
     export NVIDIA_API_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."NVIDIA_API_KEY".path})
     ${lib.getExe opencodePkg} $@
@@ -13,6 +14,14 @@
 in {
   options.tarow.opencode = {
     enable = lib.mkEnableOption "OpenCode";
+    openchamber = {
+      enable = lib.mkEnableOption "OpenChamber (web interface for OpenCode)";
+      port = lib.mkOption {
+        type = lib.types.port;
+        default = 3000;
+        description = "Port the OpenChamber web server listens on";
+      };
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -110,6 +119,7 @@ in {
 
     nps.stacks = let
       domain = "opencode.${config.nps.stacks.traefik.domain}";
+      openchamberDomain = "openchamber.${config.nps.stacks.traefik.domain}";
     in {
       traefik.dynamicConfig.http = {
         routers.opencode = {
@@ -121,19 +131,60 @@ in {
         services.opencode = {
           loadBalancer.servers = [{url = "http://host.containers.internal:4096";}];
         };
+        routers.openchamber = lib.mkIf cfg.openchamber.enable {
+          entryPoints = ["websecure" "websecure-internal"];
+          service = "openchamber";
+          middlewares = ["private@file" "authelia@file"];
+          rule = "Host(`${openchamberDomain}`)";
+        };
+        services.openchamber = lib.mkIf cfg.openchamber.enable {
+          loadBalancer.servers = [{url = "http://host.containers.internal:${toString cfg.openchamber.port}";}];
+        };
       };
-      authelia.settings.access_control.rules = [
-        {
-          domain = "${domain}";
-          policy = "one_factor";
-        }
-      ];
+      authelia.settings.access_control.rules =
+        [
+          {
+            domain = "${domain}";
+            policy = "one_factor";
+          }
+        ]
+        ++ lib.optionals cfg.openchamber.enable [
+          {
+            domain = "${openchamberDomain}";
+            policy = "one_factor";
+          }
+        ];
       homepage.services."General"."OpenCode" = {
         description = "AI Coding Agent";
         href = "https://${domain}";
         siteMonitor = "http://host.containers.internal:4096";
         icon = "opencode";
       };
+      homepage.services."General"."OpenChamber" = lib.mkIf cfg.openchamber.enable {
+        description = "Web interface for OpenCode";
+        href = "https://${openchamberDomain}";
+        siteMonitor = "http://host.containers.internal:${toString cfg.openchamber.port}";
+        icon = "openchamber";
+      };
+    };
+
+    systemd.user.services.openchamber-web = lib.mkIf cfg.openchamber.enable {
+      Unit = {
+        Description = "OpenChamber Web Server";
+        After = ["opencode-web.service"];
+      };
+      Service = {
+        Type = "simple";
+        ExecStart = "${lib.getExe openchamberPkg} serve --port ${toString cfg.openchamber.port} --host 0.0.0.0 --foreground";
+        Environment = [
+          "OPENCODE_HOST=http://localhost:4096"
+          "OPENCODE_SKIP_START=true"
+          "OPENCHAMBER_ALLOW_UNAUTHENTICATED_LAN=true"
+          "OPENCODE_BINARY=${config.programs.opencode.package}/bin/opencode"
+        ];
+        Restart = "on-failure";
+      };
+      Install.WantedBy = ["default.target"];
     };
   };
 }

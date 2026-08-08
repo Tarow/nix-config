@@ -3,6 +3,7 @@
   lib,
   pkgs,
   inputs,
+  osConfig,
   ...
 }: {
   imports = [
@@ -40,8 +41,8 @@
   ];
 
   tarow = {
-    facts.ip4Address = "10.1.1.148";
-
+    facts.ip4Address = osConfig.tarow.facts.ip4Address;
+    opencode.openchamber.enable = true;
     git-clone.repos = {
       nix-config = {
         uri = "https://github.com/Tarow/nix-config.git";
