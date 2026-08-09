@@ -33,6 +33,8 @@
         timetracker.oidc.adminGroup
         romm.oidc.adminGroup
         jotty.oidc.adminGroup
+        trek.oidc.adminGroup
+        sparky-fitness.oidc.adminGroup
 
         # No group-based admin access supported yet, just user-roles
         karakeep.oidc.userGroup
@@ -52,8 +54,7 @@
         papra.oidc.userGroup
         wallos.oidc.userGroup
         kaneo.oidc.userGroup
-        trek.oidc.adminGroup
-        sparky-fitness.oidc.adminGroup
+        reactive-resume.oidc.userGroup
       ];
     };
     selma = {
@@ -73,6 +74,7 @@
         outline.oidc.userGroup
         trek.oidc.userGroup
         sparky-fitness.oidc.userGroup
+        reactive-resume.oidc.userGroup
       ];
     };
     guest = {
@@ -892,17 +894,13 @@ in {
         };
       };
 
-      /*
-        scanopy = {
-        enable = false;
+      scanopy = {
         db.passwordFile = config.sops.secrets."scanopy/db_password".path;
-
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."scanopy/authelia/client_secret".path;
         };
       };
-      */
 
       shelfmark = {
         downloadDirectory = "${config.nps.storageBaseDir}/grimmory/bookdrop";
@@ -1064,9 +1062,27 @@ in {
         enableGrafanaAccessLogDashboard = true;
         crowdsec.middleware.bouncerKeyFile = config.sops.secrets."crowdsec/traefik_bouncer_key".path;
         containers.traefik.extraConfig.Container.DNS = "1.1.1.1";
+        dynamicConfig.http.middlewares = {
+          sablier.plugin.sablier = {
+            sablierUrl = "http://host.containers.internal:10000";
+            group = "demo";
+            dynamic = {
+              theme = "hacker-terminal";
+            };
+          };
+        };
+        staticConfig.experimental.plugins.sablier = {
+          moduleName = "github.com/sablierapp/sablier-traefik-plugin";
+          version = "v1.3.0";
+        };
       };
 
       trek = {
+        containers.trek.extraConfig."X-Sablier" = {
+          Enable = true;
+          Group = "demo";
+        };
+        containers.trek.traefik.middleware.sablier.enable = true;
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."trek/authelia/client_secret".path;
