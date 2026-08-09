@@ -119,7 +119,7 @@
                 ./hosts/shared/home.nix
                 {tarow.core.flakeConfigKey = name;}
               ];
-              home-manager.backupFileExtension = ".bak";
+              home-manager.backupFileExtension = "bak";
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.extraSpecialArgs = {inherit inputs outputs lib;};
