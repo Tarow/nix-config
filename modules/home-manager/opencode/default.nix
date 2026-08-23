@@ -164,7 +164,7 @@ in {
         description = "Web interface for OpenCode";
         href = "https://${openchamberDomain}";
         siteMonitor = "http://host.containers.internal:${toString cfg.openchamber.port}";
-        icon = "openchamber";
+        icon = "https://raw.githubusercontent.com/openchamber/openchamber/refs/heads/main/docs/references/badges/openchamber-logo-dark.png";
       };
     };
 

@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  pkgs,
   ...
 }: let
   cfg = config.tarow.firefox;
@@ -11,7 +10,7 @@ in {
   };
   config = lib.mkIf cfg.enable {
     programs.firefox.enable = true;
-
+    programs.firefox.configPath = "${config.xdg.configHome}/mozilla/firefox";
     #programs.firefox.profiles.default = {};
 
     # Disable until profiles are migrated

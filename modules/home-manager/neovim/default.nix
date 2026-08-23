@@ -33,10 +33,6 @@ in {
           maplocalleader = " ";
         };
 
-        languages = {
-          #enableTreesitter = true;
-        };
-
         lsp = {
           enable = true;
           formatOnSave = true;
@@ -49,25 +45,34 @@ in {
           registers = "unnamedplus";
         };
 
+        languages.enableTreesitter = true;
+
         binds = {
           whichKey.enable = true;
-
           cheatsheet.enable = true;
         };
-        startPlugins = ["cheatsheet-nvim"];
+        #startPlugins = ["cheatsheet-nvim"];
 
-        statusline.lualine.enable = true;
         telescope.enable = true;
         autocomplete.nvim-cmp.enable = true;
-        minimap.codewindow.enable = true;
+
         filetree.nvimTree.enable = true;
 
         ui = {
           colorizer.enable = true;
-          breadcrumbs = {
+        };
+        statusline = {
+          lualine = {
             enable = true;
-            lualine.winbar.alwaysRender = true;
-            navbuddy.enable = true;
+            integrations = {
+              breadcrumbs = {
+                nvim-navic = {
+                  enable = true;
+                  alwaysRender = true;
+                };
+                navbuddy.enable = true;
+              };
+            };
           };
         };
       };
