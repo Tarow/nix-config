@@ -1062,27 +1062,9 @@ in {
         enableGrafanaAccessLogDashboard = true;
         crowdsec.middleware.bouncerKeyFile = config.sops.secrets."crowdsec/traefik_bouncer_key".path;
         containers.traefik.extraConfig.Container.DNS = "1.1.1.1";
-        dynamicConfig.http.middlewares = {
-          sablier.plugin.sablier = {
-            sablierUrl = "http://host.containers.internal:10000";
-            group = "demo";
-            dynamic = {
-              theme = "hacker-terminal";
-            };
-          };
-        };
-        staticConfig.experimental.plugins.sablier = {
-          moduleName = "github.com/sablierapp/sablier-traefik-plugin";
-          version = "v1.3.0";
-        };
       };
 
       trek = {
-        containers.trek.extraConfig."X-Sablier" = {
-          Enable = true;
-          Group = "demo";
-        };
-        containers.trek.traefik.middleware.sablier.enable = true;
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."trek/authelia/client_secret".path;
