@@ -80,6 +80,7 @@
       #filebrowser.enable = true;
       #filebrowser-quantum.enable = true;
       sparky-fitness.enable = true;
+      spliit.enable = true;
       #freshrss.enable = true;
       #forgejo.enable = true;
       #free-games-claimer.enable = true;

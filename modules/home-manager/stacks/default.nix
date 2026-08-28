@@ -934,6 +934,22 @@ in {
         };
       };
 
+      spliit = {
+        db.passwordFile = config.sops.secrets."spliit/db_password".path;
+        extraEnv = {
+          DEFAULT_CURRENCY_CODE = "EUR";
+        };
+
+        containers.spliit = {
+          expose = true;
+          forwardAuth = {
+            enable = true;
+            middlewareOrder = 1100;
+            rules = [{policy = "one_factor";}];
+          };
+        };
+      };
+
       sshwifty = let
         privateKeyFile = "/run/secrets/ssh_pk";
         webPasswordFile = "/run/secrets/web_password";
