@@ -10,11 +10,12 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    users.users.${config.tarow.facts.username}.extraGroups = ["docker"];
     virtualisation.docker = {
       enable = true;
       rootless = {
-        enable = true;
-        setSocketVariable = true;
+        enable = false;
+        setSocketVariable = false;
       };
     };
   };

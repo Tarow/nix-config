@@ -99,6 +99,7 @@
 
       streaming = {
         enable = true;
+
         gluetun = {
           vpnProvider = "airvpn";
           wireguardPrivateKeyFile = config.sops.secrets."gluetun/wg_pk".path;
@@ -109,7 +110,6 @@
 
       blocky.enable = true;
       dozzle.enable = true;
-      dozzle.containers.dozzle.ports = ["8080:8080"];
       docker-socket-proxy.enable = true;
       homepage.enable = true;
       monitoring.enable = true;
@@ -128,6 +128,9 @@
         };
       };
       */
+
+      # sablier.enable = true;
+      # sablier.settings.sessions.default-duration = "1m0s";
 
       leantime = {
         enable = true;
@@ -149,6 +152,7 @@
         enablePrometheusExport = true;
         enableGrafanaMetricsDashboard = true;
         enableGrafanaAccessLogDashboard = true;
+        provider = "file";
 
         extraEnv.CF_DNS_API_TOKEN.fromFile = config.sops.secrets."CLOUDFLARE_API_KEY".path;
       };

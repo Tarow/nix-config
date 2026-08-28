@@ -12,7 +12,7 @@ in {
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
-      matchBlocks = {
+      settings = {
         homeserver = {
           host = "ntasler ntasler.de";
           hostname = "ntasler.de";
