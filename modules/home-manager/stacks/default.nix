@@ -1042,6 +1042,21 @@ in {
           extraEnv."${lib.toUpper name}__AUTH__APIKEY".fromFile = config.sops.secrets."servarr/api_key".path;
         });
 
+      super-productivity = {
+        enableSync = true;
+        jwtSecretFile = config.sops.secrets."super-productivity/jwt_secret".path;
+        db.passwordFile = config.sops.secrets."super-productivity/db_password".path;
+        smtp = {
+          host = "smtp.purelymail.com";
+          port = 465;
+          secure = true;
+          user = lldapUsers.niklas.email;
+          passwordFile = config.sops.secrets."users/niklas/purelymail_password".path;
+          from = "SuperSync <noreply@ntasler.de>";
+        };
+        containers.supersync.extraEnv.ALLOWED_EMAILS = "*@${domain}";
+      };
+
       tandoor = {
         secretKeyFile = config.sops.secrets."tandoor/secret_key".path;
         db.passwordFile = config.sops.secrets."tandoor/db_password".path;

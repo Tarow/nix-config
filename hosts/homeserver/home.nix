@@ -173,6 +173,7 @@
         }
         // lib.genAttrs ["radarr" "sonarr" "bazarr" "jellyfin"] (_: {enable = false;});
 
+      super-productivity.enable = true;
       #tandoor.enable = true;
       # timetracker.enable = true;
       traefik.enable = true;
