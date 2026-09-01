@@ -33,4 +33,8 @@
   networking.hostName = "nixos";
 
   services.fprintd.enable = false;
+  services.fwupd = {
+    enable = true;
+    package = pkgs.unstable.fwupd;
+  };
 }
