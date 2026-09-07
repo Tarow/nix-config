@@ -908,19 +908,11 @@ in {
           #enable = true;
           clientSecretFile = config.sops.secrets."shelfmark/authelia/client_secret".path;
         };
-        containers.shelfmark = {
-          network = ["streaming"]; # to reach prowlarr
-          volumeMap.media = config.nps.containers.qbittorrent.volumeMap.media; # to access qbit downloads
-        };
-        extraEnv = {
-          PROWLARR_ENABLED = true;
-          PROWLARR_URL = "http://prowlarr:9696";
-          PROWLARR_API_KEY.fromFile = config.sops.secrets."servarr/api_key".path;
 
-          PROWLARR_TORRENT_CLIENT = "qbittorrent";
-          QBITTORRENT_URL = "http://gluetun:8080";
-          QBITTORRENT_CATEGORY = "ebooks";
-          QBITTORRENT_CATEGORY_AUDIOBOOK = "audiobooks";
+        useProwlarr = true;
+        useQbittorrent = true;
+        extraEnv = {
+          PROWLARR_API_KEY.fromFile = config.sops.secrets."servarr/api_key".path;
         };
       };
 
@@ -1006,41 +998,46 @@ in {
         };
       };
 
+      qbittorrent = {
+        gluetun = {
+          vpnProvider = "airvpn";
+          wireguardPrivateKeyFile = config.sops.secrets."gluetun/wg_pk".path;
+          wireguardPresharedKeyFile = config.sops.secrets."gluetun/wg_psk".path;
+          wireguardAddressesFile = config.sops.secrets."gluetun/wg_address".path;
+
+          extraEnv = {
+            FIREWALL_VPN_INPUT_PORTS.fromFile = config.sops.secrets."qbittorrent/torrenting_port".path;
+            SERVER_NAMES.fromFile = config.sops.secrets."gluetun/server_names".path;
+            HTTP_CONTROL_SERVER_LOG = "off";
+          };
+        };
+        containers.gluetun.ports = ["8888:8888"];
+        extraEnv = {
+          TORRENTING_PORT.fromFile = config.sops.secrets."qbittorrent/torrenting_port".path;
+        };
+        qui = {
+          enable = true;
+          oidc = {
+            enable = true;
+            clientSecretFile = config.sops.secrets."qui/authelia/client_secret".path;
+          };
+        };
+      };
       streaming =
         {
-          gluetun = {
-            vpnProvider = "airvpn";
-            wireguardPrivateKeyFile = config.sops.secrets."gluetun/wg_pk".path;
-            wireguardPresharedKeyFile = config.sops.secrets."gluetun/wg_psk".path;
-            wireguardAddressesFile = config.sops.secrets."gluetun/wg_address".path;
-
-            extraEnv = {
-              FIREWALL_VPN_INPUT_PORTS.fromFile = config.sops.secrets."qbittorrent/torrenting_port".path;
-              SERVER_NAMES.fromFile = config.sops.secrets."gluetun/server_names".path;
-              HTTP_CONTROL_SERVER_LOG = "off";
-            };
-          };
-          containers.gluetun.ports = ["8888:8888"];
-          qbittorrent.extraEnv = {
-            TORRENTING_PORT.fromFile = config.sops.secrets."qbittorrent/torrenting_port".path;
-          };
           jellyfin = {
             oidc = {
               enable = true;
               clientSecretFile = config.sops.secrets."jellyfin/authelia/client_secret".path;
             };
           };
-          qui = {
-            enable = true;
-            oidc = {
-              enable = true;
-              clientSecretFile = config.sops.secrets."qui/authelia/client_secret".path;
-            };
-          };
         }
-        // lib.genAttrs ["sonarr" "radarr" "bazarr" "prowlarr"] (name: {
+        // lib.genAttrs ["sonarr" "radarr" "bazarr"] (name: {
           extraEnv."${lib.toUpper name}__AUTH__APIKEY".fromFile = config.sops.secrets."servarr/api_key".path;
         });
+      prowlarr = {
+        extraEnv.PROWLARR__AUTH__APIKEY.fromFile = config.sops.secrets."servarr/api_key".path;
+      };
 
       super-productivity = {
         enableSync = true;

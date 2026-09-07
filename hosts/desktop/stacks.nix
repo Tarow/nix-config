@@ -97,15 +97,27 @@
         containers.romm.volumeMap.assets = lib.mkForce "${config.home.homeDirectory}/tmp/romm/testassets:/romm/assets";
       };
 
-      streaming = {
-        enable = true;
-
+      qbittorrent = {
         gluetun = {
           vpnProvider = "airvpn";
           wireguardPrivateKeyFile = config.sops.secrets."gluetun/wg_pk".path;
           wireguardPresharedKeyFile = config.sops.secrets."gluetun/wg_psk".path;
           wireguardAddressesFile = config.sops.secrets."gluetun/wg_address".path;
+
+          extraEnv = {
+            FIREWALL_VPN_INPUT_PORTS.fromFile = config.sops.secrets."qbittorrent/torrenting_port".path;
+            SERVER_NAMES.fromFile = config.sops.secrets."gluetun/server_names".path;
+            HTTP_CONTROL_SERVER_LOG = "off";
+          };
         };
+        containers.gluetun.ports = ["8888:8888"];
+        extraEnv = {
+          TORRENTING_PORT.fromFile = config.sops.secrets."qbittorrent/torrenting_port".path;
+        };
+      };
+      streaming = {
+        enable = true;
+        #useQbittorrent = false;
       };
 
       blocky.enable = true;

@@ -99,6 +99,18 @@ in {
             '';
           };
         };
+        mcp = {
+          chrome-devtools = {
+            type = "local";
+            command = [
+              "npx"
+              "-y"
+              "chrome-devtools-mcp@latest"
+              "--executable-path"
+              (lib.getExe pkgs.chromium)
+            ];
+          };
+        };
       };
     };
 
