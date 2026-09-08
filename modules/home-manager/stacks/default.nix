@@ -50,7 +50,7 @@
         norish.oidc.adminGroup
         vaultwarden.oidc.userGroup
         grimmory.oidc.userGroup
-        streaming.qui.oidc.userGroup
+        qbittorrent.qui.oidc.userGroup
         papra.oidc.userGroup
         wallos.oidc.userGroup
         kaneo.oidc.userGroup
