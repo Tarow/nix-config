@@ -2,11 +2,12 @@
   lib,
   pkgs,
   config,
+  inputs,
   ...
 }: let
   cfg = config.tarow.opencode;
   opencodePkg = pkgs.unstable.opencode;
-  openchamberPkg = pkgs.callPackage ./openchamber.nix {};
+  openchamberPkg = inputs.openchamber-nix.packages.${pkgs.stdenv.hostPlatform.system}.openchamber;
   wrapper = pkgs.writeShellScriptBin "opencode" ''
     export NVIDIA_API_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."NVIDIA_API_KEY".path})
     ${lib.getExe opencodePkg} $@

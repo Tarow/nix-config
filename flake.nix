@@ -65,6 +65,11 @@
       #url = "path:/home/niklas/projects/cmdmark";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    openchamber-nix = {
+      url = "github:Tarow/openchamber-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = {
     self,

@@ -84,6 +84,7 @@
     settings = {
       PermitRootLogin = "no";
       PasswordAuthentication = false;
+      GatewayPorts = "clientspecified";
     };
   };
 
@@ -92,7 +93,7 @@
   networking = rec {
     firewall = {
       allowedUDPPorts = [9 53 80 443 51820 51825];
-      allowedTCPPorts = [21 53 80 443 8888 2222 8081] ++ (lib.range 40000 40009);
+      allowedTCPPorts = [21 53 80 443 8888 2222 8081 14097] ++ (lib.range 40000 40009);
     };
     hostName = "homeserver";
     defaultGateway = "10.1.1.1";
