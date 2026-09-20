@@ -91,8 +91,8 @@
   time.timeZone = "Europe/Berlin";
   boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = lib.mkForce 0;
 
-  # Avoid e rtl_rxtx_empty_cond == 0 (loop: 42, delay: 100) issues
-  boot.kernelParams = ["r8169.aspm=0"];
+  boot.extraModulePackages = [config.boot.kernelPackages.r8168];
+  boot.blacklistedKernelModules = ["r8169"];
 
   networking = rec {
     firewall = {
