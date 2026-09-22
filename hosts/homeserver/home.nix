@@ -171,7 +171,7 @@
         {
           enable = true;
         }
-        // lib.genAttrs ["radarr" "sonarr" "bazarr" "jellyfin"] (_: {enable = false;});
+        // lib.genAttrs ["radarr" "sonarr" "bazarr"] (_: {enable = false;});
 
       super-productivity.enable = true;
       #tandoor.enable = true;
