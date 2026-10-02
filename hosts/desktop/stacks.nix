@@ -125,6 +125,7 @@
       dozzle.enable = true;
       homepage.enable = true;
       monitoring.enable = true;
+      monitoring.podmanExporter.enable = false;
       glance.enable = true;
       glance.containers.glance.traefik.subDomain = "glance";
       #monitoring.containers.alloy.reverseProxy.serviceName = lib.mkForce "logs";

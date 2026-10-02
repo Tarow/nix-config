@@ -71,6 +71,8 @@
     externalStorageBaseDir = "/mnt/hdd1";
 
     stacks = {
+      #openshell.enable = true;
+
       # General onfiguration for stacks provided in modules/home-manager/stacks/default.nix if necessary
       # Just enable them here or provide host-specific settings
 
