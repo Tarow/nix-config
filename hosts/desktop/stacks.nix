@@ -119,6 +119,7 @@
         enable = true;
         #useQbittorrent = false;
       };
+      socket-proxy.enable = true;
 
       blocky.enable = true;
       dozzle.enable = true;

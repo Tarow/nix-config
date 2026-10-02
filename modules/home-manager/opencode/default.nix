@@ -195,7 +195,7 @@ in {
           #"OPENCODE_SKIP_START=true"
           "OPENCHAMBER_ALLOW_UNAUTHENTICATED_LAN=true"
           # "OPENCODE_BINARY=${config.programs.opencode.package}/bin/opencode"
-          "OPENCODE_BINARY=${config.home.homeDirectory}/.opencode/bin/opencode"
+          "OPENCODE_BINARY=${config.home.homeDirectory}/.opencode/bin/opencode2"
           "PATH=${
             lib.makeBinPath [
               pkgs.nodejs
