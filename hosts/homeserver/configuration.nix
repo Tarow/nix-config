@@ -90,9 +90,9 @@
 
   time.timeZone = "Europe/Berlin";
   boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = lib.mkForce 0;
-  boot.kernelParams = ["pcie_aspm=off"];
-  boot.extraModulePackages = [config.boot.kernelPackages.r8168];
-  boot.blacklistedKernelModules = ["r8169"];
+  boot.kernelParams = ["pcie_aspm=off" "r8169.aspm=0"];
+  #boot.extraModulePackages = [config.boot.kernelPackages.r8168];
+  #boot.blacklistedKernelModules = ["r8169"];
 
   networking = rec {
     firewall = {

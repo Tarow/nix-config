@@ -2,13 +2,34 @@
   lib,
   config,
   pkgs,
-  inputs,
   ...
 }: {
   imports = [
     {
-      #services.podman.containers = lib.mkForce {};
-      #services.podman.networks = lib.mkForce {};
+      nps.stacks.dockdns.settings.domains = [
+        {
+          name = "openchamber2.${config.nps.stacks.traefik.domain}";
+        }
+      ];
+      nps.stacks.authelia.settings = {
+        access_control.rules = [
+          {
+            domain = "openchamber2.${config.nps.stacks.traefik.domain}";
+            policy = "one_factor";
+          }
+        ];
+      };
+      nps.stacks.traefik.dynamicConfig.http = {
+        routers.openchamber2 = {
+          entryPoints = ["websecure" "websecure-internal"];
+          service = "openchamber2";
+          middlewares = ["public@file" "authelia@file"];
+          rule = "Host(`${"openchamber2.${config.nps.stacks.traefik.domain}"}`)";
+        };
+        services.openchamber2 = {
+          loadBalancer.servers = [{url = "http://host.containers.internal:14098";}];
+        };
+      };
     }
     {
       tarow = lib.tarow.enableModules [
@@ -61,26 +82,28 @@
 
       bentopdf.enable = true;
 
-      beszel.enable = true;
+      #beszel.enable = true;
       blocky.enable = true;
 
       #bytestash.enable = true;
       #calibre.enable = true;
       #changedetection.enable = true;
-      glance.enable = true;
-      glance.containers.glance.traefik.subDomain = "glance";
+      #glance.enable = true;
       crowdsec.enable = true;
       davis.enable = true;
       # dawarich.enable = true;
       dockdns.enable = true;
-      docker-socket-proxy.enable = true;
+
       #donetick.enable = true;
       dozzle.enable = true;
 
+      dynacat.enable = true;
+
       #filebrowser.enable = true;
       #filebrowser-quantum.enable = true;
-      sparky-fitness.enable = true;
+      #sparky-fitness.enable = true;
       spliit.enable = true;
+      frigate.enable = true;
       #freshrss.enable = true;
       #forgejo.enable = true;
       #free-games-claimer.enable = true;
@@ -107,7 +130,7 @@
       #job-ops.enable = true;
       #jotty.enable = true;
 
-      kaneo.enable = true;
+      #kaneo.enable = true;
       karakeep.enable = true;
       #kimai.enable = true;
 
@@ -162,6 +185,7 @@
       skatcounter = {
         enable = true;
       };
+      socket-proxy.enable = true;
       planning-poker.enable = true;
       #sshwifty.enable = true;
       #stirling-pdf.enable = true;
@@ -186,7 +210,7 @@
       #webtop.enable = true;
       #wg-easy.enable = true;
       #wg-portal.enable = true;
-      wallos.enable = true;
+      #wallos.enable = true;
       #yopass.enable = true;
     };
   };

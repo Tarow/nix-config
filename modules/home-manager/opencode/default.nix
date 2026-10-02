@@ -29,6 +29,7 @@ in {
     programs.opencode = {
       enable = true;
       package = wrapper;
+      context = ./AGENTS.md;
       agents = {
         debug = ./agents/debug.md;
         docs = ./agents/docs.md;
@@ -190,10 +191,20 @@ in {
         Type = "simple";
         ExecStart = "${lib.getExe openchamberPkg} serve --port ${toString cfg.openchamber.port} --host 0.0.0.0 --foreground";
         Environment = [
-          "OPENCODE_HOST=http://localhost:4096"
-          "OPENCODE_SKIP_START=true"
+          #"OPENCODE_HOST=http://localhost:4096"
+          #"OPENCODE_SKIP_START=true"
           "OPENCHAMBER_ALLOW_UNAUTHENTICATED_LAN=true"
-          "OPENCODE_BINARY=${config.programs.opencode.package}/bin/opencode"
+          # "OPENCODE_BINARY=${config.programs.opencode.package}/bin/opencode"
+          "OPENCODE_BINARY=${config.home.homeDirectory}/.opencode/bin/opencode"
+          "PATH=${
+            lib.makeBinPath [
+              pkgs.nodejs
+              pkgs.bun
+
+              "/run/current-system/sw"
+              config.home.profileDirectory
+            ]
+          }"
         ];
         Restart = "on-failure";
       };

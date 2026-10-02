@@ -17,7 +17,7 @@ config: {
   };
   niklas-phone = {
     name = "niklas-phone";
-    publicKey = "NqjXYy3NzgQVSjAvzp/AevGmENxIA6/XdXzZZy87PRA=";
+    publicKey = "JACXsFxKsknlvqz4ZpTErl1OnBXNEqG9Zv89KQQnJAM=";
     presharedKeyFile = config.sops.secrets."wireguard/psk_phone".path;
     allowedIPs = ["10.2.2.2"];
   };

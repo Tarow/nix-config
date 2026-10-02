@@ -128,7 +128,7 @@ in {
     hostUid = config.tarow.facts.uid;
     defaultTz = "Europe/Berlin";
 
-    stacks = {
+    stacks = rec {
       adventurelog = {
         secretKeyFile = config.sops.secrets."adventurelog/secret_key".path;
         db.passwordFile = config.sops.secrets."adventurelog/db_password".path;
@@ -212,8 +212,7 @@ in {
         enableGrafanaDashboard = true;
         enablePrometheusExport = true;
         containers.blocky = {
-          homepage.settings.href = "${config.nps.containers.grafana.traefik.serviceUrl}/d/blocky";
-          glance.url = "${config.nps.containers.grafana.traefik.serviceUrl}/d/blocky";
+          dashboard.url = "${config.nps.containers.grafana.traefik.serviceUrl}/d/blocky";
           gatus = {
             enable = true;
             settings = {
@@ -333,6 +332,53 @@ in {
           clientSecretFile = config.sops.secrets."freshrss/authelia/client_secret".path;
           cryptoKeyFile = config.sops.secrets."freshrss/authelia/crypto_key".path;
         };
+      };
+      frigate = {
+        settings = {
+          mqtt.enabled = false;
+
+          # https://docs.frigate.video/configuration/ffmpeg_presets/#hwaccel-presets
+          ffmpeg.hwaccel_args = "preset-intel-qsv-h264";
+
+          go2rtc.streams.birdfeeder = [
+            "https://10.1.1.143:4444/video/h264"
+          ];
+          cameras.birdfeeder = {
+            enabled = true;
+            ffmpeg.inputs = [
+              {
+                path = "rtsp://127.0.0.1:8554/birdfeeder";
+                input_args = "preset-rtsp-restream";
+                roles = ["detect" "record"];
+              }
+            ];
+            detect.enabled = true;
+            objects.track = ["bird"];
+          };
+
+          record = {
+            enabled = true;
+            continuous = {
+              days = 1;
+            };
+            motion = {
+              days = 3;
+            };
+            detections.retain = {
+              days = 7;
+            };
+            alerts.retain = {
+              days = 7;
+            };
+          };
+          snapshots = {
+            enabled = true;
+            retain.default = 7;
+          };
+        };
+
+        # Increase shared memory from the module default (64MB) to 256MB
+        containers.frigate.extraConfig.Container.ShmSize = "256mb";
       };
       gatus = {
         db = {
@@ -497,6 +543,16 @@ in {
         };
       };
 
+      dynacat =
+        glance
+        // {
+          secretKeyFile = "${pkgs.writeText "dynacat-secret" "U3PgCKBYKEVPCmJOvRLA0XgHTXMebP7ngywmcXU5P1HKNQVdhlbdezG57tohDSwD4U7srE2jqq2ftnYuYQYF4w=="}";
+          oidc = {
+            enable = false;
+            clientSecretFile = "${pkgs.writeText "oidc-secret" "aYAlMCs2o4Jb9BA1PCOWN6aacyibgKFBEqmEF95dR5iZcoBiXRMzmXRpuP1So4OZfpND1J2x"}";
+          };
+        };
+
       grimmory = {
         oidc = {
           registerClient = true;
@@ -570,6 +626,7 @@ in {
           "${./homepage-background.jpg}:/app/public/images/background.jpg"
           "${pkgs.writeText "custom.js" (import ./homepage-customjs.nix config.nps.containers.dozzle.traefik.serviceUrl)}:/app/config/custom.js"
         ];
+        containers.homepage.traefik.subDomain = "";
         settings.background = {
           image = "/images/background.jpg";
           opacity = 50;
@@ -1084,11 +1141,13 @@ in {
       traefik = {
         domain = domain;
         extraEnv.CF_DNS_API_TOKEN.fromFile = config.sops.secrets."CLOUDFLARE_API_KEY".path;
-        geoblock.allowedCountries = ["DE"];
+        geoblock.allowedCountries = ["DE" "PT"];
         enablePrometheusExport = true;
         enableGrafanaMetricsDashboard = true;
         enableGrafanaAccessLogDashboard = true;
         crowdsec.middleware.bouncerKeyFile = config.sops.secrets."crowdsec/traefik_bouncer_key".path;
+        provider = "file";
+        staticConfig.providers.docker = lib.mkForce null;
         containers.traefik.extraConfig.Container.DNS = "1.1.1.1";
       };
 

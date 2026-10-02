@@ -122,7 +122,6 @@
 
       blocky.enable = true;
       dozzle.enable = true;
-      docker-socket-proxy.enable = true;
       homepage.enable = true;
       monitoring.enable = true;
       glance.enable = true;
