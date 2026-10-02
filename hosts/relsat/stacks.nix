@@ -100,7 +100,7 @@
         ];
       };
 
-      docker-socket-proxy.enable = true;
+      socket-proxy.enable = true;
 
       grimmory = {
         enable = true;
