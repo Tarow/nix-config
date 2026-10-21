@@ -114,6 +114,7 @@
       };
 
       homepage.enable = true;
+      homepage.containers.homepage.traefik.subDomain = "";
       mazanoke.enable = true;
       #monitoring.enable = true;
 

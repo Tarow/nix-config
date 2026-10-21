@@ -104,6 +104,9 @@
     nameservers = [defaultGateway "1.1.1.1" "9.9.9.9"];
     resolvconf.extraOptions = ["timeout:2"];
 
+    localCommands = ''
+      ${pkgs.ethtool}/bin/ethtool -K enp1s0 tx off tso off gso off
+    '';
     interfaces.enp1s0 = {
       wakeOnLan.enable = true;
       ipv4.addresses = [
@@ -137,6 +140,15 @@
         "${config.tarow.facts.userhome}/stacks"
         "/mnt/hdd1/media/pictures/immich"
         "/mnt/hdd1/shares/niklas"
+      ];
+      exclude = [
+        "${config.tarow.facts.userhome}/stacks/frigate"
+        "**/node_modules"
+        "**/.cache"
+        "**/.git"
+        "**/.next"
+        "**/.venv"
+        "**/venv"
       ];
       encryption = {
         mode = "repokey-blake2";

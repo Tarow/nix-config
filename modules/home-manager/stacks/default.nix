@@ -109,12 +109,37 @@ in {
       # Add default config to every container
       options.services.podman.containers = lib.mkOption {
         type = lib.types.attrsOf (
-          lib.types.submodule ({config, ...}: {
+          lib.types.submodule ({
+            name,
+            config,
+            ...
+          }: let
+            sablierContainerPrefixes = [
+              "bentopdf"
+              "it-tools"
+              "reactive-resume"
+              "spliit"
+              "trek"
+              "shelfmark"
+              "grafana"
+              "radarr"
+              "sonarr"
+              "bazarr"
+              "guacamole"
+            ];
+          in {
             #homepage.settings.description = lib.mkIf (config.homepage.category != null) (lib.mkForce null);
             extraConfig.Unit = {
               Wants = ["sops-nix.service"];
               After = ["sops-nix.service"];
             };
+
+            sablier.enable = lib.any (containerPrefix: lib.hasPrefix containerPrefix name) sablierContainerPrefixes;
+            sablier.middleware.ignoreUserAgent = [
+              "curl"
+              "(?i)uptimerobot"
+              "(?i)^Gatus/"
+            ];
           })
         );
       };
@@ -128,7 +153,7 @@ in {
     hostUid = config.tarow.facts.uid;
     defaultTz = "Europe/Berlin";
 
-    stacks = rec {
+    stacks = {
       adventurelog = {
         secretKeyFile = config.sops.secrets."adventurelog/secret_key".path;
         db.passwordFile = config.sops.secrets."adventurelog/db_password".path;
@@ -190,14 +215,6 @@ in {
         };
       };
 
-      homelable = {
-        secretKeyFile = config.sops.secrets."homelable/secret_key".path;
-        oidc = {
-          enable = true;
-          clientSecretFile = config.sops.secrets."homelable/authelia/client_secret".path;
-        };
-      };
-
       beszel = {
         ed25519PrivateKeyFile = config.sops.secrets."beszel/ssh_key".path;
         ed25519PublicKeyFile = config.sops.secrets."beszel/ssh_pub_key".path;
@@ -227,6 +244,15 @@ in {
             };
           };
         };
+      };
+
+      bookorbit = {
+        enable = false;
+        libraryPath = "${config.nps.mediaStorageBaseDir}/books";
+        jwtSecretFile = config.sops.secrets."bookorbit/jwt_secret".path;
+        podcastEncryptionKeyFile = config.sops.secrets."bookorbit/podcast_encryption_key".path;
+        setupBootstrapTokenFile = config.sops.secrets."bookorbit/setup_bootstrap_token".path;
+        db.passwordFile = config.sops.secrets."bookorbit/db_password".path;
       };
 
       crowdsec = {
@@ -543,15 +569,79 @@ in {
         };
       };
 
-      dynacat =
-        glance
-        // {
-          secretKeyFile = "${pkgs.writeText "dynacat-secret" "U3PgCKBYKEVPCmJOvRLA0XgHTXMebP7ngywmcXU5P1HKNQVdhlbdezG57tohDSwD4U7srE2jqq2ftnYuYQYF4w=="}";
-          oidc = {
-            enable = false;
-            clientSecretFile = "${pkgs.writeText "oidc-secret" "aYAlMCs2o4Jb9BA1PCOWN6aacyibgKFBEqmEF95dR5iZcoBiXRMzmXRpuP1So4OZfpND1J2x"}";
+      dynacat = {
+        secretKeyFile = "${pkgs.writeText "dynacat-secret" "U3PgCKBYKEVPCmJOvRLA0XgHTXMebP7ngywmcXU5P1HKNQVdhlbdezG57tohDSwD4U7srE2jqq2ftnYuYQYF4w=="}";
+        oidc = {
+          enable = false;
+          clientSecretFile = "${pkgs.writeText "oidc-secret" "aYAlMCs2o4Jb9BA1PCOWN6aacyibgKFBEqmEF95dR5iZcoBiXRMzmXRpuP1So4OZfpND1J2x"}";
+        };
+        settings.theme = {
+          primary-color = "47 50 70";
+        };
+        settings.pages.home = {
+          columns.start = {
+            rank = 500;
+            size = "small";
+            widgets = [
+              {
+                type = "server-stats";
+                servers = [
+                  {
+                    type = "local";
+                    name = "Server";
+                  }
+                ];
+              }
+              {
+                type = "bookmarks";
+                groups = import ./glance-bookmarks.nix;
+              }
+              {
+                type = "reddit";
+                subreddit = "selfhosted";
+                collapse-after = 3;
+              }
+            ];
+          };
+
+          columns.end = {
+            rank = 1500;
+            size = "small";
+            widgets = [
+              {
+                type = "clock";
+                time-format = "24h";
+                date-format = "d MMMM yyyy";
+                show-seconds = true;
+                show-timezone = true;
+                timezone = config.nps.defaultTz;
+              }
+              {
+                type = "search";
+                search-engine = "google";
+                new-tab = true;
+              }
+              {
+                type = "calendar";
+                first-day-of-week = "monday";
+              }
+              {
+                type = "weather";
+                location = "Mönchengladbach, Germany";
+              }
+            ];
           };
         };
+      };
+
+      excalidash = {
+        jwtSecretFile = config.sops.secrets."excalidash/jwt_secret".path;
+        csrfSecretFile = config.sops.secrets."excalidash/csrf_secret".path;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."excalidash/authelia/client_secret".path;
+        };
+      };
 
       grimmory = {
         oidc = {
@@ -617,6 +707,13 @@ in {
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."homebox/authelia/client_secret".path;
+        };
+      };
+      homelable = {
+        secretKeyFile = config.sops.secrets."homelable/secret_key".path;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."homelable/authelia/client_secret".path;
         };
       };
 
@@ -839,6 +936,7 @@ in {
       norish = {
         masterKeyFile = config.sops.secrets."norish/master_key".path;
         db.passwordFile = config.sops.secrets."norish/db_password".path;
+        cdpTokenFile = config.sops.secrets."norish/cdp_token".path;
         oidc = {
           enable = true;
           clientSecretFile = config.sops.secrets."norish/authelia/client_secret".path;
@@ -951,6 +1049,31 @@ in {
         };
       };
 
+      sablier = {
+        defaultStrategy = "blocking";
+        settings = {
+          logging.level = "debug";
+          provider = {
+            auto-stop-externally-started = true;
+            auto-stop-on-startup = true;
+          };
+          sessions = {
+            default-duration = "15m";
+            expiration-interval = "5m";
+          };
+          strategy = {
+            blocking = {
+              default-refresh-frequency = "5s";
+              default-timeout = "2m0s";
+            };
+            dynamic = {
+              default-refresh-frequency = "5s";
+              show-details-by-default = true;
+            };
+          };
+        };
+      };
+
       scanopy = {
         db.passwordFile = config.sops.secrets."scanopy/db_password".path;
         oidc = {
@@ -996,6 +1119,8 @@ in {
             middlewareOrder = 1100;
             rules = [{policy = "one_factor";}];
           };
+          sablier.middleware.blocking = null;
+          sablier.middleware.dynamic.theme = "matrix";
         };
       };
 

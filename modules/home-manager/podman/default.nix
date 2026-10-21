@@ -1,9 +1,17 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }: let
   cfg = config.tarow.podman;
+
+  script = pkgs.writeShellScriptBin "podman-cleanup" ''
+    ${lib.getExe config.services.podman.package} system prune -af;
+
+    # Recreate unused network for stacks that sablier scaled down
+    ${pkgs.systemd}/bin/systemctl --user restart 'podman-*-network.service';
+  '';
 in {
   options.tarow.podman.enable = lib.options.mkEnableOption "Podman";
 
@@ -23,7 +31,7 @@ in {
       services."podman-cleanup" = {
         Service = {
           Type = "oneshot";
-          ExecStart = "${lib.getExe config.services.podman.package} system prune -af";
+          ExecStart = lib.getExe script;
         };
       };
     };

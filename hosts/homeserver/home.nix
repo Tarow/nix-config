@@ -118,6 +118,7 @@
       guacamole.enable = true;
 
       #healthchecks.enable = true;
+      excalidash.enable = true;
 
       #homeassistant.enable = true;
       #homebox.enable = true;
@@ -158,17 +159,6 @@
         ];
       };
       #n8n.enable = true;
-      /*
-        netbird = {
-        enable = true;
-        authSecretFile = config.sops.secrets."netbird/auth_secret".path;
-        storeEncryptionKeyFile = config.sops.secrets."netbird/encryption_key".path;
-        oidc = {
-          enable = true;
-          clientSecretFile = config.sops.secrets."netbird/authelia/client_secret".path;
-        };
-      };
-      */
 
       #networking-toolbox.enable = true;
 
@@ -183,6 +173,7 @@
       #pinepods.enable = true;
 
       #romm.enable = true;
+      sablier.enable = true;
       shelfmark.enable = true;
       skatcounter = {
         enable = true;
@@ -193,11 +184,10 @@
       #stirling-pdf.enable = true;
 
       #storyteller.enable = true;
-      streaming =
-        {
-          enable = true;
-        }
-        // lib.genAttrs ["radarr" "sonarr" "bazarr"] (_: {enable = false;});
+      streaming = {
+        enable = true;
+      };
+      #// lib.genAttrs ["radarr" "sonarr" "bazarr"] (_: {enable = false;});
 
       super-productivity.enable = true;
       #tandoor.enable = true;
