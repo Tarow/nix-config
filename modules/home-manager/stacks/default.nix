@@ -570,10 +570,10 @@ in {
       };
 
       dynacat = {
-        secretKeyFile = "${pkgs.writeText "dynacat-secret" "U3PgCKBYKEVPCmJOvRLA0XgHTXMebP7ngywmcXU5P1HKNQVdhlbdezG57tohDSwD4U7srE2jqq2ftnYuYQYF4w=="}";
+        secretKeyFile = config.sops.secrets."dynacat/secret_key".path;
         oidc = {
           enable = false;
-          clientSecretFile = "${pkgs.writeText "oidc-secret" "aYAlMCs2o4Jb9BA1PCOWN6aacyibgKFBEqmEF95dR5iZcoBiXRMzmXRpuP1So4OZfpND1J2x"}";
+          clientSecretFile = config.sops.secrets."dynacat/authelia/client_secret".path;
         };
         settings.theme = {
           primary-color = "47 50 70";
