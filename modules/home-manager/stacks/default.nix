@@ -293,19 +293,28 @@ in {
         settings.log.level = "debug";
         settings.domains = let
           hostIP4Address = config.nps.hostIP4Address;
-        in [
-          {
-            name = domain;
-            a = hostIP4Address;
-          }
-          {
-            name = "*.${domain}";
-            a = hostIP4Address;
-          }
-          {
-            name = "vpn.${domain}";
-          }
-        ];
+          exposedContainers = config.services.podman.containers |> lib.filterAttrs (_: c: c.expose);
+        in
+          [
+            {
+              name = domain;
+              a = hostIP4Address;
+            }
+            {
+              name = "*.${domain}";
+              a = hostIP4Address;
+            }
+            {
+              name = "vpn.${domain}";
+            }
+          ]
+          # Keep exposed containers in static config to avoid dns entries removed if sablier is used
+          ++ (
+            lib.mapAttrsToList (name: c: {
+              name = c.traefik.serviceHost;
+            })
+            exposedContainers
+          );
       };
       donetick = {
         settings.is_user_creation_disabled = true;
@@ -767,6 +776,15 @@ in {
         settings = {
           oauth.autoLaunch = true;
           passwordLogin.enabled = false;
+        };
+
+        containers.immich = rec {
+          expose = false;
+          forwardAuth = {
+            enable = expose;
+            middlewareOrder = 1100;
+            rules = [{policy = "one_factor";}];
+          };
         };
       };
 
