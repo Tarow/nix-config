@@ -81,6 +81,7 @@
       audiobookshelf.enable = true;
       authelia.enable = true;
       #baikal.enable = true;
+      bambuddy.enable = true;
 
       bentopdf.enable = true;
 

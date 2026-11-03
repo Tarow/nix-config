@@ -30,6 +30,7 @@
         wg-portal.oidc.adminGroup
         filebrowser-quantum.oidc.adminGroup
         audiobookshelf.oidc.adminGroup
+        bambuddy.oidc.adminGroup
         timetracker.oidc.adminGroup
         romm.oidc.adminGroup
         jotty.oidc.adminGroup
@@ -205,13 +206,20 @@ in {
             redirect_uris = [];
           };
         };
-        settings.log.level = "debug";
+        #settings.log.level = "debug";
         settings.access_control.default_policy = "deny";
         sessionProvider = "redis";
 
         containers.authelia = {
           traefik.subDomain = "auth";
           expose = true;
+        };
+      };
+      bambuddy = {
+        bambuStudio.enable = true;
+        oidc = {
+          enable = true;
+          clientSecretFile = config.sops.secrets."bambuddy/authelia/client_secret".path;
         };
       };
 
@@ -1111,6 +1119,7 @@ in {
         useQbittorrent = true;
         extraEnv = {
           PROWLARR_API_KEY.fromFile = config.sops.secrets."servarr/api_key".path;
+          PROWLARR_TORRENT_ACTION = "remove_and_delete";
         };
       };
 
