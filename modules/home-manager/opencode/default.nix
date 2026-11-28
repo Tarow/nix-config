@@ -8,10 +8,6 @@
   cfg = config.tarow.opencode;
   opencodePkg = inputs.openchamber.packages.${pkgs.stdenv.hostPlatform.system}.opencode-cli;
   openchamberPkg = inputs.openchamber.packages.${pkgs.stdenv.hostPlatform.system}.openchamber;
-  wrapper = pkgs.writeShellScriptBin "opencode" ''
-    export NVIDIA_API_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."NVIDIA_API_KEY".path})
-    ${lib.getExe opencodePkg} $@
-  '';
 in {
   options.tarow.opencode = {
     enable = lib.mkEnableOption "OpenCode";
@@ -34,7 +30,7 @@ in {
     (lib.mkIf cfg.enable {
       programs.opencode = {
         enable = true;
-        package = wrapper;
+        package = opencodePkg;
         context = ./AGENTS.md;
         agents = {
           debug = ./agents/debug.md;
@@ -59,16 +55,6 @@ in {
           compaction = {
             auto = false;
             prune = true;
-          };
-          provider = {
-            nvidia = {
-              npm = "@ai-sdk/openai-compatible";
-              name = "NVIDIA NIM";
-              options = {
-                baseURL = "https://integrate.api.nvidia.com/v1";
-                apiKey = "{env:NVIDIA_API_KEY}";
-              };
-            };
           };
           agent = {
             explore = {
@@ -131,7 +117,7 @@ in {
         };
         Service = {
           Type = "simple";
-          ExecStart = "${lib.getExe wrapper} serve --port 4096 --hostname 0.0.0.0";
+          ExecStart = "${lib.getExe opencodePkg} serve --port 4096 --hostname 0.0.0.0";
           Restart = "on-failure";
         };
         Install.WantedBy = ["default.target"];
@@ -149,7 +135,7 @@ in {
             #"OPENCODE_HOST=http://localhost:4096"
             #"OPENCODE_SKIP_START=true"
             "OPENCHAMBER_ALLOW_UNAUTHENTICATED_LAN=true"
-            "OPENCODE_BINARY=${config.programs.opencode.package}/bin/opencode"
+            "OPENCODE_BINARY=${opencodePkg}/bin/opencode"
             #"OPENCODE_BINARY=${config.home.homeDirectory}/.opencode/bin/opencode2"
             "PATH=${
               lib.makeBinPath [
@@ -181,36 +167,33 @@ in {
           services.opencode = {
             loadBalancer.servers = [{url = "http://host.containers.internal:4096";}];
           };
-          routers.openchamber = lib.mkIf cfg.openchamber.enable {
+          routers.openchamber = {
             entryPoints = ["websecure" "websecure-internal"];
             service = "openchamber";
             middlewares = ["private@file" "authelia@file"];
             rule = "Host(`${openchamberDomain}`)";
           };
-          services.openchamber = lib.mkIf cfg.openchamber.enable {
+          services.openchamber = {
             loadBalancer.servers = [{url = "http://host.containers.internal:${toString cfg.openchamber.port}";}];
           };
         };
-        authelia.settings.access_control.rules =
-          [
-            {
-              domain = "${domain}";
-              policy = "one_factor";
-            }
-          ]
-          ++ lib.optionals cfg.openchamber.enable [
-            {
-              domain = "${openchamberDomain}";
-              policy = "one_factor";
-            }
-          ];
+        authelia.settings.access_control.rules = [
+          {
+            domain = "${domain}";
+            policy = "one_factor";
+          }
+          {
+            domain = "${openchamberDomain}";
+            policy = "one_factor";
+          }
+        ];
         homepage.services."General"."OpenCode" = {
           description = "AI Coding Agent";
           href = "https://${domain}";
           siteMonitor = "http://host.containers.internal:4096";
           icon = "opencode";
         };
-        homepage.services."General"."OpenChamber" = lib.mkIf cfg.openchamber.enable {
+        homepage.services."General"."OpenChamber" = {
           description = "Web interface for OpenCode";
           href = "https://${openchamberDomain}";
           siteMonitor = "http://host.containers.internal:${toString cfg.openchamber.port}";

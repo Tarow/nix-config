@@ -1,8 +1,12 @@
-{config, ...}: let
+{
+  config,
+  lib,
+  ...
+}: let
   cfg = config.tarow.facts;
 in {
   config = {
-    home.username = cfg.username;
-    home.homeDirectory = "/home/${cfg.username}";
+    home.username = lib.mkDefault cfg.username;
+    home.homeDirectory = lib.mkDefault "/home/${cfg.username}";
   };
 }

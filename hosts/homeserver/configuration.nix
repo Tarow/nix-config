@@ -14,6 +14,7 @@
   tarow = {
     facts.ip4Address = "10.1.1.99";
     nh.enable = true;
+    ai.enable = true;
     bootLoader.enable = true;
     shells.enable = true;
     sops = {

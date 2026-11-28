@@ -4,11 +4,13 @@
   outputs,
   ...
 }: {
+  users.groups.hm-nix-users = {};
+
   nix = {
     package = pkgs.unstable.nix;
     settings = {
-      trusted-users = ["@wheel"];
-      allowed-users = ["@wheel"];
+      trusted-users = ["root" "@wheel"];
+      allowed-users = ["@wheel" "@hm-nix-users"];
       extra-experimental-features = [
         "nix-command"
         "flakes"

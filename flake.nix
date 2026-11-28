@@ -68,7 +68,7 @@
 
     openchamber = {
       url = "github:openchamber/openchamber";
-      inputs.nixpkgs.follows = "nixpkgs";
+      #inputs.nixpkgs.follows = "nixpkgs";
     };
   };
   outputs = {
