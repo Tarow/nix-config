@@ -42,6 +42,7 @@
 
   tarow = {
     facts.ip4Address = osConfig.tarow.facts.ip4Address;
+    opencode.expose = true;
     opencode.openchamber.enable = true;
     git-clone.repos = {
       nix-config = {

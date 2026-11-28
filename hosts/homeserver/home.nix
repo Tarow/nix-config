@@ -6,32 +6,6 @@
 }: {
   imports = [
     {
-      nps.stacks.dockdns.settings.domains = [
-        {
-          name = "openchamber2.${config.nps.stacks.traefik.domain}";
-        }
-      ];
-      nps.stacks.authelia.settings = {
-        access_control.rules = [
-          {
-            domain = "openchamber2.${config.nps.stacks.traefik.domain}";
-            policy = "one_factor";
-          }
-        ];
-      };
-      nps.stacks.traefik.dynamicConfig.http = {
-        routers.openchamber2 = {
-          entryPoints = ["websecure" "websecure-internal"];
-          service = "openchamber2";
-          middlewares = ["public@file" "authelia@file"];
-          rule = "Host(`${"openchamber2.${config.nps.stacks.traefik.domain}"}`)";
-        };
-        services.openchamber2 = {
-          loadBalancer.servers = [{url = "http://host.containers.internal:14098";}];
-        };
-      };
-    }
-    {
       tarow = lib.tarow.enableModules [
         "aichat"
         "audiobook-organizer"
@@ -63,6 +37,7 @@
   tarow = {
     facts.ip4Address = "10.1.1.99";
     sops.extraSopsFiles = [../../secrets/homeserver/secrets.yaml];
+    opencode.expose = true;
     opencode.openchamber.enable = true;
   };
 
