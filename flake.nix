@@ -66,8 +66,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    openchamber-nix = {
-      url = "github:Tarow/openchamber-nix";
+    openchamber = {
+      url = "github:openchamber/openchamber";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

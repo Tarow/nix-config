@@ -6,8 +6,8 @@
   ...
 }: let
   cfg = config.tarow.opencode;
-  opencodePkg = pkgs.unstable.opencode;
-  openchamberPkg = inputs.openchamber-nix.packages.${pkgs.stdenv.hostPlatform.system}.openchamber;
+  opencodePkg = inputs.openchamber.packages.${pkgs.stdenv.hostPlatform.system}.opencode-cli;
+  openchamberPkg = inputs.openchamber.packages.${pkgs.stdenv.hostPlatform.system}.openchamber;
   wrapper = pkgs.writeShellScriptBin "opencode" ''
     export NVIDIA_API_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."NVIDIA_API_KEY".path})
     ${lib.getExe opencodePkg} $@
@@ -149,8 +149,8 @@ in {
             #"OPENCODE_HOST=http://localhost:4096"
             #"OPENCODE_SKIP_START=true"
             "OPENCHAMBER_ALLOW_UNAUTHENTICATED_LAN=true"
-            # "OPENCODE_BINARY=${config.programs.opencode.package}/bin/opencode"
-            "OPENCODE_BINARY=${config.home.homeDirectory}/.opencode/bin/opencode2"
+            "OPENCODE_BINARY=${config.programs.opencode.package}/bin/opencode"
+            #"OPENCODE_BINARY=${config.home.homeDirectory}/.opencode/bin/opencode2"
             "PATH=${
               lib.makeBinPath [
                 pkgs.nodejs
